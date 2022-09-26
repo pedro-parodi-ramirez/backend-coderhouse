@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Leche",
+    "price": 68.59,
+    "thumbnail": "https://www.laserenisima.com.ar/images/productos/grandesachet3.png"
+  },
+  {
+    "id": 2,
+    "title": "Azucar",
+    "price": 89.99,
+    "thumbnail": "https://www.casa-segal.com/wp-content/uploads/2019/03/azucar-kilo-ledesma-reposteria-mendoza-casa-segal-1-600x600.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Cafe",
+    "price": 522,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_726859-MLA45758824859_042021-O.webp"
+  }
+]
