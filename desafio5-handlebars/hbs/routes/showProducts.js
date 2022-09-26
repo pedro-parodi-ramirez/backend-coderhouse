@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-const DB = require('./DB.js');
+const express = require('express');
+const router = express.Router();
+const DB = require('../config/DB.js');
 
 // Lectura de archivo con productos
 let products, nextID;
@@ -20,7 +20,7 @@ router.get('/productos', function(req, res, next) {
     };
     
     console.log('Solicitud de listar los productos');
-    res.render('listProducts', data);
+    res.render('showProducts', data);
   }
   catch(e){
     console.log(e.message);

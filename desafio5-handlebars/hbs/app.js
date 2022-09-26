@@ -8,10 +8,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* Routes */
-const main = require('./config/index');
-const products = require('./config/products');
-app.use('/', main);
-app.use('/', products);
+const showProducts = require('./routes/showProducts');
+const addProduct = require('./routes/addProduct');
+const index = require('./routes/index');
+app.use('/api', showProducts);
+app.use('/api', addProduct);
+app.use('/', index);
 
 /* Handlebars */
 app.engine('handlebars', handlebars.engine());
