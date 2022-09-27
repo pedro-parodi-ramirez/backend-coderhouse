@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const showProducts = require('./showProducts');
+const addProduct = require('./addProduct');
 
-/* GET home page. */
-router.get('/index', function(req, res, next) {
-  console.log('Acceso a sitio principal del sitio web');
-  res.render('index');
-});
+router.use('/api', showProducts, addProduct);
 
 module.exports = router;

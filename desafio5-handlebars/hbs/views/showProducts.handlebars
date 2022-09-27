@@ -1,4 +1,7 @@
-<h2 class="my-4">Productos disponibles</h2>
+<h2 class="mt-4">Productos disponibles</h2>
+    <form action="/api" method="GET">
+            <button class="btn btn-warning btn-lg my-3" type="sumbit">Agregar Producto</button>    
+    </form>
     {{#if isEmpty}}
         <p>No hay productos disponibles<p>
     {{/if}}
