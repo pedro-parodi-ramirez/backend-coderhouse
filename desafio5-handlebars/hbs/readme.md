@@ -11,7 +11,7 @@ El motor EJS parece ser el más completo de todos. Se deja para una etapa futura
 1. El paquete nodemon debe instalarse de forma global. Caso contrario, modificar la ruta según corresponda para el comando `npm run dev` dentro del archivo `package.json`:
 ```
 "script":{
-    "dev": "nodemon --exec 'node -r dotenv/config' ./index.js"
+    "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
 }
 ```
 2. Crear un archivo en la raíz del proyecto, con el nombre `.env` y el siguiente contenido:
