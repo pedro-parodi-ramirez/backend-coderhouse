@@ -14,7 +14,8 @@ router.get('/productos', function(req, res, next) {
       products
     };
     
-    res.render('showProducts', data);
+    //res.render('showProducts', data);
+    res.json(data);
     console.log('[SUCCESS]');
   }
   catch(e){
