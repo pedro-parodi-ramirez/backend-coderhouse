@@ -1,29 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const DB = require('../config/DB.js');
-
-/* GET add product. */
-router.get('/', function(req, res, next) {
-  try{
-    console.log('Solicitud GET para completar formulario addProduct');
-    res.render('addProduct');
-    console.log('[SUCCESS]');
-  }
-  catch(e){
-    console.log(e.message);
-    next(e);
-  }
-});
+const { emit } = require('../socket');
 
 /* POST add product */
-router.post('/productos', function(req, res, next) {
-  try{
+router.post('/api/productos', function (req, res, next) {
+  try {
+    const data = req.body;
     console.log('Solicitud POST para agregar producto');
     DB.addProduct(req.body);
     console.log('[SUCCESS]');
-    res.redirect('/api/productos');
+    emit('new-product', data);
+    res.redirect('/');
   }
-  catch(e){
+  catch (e) {
     console.log(e.message);
     next(e);
   }

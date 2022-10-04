@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const showProducts = require('./showProducts');
+const showProducts = require('./getProducts');
 const addProduct = require('./addProduct');
 
-router.use('/api', showProducts, addProduct);
+router.use('/', showProducts, addProduct);
 
 module.exports = router;

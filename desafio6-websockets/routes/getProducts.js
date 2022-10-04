@@ -3,7 +3,7 @@ const router = express.Router();
 const DB = require('../config/DB.js');
 
 /* GET products. */
-router.get('/productos', function(req, res, next) {
+router.get('/api/productos', function(req, res, next) {
   try{
     console.log('Solicitud GET de listar los productos');
     let isEmpty;
@@ -14,7 +14,6 @@ router.get('/productos', function(req, res, next) {
       products
     };
     
-    //res.render('showProducts', data);
     res.json(data);
     console.log('[SUCCESS]');
   }
