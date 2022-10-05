@@ -1,9 +1,16 @@
-# Desafío 5 - Handlebars
-La aplicación cuenta con funcionalidades de listar productos y agregar productos, haciendo uso de `handlebars` para plantillas. Al iniciar, se cuenta con un array `productos` con un total de 3 items. Se utilizó `handlebars` como motor de plantillas dado que parece ser un punto medio, en cuanto a complejidad, entre `PUG` y `EJS`.
+# Desafío 6 - Websockets
+La aplicación cuenta con una única ruta para interactuar `localhost:3000`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. También cuenta con un chat en línea con todos los usuarios conectados.
 
-El motor `PUG` posee una sintaxis basada en tabulaciones para abrir y cerrar etiquetas, se cree esto que puede generar errores con más frecuencia (por su simplicidad), por lo que se decidió evitar.
+## Funcionamiento
 
-El motor EJS parece ser el más completo de todos. Se deja para una etapa futura su implementación y así definir el mejor motor entre `handlebars` y `EJS`.
+### Formulario
+Realiza método **post** a `localhost:3000/api/productos`. Se agrega nuevo producto a la DB y este se emite, haciendo uso de websockets, a todos los usuarios conectados.
+
+### Lista de productos
+Lista con todos los productos. Al inicio del servidor, se cuenta con tres productos, los cuales son obtenidos por los clientes a través de una solicitud **get** a `localhost:3000/api/productos`. Esta solicitud retorna un json con los productos iniciales.
+
+### Centro de mensajes
+Chat en línea con todos los usuarios conectados. Se deja registro del historial de mensajes en un archivo txt en la carpeta `config`.
 
 
 ## Configuración
@@ -30,18 +37,5 @@ npm run dev
 ```
 Luego ingresar a la siguiente ruta para probar las funcionalidades de la app:
 ```
-localhost:3000/static/index.html
+localhost:3000
 ```
-## Rutas disponibles
-
-***1) localhost:3000/static/index.html***
-
-Acceso a sitio principal, cuenta con dos botones `Mostrar productos` y `Agregar producto`.
-
-***2) localhost:3000/api/productos***
-
-Lista con todos los productos. Cuenta también con el botón `Agregar producto`.
-
-***3) localhost:3000/api***
-
-Formulario para agregar un producto. Al agregarlo mediante el botón `enviar`, redirige a ruta del punto ***2)***. Se cuenta también con un botón `Listar productos`.

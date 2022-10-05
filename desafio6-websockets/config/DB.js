@@ -1,3 +1,4 @@
+// Lista de productos al inicip de la app
 const products = [
   {
     "id": 1,
@@ -22,6 +23,7 @@ const products = [
 module.exports = class DB {
   static productQty = products.length;
 
+  // Agrega nuevo producto a la DB.
   static addProduct(newProduct) {
     console.log('📁Se agrega producto a DB📁');
     let title = newProduct.title;
@@ -36,9 +38,17 @@ module.exports = class DB {
     });
   }
 
+  // Retorna de los productos disponibles en la DB.
   static getAllProducts() {
     console.log('📁Lectura de productos desde DB📁');
     return products;
+  }
+
+  // Se agrega nuevo mensaje recibido, por un cliente, a un archivo de texto como registro histórico.
+  static async addMessage(data) {
+    const fs = require('fs');
+    const newLine = `${data.email} [${data.time.DD}/${data.time.MM}/${data.time.YY} ${data.time.hh}:${data.time.mm}:${data.time.ss}]: ${data.message}`;
+    await fs.promises.appendFile('./config/messages.txt', newLine + '\n');
   }
 }
 
