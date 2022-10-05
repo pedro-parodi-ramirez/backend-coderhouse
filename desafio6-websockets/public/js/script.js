@@ -1,4 +1,5 @@
 (function () {
+    const socket = io();
     const productTable = document.getElementById('product-table');
     const addProduct = document.getElementById('form-add-product');
     const inputTitle = document.getElementById('title');
@@ -8,7 +9,7 @@
     const formMessage = document.getElementById('form-message');
     const inputUserEmail = document.getElementById('user-email');
     const inputUserMessage = document.getElementById('user-message');
-    const socket = io();
+
     let template;
     let messages = []
     fetch('http://localhost:3000/templates/card-images.hbs')
@@ -35,18 +36,12 @@
     socket.on('log-messages', logMessages => {
         messageList.innerHTML = '';
         messages = logMessages;
-        messages.forEach(m => {
-            const li = document.createElement('li');
-            li.innerText = `${m.email}: ${m.message}`;
-            messageList.appendChild(li);
-        });
+        showMessages(logMessages);
     });
 
     socket.on('new-message', newMessage => {
         messages.push(newMessage);
-        const li = document.createElement('li');
-        li.innerText = `${newMessage.email}: ${newMessage.message}`;
-        messageList.appendChild(li);
+        showMessages(newMessage);
     })
 
     socket.on('update-products', (data) => {
@@ -65,12 +60,32 @@
 
     formMessage.addEventListener('submit', (e) => {
         e.preventDefault();
+        const date = new Date();
         const data = {
             email: inputUserEmail.value,
+            time: {
+                YY: date.getFullYear(),
+                MM: date.getMonth(),
+                DD: date.getDate(),
+                hh: date.getHours(),
+                mm: date.getMinutes(),
+                ss: date.getSeconds()                
+            },
             message: inputUserMessage.value
         };
         socket.emit('send-message', data)
         inputUserMessage.value = '';
         inputUserMessage.focus();
-    })
+    });
+
+    function showMessages(messages) {
+        messages.forEach(m => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <b style="color:#6495ED">${m.email}</b>
+                <span style="color:#CD7F32">[${m.time.DD}/${m.time.MM}/${m.time.YY} ${m.time.hh}:${m.time.mm}:${m.time.ss}]</span>:
+                <i style="color:#00A36C">${m.message}</i>`;
+            messageList.appendChild(li);
+        });
+    }
 })();

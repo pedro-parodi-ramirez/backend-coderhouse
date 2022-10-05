@@ -4,6 +4,14 @@ let io;
 let urlGetProducts = 'api/productos';
 let messages = [{
     email: 'welcome@store',
+    time: {
+        YY: 00,
+        MM: 00,
+        DD: 00,
+        hh: 00,
+        mm: 00,
+        ss: 00
+    },
     message: 'Bienvenido!'
 }];
 
