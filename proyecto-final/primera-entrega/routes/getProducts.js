@@ -15,7 +15,6 @@ router.get('/api/productos', async function(req, res, next) {
     };
     
     res.json(data);
-    console.log('[SUCCESS]');
   }
   catch(e){
     console.log(e.message);
