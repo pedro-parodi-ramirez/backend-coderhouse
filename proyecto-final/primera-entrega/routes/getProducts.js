@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const DB = require('../config/DB.js');
+const STATUS = require('../config/variables');
+const DB = require('../config/DB');
 
-/* GET products. */
-router.get('/api/productos', async function(req, res, next) {
-  try{
+/* GET all products. */
+router.get('/api/productos', async function (_, res, next) {
+  try {
     console.log('Solicitud GET de listar los productos');
     let isEmpty;
     const products = await DB.getAllProducts();
@@ -13,10 +14,28 @@ router.get('/api/productos', async function(req, res, next) {
       isEmpty,
       products
     };
-    
-    res.json(data);
+
+    res.status(STATUS.OK).json(data);
   }
-  catch(e){
+  catch (e) {
+    console.log(e.message);
+    next(e);
+  }
+});
+
+router.get('/api/productos/:id', async function (req, res, next) {
+  try {
+    let id = parseInt(req.params.id);
+    console.log(`Solicitud GET de mostrar product id:${id}`);
+    const productRequested = await DB.getProductById(id);
+    if (productRequested !== null) {
+      res.status(STATUS.OK).json(productRequested);
+    }
+    else {
+      res.status(STATUS.BAD_REQUEST).json(productRequested);
+    }
+  }
+  catch (e) {
     console.log(e.message);
     next(e);
   }

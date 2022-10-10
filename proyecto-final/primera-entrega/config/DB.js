@@ -1,9 +1,7 @@
-//let products = [];
-
 module.exports = class DB {
   static productQty = 0;
 
-  // Agrega nuevo producto a la DB.
+  /* Agregar producto */
   static async addProduct(newProduct) {
     try {
       const fs = require('fs');
@@ -26,11 +24,11 @@ module.exports = class DB {
     }
   }
 
-  // Retorna de los productos disponibles en la DB.
+  /* Retornar todos los productos */
   static async getAllProducts() {
-    console.log('📁Lectura de productos desde DB📁');
+    console.log('📁 Lectura de productos desde DB 📁');
     // Lectura de archivo con productos
-    const products = await readFile();
+    const products = await readFileProducts();
     if (products != null) {
       (DB.productQty = products.length);
       return products;
@@ -41,7 +39,21 @@ module.exports = class DB {
     }
   }
 
-  // Se agrega nuevo mensaje recibido, por un cliente, a un archivo de texto como registro histórico.
+  /* Retornar producto según ID */
+  static async getProductById(id) {
+    console.log('📁 Búsqueda de producto según ID 📁');
+    // Lectura de archivo con productos
+    const products = await readFileProducts();
+    const productRequested = products.filter(p => p.id === id);
+    if (productRequested.length > 0) {
+      return productRequested;
+    }
+    else {
+      return null;
+    }
+  }
+
+  /* Almacenar mensajes en archivo */
   static async addMessage(data) {
     const fs = require('fs');
     const newLine = `${data.email} [${data.time.DD}/${data.time.MM}/${data.time.YY} ${data.time.hh}:${data.time.mm}:${data.time.ss}]: ${data.message}`;
@@ -49,8 +61,8 @@ module.exports = class DB {
   }
 }
 
-// Le archivo con productos y los devuelve, o devuelve null si no existiera ninguno.
-async function readFile() {
+// Lectura de archivo con productos
+async function readFileProducts() {
   try {
     // Lectura del archivo
     const fs = require('fs');
