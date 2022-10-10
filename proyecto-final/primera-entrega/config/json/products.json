@@ -10,16 +10,6 @@
     "stock": 50
   },
   {
-    "id": 1,
-    "timestamp": 1665419816543,
-    "name": "Café",
-    "description": "Café Instántaneo Suave Y Espumoso Arlistan Fra 170 Grm",
-    "codigo": "CCI",
-    "imgURL": "https://cdn0.iconfinder.com/data/icons/coffee-172/100/Coffe-04-512.png",
-    "price": 1017.25,
-    "stock": 20
-  },
-  {
     "id": 2,
     "timestamp": 1665419816544,
     "name": "Azúcar",
@@ -28,12 +18,5 @@
     "imgURL": "https://cdn0.iconfinder.com/data/icons/breakfast-time-1/32/breakfast_cute_drink_food_eat_3-Sugar-512.png",
     "price": 229,
     "stock": 60
-  },
-  {
-    "id": 3,
-    "timestamp": 1665429375868,
-    "name": "MIERDA",
-    "imgURL": "https://img.freepik.com/vector-premium/lindo-personaje-mierda_427567-202.jpg?w=2000",
-    "price": "99.99"
   }
 ]
