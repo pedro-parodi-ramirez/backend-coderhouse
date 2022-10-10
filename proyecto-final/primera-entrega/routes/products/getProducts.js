@@ -1,21 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { STATUS } = require('../config/variables');
-const DB = require('../config/DB');
+const { STATUS } = require('../../config/variables');
+const DB = require('../../config/DB');
 
 /* Obtener todos los productos. */
 router.get('/api/productos', async function (_, res, next) {
   try {
     console.log('\nSolicitud GET de listar los productos');
-    let isEmpty;
     const products = await DB.getAllProducts();
-    (DB.productQty === 0) ? isEmpty = true : isEmpty = false;
-    const data = {
-      isEmpty,
-      products
-    };
-
-    res.status(STATUS.OK).json(data);
+    
+    res.status(STATUS.OK).json(products);
   }
   catch (e) {
     console.log(e.message);

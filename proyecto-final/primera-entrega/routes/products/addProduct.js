@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { STATUS } = require('../config/variables');
-const { ADMIN } = require('../config/variables');
-const DB = require('../config/DB');
+const { STATUS } = require('../../config/variables');
+const { ADMIN } = require('../../config/variables');
+const DB = require('../../config/DB');
 
 /* Agregar nuevo producto */
 router.post('/api/productos', async function (req, res, next) {

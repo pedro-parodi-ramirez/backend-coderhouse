@@ -1,5 +1,5 @@
 module.exports = class DB {
-  static productQty = 0;  // Cantidad de productos de diferentes tipo
+  static nextID = 3; // Control de ID para productos
 
   /* Retornar todos los productos */
   static async getAllProducts() {
@@ -7,11 +7,9 @@ module.exports = class DB {
     // Lectura de archivo con productos.
     const products = await readFileProducts();
     if (products != null) {
-      DB.productQty = products.length;
       return products;
     }
     else {
-      DB.productQty = 0;
       return [];
     }
   }
@@ -36,10 +34,9 @@ module.exports = class DB {
   static async addProduct(newProduct) {
     try {
       const fs = require('fs');
-      console.log('📁 Se agrega producto a DB 📁');
       const products = await DB.getAllProducts();
       products.push({
-        id: DB.productQty,
+        id: DB.nextID,
         timestamp: Date.now(),
         name: newProduct.name,
         description: newProduct.description,
@@ -48,12 +45,11 @@ module.exports = class DB {
         price: parseFloat(newProduct.price).toFixed(2),
         stock: newProduct.stock
       });
-
-      // Se aumenta la cantidad de productos de diferente tipo
-      DB.productQty++;
+      DB.nextID++;
 
       // Se almacena nuevo producto en archivo
       await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
+      console.log('📁 Se agrega producto a DB 📁');
     }
     catch (e) {
       console.log('📁❌ Error al agregar producto a la base de datos: ❌📁\n' + e.message);
@@ -69,7 +65,6 @@ module.exports = class DB {
 
       products.map(p => {
         if (p.id === id) {
-          console.log('📁 Se actualiza producto en DB 📁');
           let newPrice = parseFloat(body.price).toFixed(2);
 
           // Se almacenan nuevos valores. En caso de que existan campos vacíos, se mantiene el valor anterior al update.
@@ -82,6 +77,7 @@ module.exports = class DB {
             p.stock = body.stock || p.stock
 
           finded = true;
+          console.log('📁 Se actualiza producto en DB 📁');
         }
       })
 
@@ -108,11 +104,11 @@ module.exports = class DB {
       let finded = products.some(p => p.id === id);
 
       if (finded) {
-        console.log('📁 Se elimina producto de DB 📁');
         products = products.filter(p => p.id !== id);
 
         // Se almacenan modificaciones en archivo
         await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
+        console.log('📁 Se elimina producto de DB 📁');
       }
       else{
         console.log('📁❌ Producto no encontrado ❌📁');
@@ -138,12 +134,11 @@ async function readFileProducts() {
       return dataJSON;
     }
     else {
-      DB.productQty = 0;
       return null;
     }
   }
   catch (e) {
-    console.log('📁❌ Error al leer la base de datos: ❌📁\n' + e.message);
+    console.log('📁❌ Error al leer la base de datos de productos: ❌📁\n' + e.message);
     return null;
   }
 }

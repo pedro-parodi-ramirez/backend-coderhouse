@@ -20,9 +20,9 @@ fetch(`http://localhost:8080/templates/card-images.hbs`)
 fetch("http://localhost:8080/api/productos")
     .then(respose => respose.json())
     .then(response => {
-        if (!response.isEmpty) {
+        const products = response;
+        if (products.length > 0) {
             // Se presentan productos con Handlebars.
-            const { products: products } = response;
             const html = (products.map(products => template(products))).join('');
             productTable.innerHTML = html;
         }
