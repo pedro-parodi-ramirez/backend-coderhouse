@@ -6,16 +6,16 @@ module.exports = class DB {
     try {
       const fs = require('fs');
       console.log('📁Se agrega producto a DB📁');
-      let title = newProduct.title;
+      let name = newProduct.name;
       let price = parseFloat(newProduct.price);
-      let thumbnail = newProduct.thumbnail;
+      let imgURL = newProduct.imgURL;
       const products = await DB.getAllProducts();
       DB.productQty++;
       products.push({
         id: DB.productQty,
-        title: title,
+        name: name,
         price: price,
-        thumbnail, thumbnail
+        imgURL, imgURL
       });
       await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
     }
