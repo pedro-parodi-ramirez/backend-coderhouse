@@ -10,6 +10,16 @@
     "stock": 50
   },
   {
+    "id": 1,
+    "timestamp": 1665432726241,
+    "name": "Lampara",
+    "description": "Café Instántaneo Suave Y Espumoso Arlistan Fra 170 Grm",
+    "codigo": "CCI",
+    "imgURL": "https://cdn0.iconfinder.com/data/icons/coffee-172/100/Coffe-04-512.png",
+    "price": 1017.25,
+    "stock": 20
+  },
+  {
     "id": 2,
     "timestamp": 1665419816544,
     "name": "Azúcar",

@@ -23,9 +23,11 @@ module.exports = class DB {
     const products = await readFileProducts();
     const productRequested = products.filter(p => p.id === id);
     if (productRequested.length > 0) {
+      console.log('📁 Se retorna producto solicitado 📁');
       return productRequested;
     }
     else {
+      console.log('📁❌ Producto no encontrado ❌📁');
       return null;
     }
   }
@@ -47,11 +49,9 @@ module.exports = class DB {
         stock: newProduct.stock
       });
 
-      console.log(products);
-
       // Se aumenta la cantidad de productos de diferente tipo
       DB.productQty++;
-      
+
       // Se almacena nuevo producto en archivo
       await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
     }
@@ -68,25 +68,30 @@ module.exports = class DB {
       let finded = false;
 
       products.map(p => {
-        if(p.id === id){
+        if (p.id === id) {
           console.log('📁 Se actualiza producto en DB 📁');
           let newPrice = parseFloat(body.price).toFixed(2);
 
           // Se almacenan nuevos valores. En caso de que existan campos vacíos, se mantiene el valor anterior al update.
           p.timestamp = Date.now(),
-          p.name = body.name || p.name,
-          p.description = body.description || p.description,
-          p.code = body.code || p.code,
-          p.imgURL = body.imgURL || p.imgURL,
-          (newPrice !== "NaN") && (p.price = newPrice),
-          p.stock = body.stock || p.stock
+            p.name = body.name || p.name,
+            p.description = body.description || p.description,
+            p.code = body.code || p.code,
+            p.imgURL = body.imgURL || p.imgURL,
+            (newPrice !== "NaN") && (p.price = newPrice),
+            p.stock = body.stock || p.stock
 
           finded = true;
         }
       })
 
-      // Se almacenan modificaciones en archivo
-      await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
+      if (finded) {
+        // Se almacenan modificaciones en archivo
+        await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
+      }
+      else {
+        console.log('📁❌ Producto no encontrado ❌📁');
+      }
 
       return finded;
     }
@@ -101,14 +106,17 @@ module.exports = class DB {
       const fs = require('fs');
       let products = await DB.getAllProducts();
       let finded = products.some(p => p.id === id);
-      
-      if(finded){
+
+      if (finded) {
         console.log('📁 Se elimina producto de DB 📁');
         products = products.filter(p => p.id !== id);
+
+        // Se almacenan modificaciones en archivo
+        await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
       }
-      
-      // Se almacenan modificaciones en archivo
-      await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
+      else{
+        console.log('📁❌ Producto no encontrado ❌📁');
+      }
 
       return finded;
     }

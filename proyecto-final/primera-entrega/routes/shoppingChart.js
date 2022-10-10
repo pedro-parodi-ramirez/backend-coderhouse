@@ -6,7 +6,7 @@ const shoppingChartController = require('../config/shoppingChartController');
 /* Crear nuevo carrito */
 router.post('/api/carrito', async function (_, res, next) {
     try {
-        console.log('Solicitud de crear nuevo carrito de compras');
+        console.log('\nSolicitud de crear nuevo carrito de compras');
         let id = await shoppingChartController.newShoppingChart();
         res.status(STATUS.CREATED).json(JSON.stringify(id));
     }
