@@ -19,8 +19,8 @@ module.exports = class DB {
     console.log('📁 Búsqueda de producto según ID 📁');
     // Lectura de archivo con productos.
     const products = await readFileProducts();
-    const productRequested = products.filter(p => p.id === id);
-    if (productRequested.length > 0) {
+    const productRequested = products.find(p => p.id === id);
+    if (productRequested !== undefined) {
       console.log('📁 Se retorna producto solicitado 📁');
       return productRequested;
     }
@@ -61,7 +61,7 @@ module.exports = class DB {
     try {
       const fs = require('fs');
       const products = await DB.getAllProducts();
-      let finded = false;
+      let found = false;
 
       products.map(p => {
         if (p.id === id) {
@@ -76,12 +76,12 @@ module.exports = class DB {
             (newPrice !== "NaN") && (p.price = newPrice),
             p.stock = body.stock || p.stock
 
-          finded = true;
+          found = true;
           console.log('📁 Se actualiza producto en DB 📁');
         }
       })
 
-      if (finded) {
+      if (found) {
         // Se almacenan modificaciones en archivo
         await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
       }
@@ -89,7 +89,7 @@ module.exports = class DB {
         console.log('📁❌ Producto no encontrado ❌📁');
       }
 
-      return finded;
+      return found;
     }
     catch (e) {
       console.log('📁❌ Error al agregar producto a la base de datos: ❌📁\n' + e.message);
@@ -101,9 +101,9 @@ module.exports = class DB {
     try {
       const fs = require('fs');
       let products = await DB.getAllProducts();
-      let finded = products.some(p => p.id === id);
+      let found = products.some(p => p.id === id);
 
-      if (finded) {
+      if (found) {
         products = products.filter(p => p.id !== id);
 
         // Se almacenan modificaciones en archivo
@@ -114,7 +114,7 @@ module.exports = class DB {
         console.log('📁❌ Producto no encontrado ❌📁');
       }
 
-      return finded;
+      return found;
     }
     catch (e) {
       console.log('📁❌ Error al eliminar producto de la base de datos: ❌📁\n' + e.message);

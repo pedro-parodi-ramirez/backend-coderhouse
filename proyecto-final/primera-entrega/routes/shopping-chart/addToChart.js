@@ -3,17 +3,18 @@ const router = express.Router();
 const { STATUS } = require('../../config/variables');
 const shoppingChartController = require('../../config/shoppingChartController');
 
-/* Eliminar carrito según ID */
-router.delete('/api/carrito/:id', async function (req, res, next) {
+/* Agregar producto a carrito */
+router.post('/api/carrito/:id/productos', async function (req, res, next) {
     try {
-        let id = parseInt(req.params.id);
-        console.log(`\nSolicitud DELETE eliminar carrito id:${id}`);       
-        let accepted = await shoppingChartController.deleteChart(id);
-        
-        if(accepted){
+        let idChart = parseInt(req.params.id);
+        let idProduct = parseInt(req.body.id);
+        console.log(`\nSolicitud POST para agregar idProducto:${idProduct} a idCarrito:${idChart}`);
+        let accepted = await shoppingChartController.addToChart(idChart, idProduct);
+
+        if (accepted) {
             res.status(STATUS.ACCEPTED).end();
         }
-        else{
+        else {
             res.status(STATUS.BAD_REQUEST).end();
         }
     }

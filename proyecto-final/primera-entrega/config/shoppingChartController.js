@@ -1,14 +1,16 @@
+const DB = require('./DB');
+
 module.exports = class shoppingChartController {
   static nextID = 0;  // Control de ID para carritos
 
   /* Crear nuevo carrito de compras */
-  static async addChart() {
+  static async newChart() {
     try {
       const fs = require('fs');
 
       // Lectura de carritos existentes.
       const chartArray = await readFileShoppingCharts();
-      
+
       // Formato de nuevo carrito de compras.
       const newChart = {
         id: shoppingChartController.nextID,
@@ -28,7 +30,7 @@ module.exports = class shoppingChartController {
       return newChart.id;
     }
     catch (e) {
-      console.log(`🛒❌ Error al crear carrito de compras 🛒❌\n ${e.message}`);
+      console.log(`🛒❌ Error al crear carrito 🛒❌\n ${e.message}`);
     }
   }
 
@@ -39,10 +41,10 @@ module.exports = class shoppingChartController {
 
       // Lectura de carritos existentes.
       let chartArray = await readFileShoppingCharts();
-      
-      let finded = chartArray.some(c => c.id === id);
 
-      if (finded) {
+      let found = chartArray.some(c => c.id === id);
+
+      if (found) {
         chartArray = chartArray.filter(c => c.id !== id);
 
         // Se almacenan modificaciones en archivo
@@ -53,10 +55,88 @@ module.exports = class shoppingChartController {
         console.log('🛒❌ Carrito de compras no encontrado ❌🛒');
       }
 
-      return finded;
+      return found;
     }
     catch (e) {
-      console.log(`🛒❌ Error al eliminar carrito de compras 🛒❌\n ${e.message}`);
+      console.log(`🛒❌ Error al eliminar carrito 🛒❌\n ${e.message}`);
+    }
+  }
+
+  /* Agregar producto a carrito existente */
+  static async addToChart(idChart, idProduct) {
+    try {
+      let success = false;
+      const fs = require('fs');
+
+      // Lectura de carritos existentes.
+      let chartArray = await readFileShoppingCharts();
+
+      // Búsqueda de carrito solicitado
+      let chart = chartArray.find(c => c.id === idChart);
+
+      if (chart !== undefined) {
+        // Búsqueda de producto a agregar a carrito
+        const productRequested = await DB.getProductById(idProduct);
+
+        if (productRequested !== null) {
+          // Se agrega producto a carrito
+          chart.products.push(productRequested);
+
+          // Se almacenan modificaciones en archivo
+          await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+          console.log('🛒 Producto agregado a carrito 🛒');
+          success = true;
+        }
+        else {
+          console.log('🛒❌ Operación cancelada ❌🛒');
+        }
+      }
+      else {
+        console.log('🛒❌ Carrito de compras no encontrado ❌🛒');
+      }
+      return success;
+    }
+    catch (e) {
+      console.log(`🛒❌ Error al agregar producto a carrito 🛒❌\n ${e.message}`);
+    }
+  }
+
+  /* Eliminar producto de carrito existente */
+  static async deleteFromChart(idChart, idProduct) {
+    try {
+      let success = false;
+      const fs = require('fs');
+
+      // Lectura de carritos existentes.
+      let chartArray = await readFileShoppingCharts();
+
+      // Búsqueda de carrito solicitado
+      let chart = chartArray.find(c => c.id === idChart);
+
+      if (chart !== undefined) {
+        // Búsqueda de producto a eliminar
+        let found = chart.products.some(p => p.id === idProduct);
+
+        if (found) {
+          // Se elimina producto
+          chart.products = chart.products.filter(p => p.id !== idProduct);
+
+          // Se almacenan modificaciones en archivo
+          await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+          console.log('🛒 Producto eliminado de carrito 🛒');
+          success = true;
+        }
+        else {
+          console.log('🛒❌ El producto no existe en el carrito ❌🛒');
+        }
+      }
+      else {
+        console.log('🛒❌ Carrito de compras no encontrado ❌🛒');
+      }
+      return success;
+    }
+    catch (e) {
+      console.log(`🛒❌ Error al eliminar producto de carrito 🛒❌\n ${e.message}`);
     }
   }
 }

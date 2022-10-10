@@ -6,7 +6,7 @@
     "description": "Leche Entera LA SERENÍSIMA 3% Sachet 1 L",
     "codigo": "APL",
     "imgURL": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_7-256.png",
-    "price": 207.8,
+    "price": 207.80,
     "stock": 50
   },
   {
@@ -28,35 +28,5 @@
     "imgURL": "https://cdn0.iconfinder.com/data/icons/breakfast-time-1/32/breakfast_cute_drink_food_eat_3-Sugar-512.png",
     "price": 229,
     "stock": 60
-  },
-  {
-    "id": 4,
-    "timestamp": 1665436697211,
-    "name": "Champagne",
-    "description": "Espumante Extra Brut Chandon Bot 750 Ml",
-    "code": "BA",
-    "imgURL": "https://cdn3.iconfinder.com/data/icons/christmas-and-new-year-27/64/xmas-11-512.png",
-    "price": "1830.00",
-    "stock": 10
-  },
-  {
-    "id": 5,
-    "timestamp": 1665436711820,
-    "name": "Champagne",
-    "description": "Espumante Extra Brut Chandon Bot 750 Ml",
-    "code": "BA",
-    "imgURL": "https://cdn3.iconfinder.com/data/icons/christmas-and-new-year-27/64/xmas-11-512.png",
-    "price": "1830.00",
-    "stock": 10
-  },
-  {
-    "id": 6,
-    "timestamp": 1665436724773,
-    "name": "Champagne",
-    "description": "Espumante Extra Brut Chandon Bot 750 Ml",
-    "code": "BA",
-    "imgURL": "https://cdn3.iconfinder.com/data/icons/christmas-and-new-year-27/64/xmas-11-512.png",
-    "price": "1830.00",
-    "stock": 10
   }
 ]
