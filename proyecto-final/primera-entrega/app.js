@@ -4,7 +4,6 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV;
 const index = require('./routes/index');
-const { initSocket } = require('./socket');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +16,4 @@ const server = app.listen(PORT, () => {
   console.log(`http://localhost:${server.address().port}`);
   console.log(`Environment:${ENV}`);
 });
-
-initSocket(server);
-
 server.on("error", error => console.log(`Error en servidor ${error}`));

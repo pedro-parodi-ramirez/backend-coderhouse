@@ -36,24 +36,8 @@
             <h2 class="mt-4">Productos disponibles</h2>
             <div id="product-table" class="row row-cols-1 row-cols-md-4 g-4"></div>
         </div>
-
-        <!-- Centro de mensajes -->
-        <h2 class="mt-4">Centro de mensajes</h2>
-        <form id="form-message">
-            <div class="mb-3">
-                <label for="user-email" class="form-label">Ingerese su correo:</label>
-                <input type="email" name="user-email" class="form-control" id="user-email" required>
-            </div>
-            <div id="messages-container">
-                <ul id="list-messages"></ul>
-            </div>
-            <input type="text" name="user-message" class="form-control" id="user-message" placeholder="Escribe algo ..." required>
-            <button type="submit" class="mt-2 btn btn-success">Enviar</button>
-        </form>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <script src="js/script.js"></script>
 </body>
-
 </html>

@@ -3,6 +3,7 @@ const router = express.Router();
 const STATUS = require('../config/variables');
 const DB = require('../config/DB');
 
+/* Actualizar producto según ID */
 router.put('/api/productos/:id', async function (req, res, next) {
     try {
         console.log('Solicitud UPDATE para modificar producto');

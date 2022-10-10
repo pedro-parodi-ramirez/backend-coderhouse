@@ -3,7 +3,7 @@ const router = express.Router();
 const STATUS = require('../config/variables');
 const shoppingChartController = require('../config/shoppingChartController');
 
-/* Crear carrito */
+/* Crear nuevo carrito */
 router.post('/api/carrito', async function (_, res, next) {
     try {
         console.log('Solicitud de crear nuevo carrito de compras');

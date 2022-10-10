@@ -3,7 +3,7 @@ const router = express.Router();
 const STATUS = require('../config/variables');
 const DB = require('../config/DB');
 
-/* GET all products. */
+/* Obtener todos los productos. */
 router.get('/api/productos', async function (_, res, next) {
   try {
     console.log('Solicitud GET de listar los productos');
@@ -23,6 +23,7 @@ router.get('/api/productos', async function (_, res, next) {
   }
 });
 
+/* Obtener producto según ID */
 router.get('/api/productos/:id', async function (req, res, next) {
   try {
     let id = parseInt(req.params.id);
