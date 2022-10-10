@@ -5,7 +5,7 @@
     "name": "Leche",
     "description": "Leche Entera LA SERENÍSIMA 3% Sachet 1 L",
     "codigo": "APL",
-    "imgURL": "https://cdn2.iconfinder.com/data/icons/webina-coffee/128/coffee-09-512.png",
+    "imgURL": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_7-256.png",
     "price": 207.80,
     "stock": 50
   },
@@ -20,7 +20,7 @@
     "stock": 20
   },
   {
-    "id": 3,
+    "id": 2,
     "timestamp": 1665419816544,
     "name": "Azúcar",
     "description": "Azúcar Superior Real LEDESMA 1 Kg",

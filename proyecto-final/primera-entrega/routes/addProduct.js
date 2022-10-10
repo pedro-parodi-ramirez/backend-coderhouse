@@ -7,8 +7,8 @@ const { emit } = require('../socket');
 /* POST add product */
 router.post('/api/productos', async function (req, res, next) {
   try {
-    const data = req.body;
     console.log('Solicitud POST para agregar producto');
+    const data = req.body;
     await DB.addProduct(req.body);
     emit('new-product', data);
     res.status(STATUS.ACCEPTED).redirect('/');

@@ -21,7 +21,7 @@ module.exports = class shoppingChartController {
             chartArray.push(newChart);
             
             // Se almacena nuevo carrito en archivo.
-            fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+            await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
 
             // Retorno de ID de carrito y actualización de nuevo ID.
             shoppingChartController.nextID++;
