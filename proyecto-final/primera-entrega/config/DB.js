@@ -17,7 +17,7 @@ module.exports = class DB {
         price: price,
         thumbnail, thumbnail
       });
-      await fs.promises.writeFile('./config/products.json', JSON.stringify(products, null, 2));
+      await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
     }
     catch (e) {
       console.log('📁❌ Error al agregar producto a la base de datos: ❌📁\n' + e.message);
@@ -27,14 +27,14 @@ module.exports = class DB {
   /* Retornar todos los productos */
   static async getAllProducts() {
     console.log('📁 Lectura de productos desde DB 📁');
-    // Lectura de archivo con productos
+    // Lectura de archivo con productos.
     const products = await readFileProducts();
     if (products != null) {
-      (DB.productQty = products.length);
+      DB.productQty = products.length;
       return products;
     }
     else {
-      (DB.productQty = 0);
+      DB.productQty = 0;
       return [];
     }
   }
@@ -42,7 +42,7 @@ module.exports = class DB {
   /* Retornar producto según ID */
   static async getProductById(id) {
     console.log('📁 Búsqueda de producto según ID 📁');
-    // Lectura de archivo con productos
+    // Lectura de archivo con productos.
     const products = await readFileProducts();
     const productRequested = products.filter(p => p.id === id);
     if (productRequested.length > 0) {
@@ -57,16 +57,16 @@ module.exports = class DB {
   static async addMessage(data) {
     const fs = require('fs');
     const newLine = `${data.email} [${data.time.DD}/${data.time.MM}/${data.time.YY} ${data.time.hh}:${data.time.mm}:${data.time.ss}]: ${data.message}`;
-    await fs.promises.appendFile('./config/messages.txt', newLine + '\n');
+    await fs.promises.appendFile('./config/text/messages.txt', newLine + '\n');
   }
 }
 
-// Lectura de archivo con productos
+// Lectura de archivo con productos.
 async function readFileProducts() {
   try {
     // Lectura del archivo
     const fs = require('fs');
-    const data = await fs.promises.readFile('./config/products.json', 'utf-8');
+    const data = await fs.promises.readFile('./config/json/products.json', 'utf-8');
 
     if (data != null) {
       let dataJSON = JSON.parse(data);
