@@ -31,20 +31,24 @@ module.exports = class DB {
   }
 
   /* Agregar producto */
-  static async addProduct(newProduct) {
+  static async addProduct(data) {
     try {
       const fs = require('fs');
+      // Se leen productos existentes
       const products = await DB.getAllProducts();
-      products.push({
+
+      // Se agrega nuevo producto
+      const newProduct = {
         id: DB.nextID,
         timestamp: Date.now(),
-        name: newProduct.name,
-        description: newProduct.description,
-        code: newProduct.code,
-        imgURL: newProduct.imgURL,
-        price: parseFloat(newProduct.price).toFixed(2),
-        stock: newProduct.stock
-      });
+        name: data.name,
+        description: data.description,
+        code: data.code,
+        imgURL: data.imgURL,
+        price: parseFloat(parseFloat(data.price).toFixed(2)),
+        stock: parseInt(data.stock)
+      }
+      products.push(newProduct);
       DB.nextID++;
 
       // Se almacena nuevo producto en archivo
@@ -110,7 +114,7 @@ module.exports = class DB {
         await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
         console.log('📁 Se elimina producto de DB 📁');
       }
-      else{
+      else {
         console.log('📁❌ Producto no encontrado ❌📁');
       }
 

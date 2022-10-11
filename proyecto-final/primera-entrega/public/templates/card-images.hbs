@@ -3,8 +3,11 @@
         <img src="{{this.imgURL}}" class="card-img-top bg-secondary" alt="...">
         <div class="card-body bg-light">
             <h5 class="card-title">{{this.name}}</h5>
-            <p class="card-text">$ {{this.price}}</p>
-            <p class="card-text">{{this.description}}</p>
+            <p class="card-text">
+                <b>$ {{this.price}}</b><br>
+                {{this.description}}<br>
+                <u>Disponible</u>: {{this.stock}}u
+            </p>
         </div>
     </div>
 </div>
