@@ -16,28 +16,45 @@ const inputFoto = document.getElementById('foto');
 const inputDescripcion = document.getElementById('descripcion');
 const inputCodigo = document.getElementById('codigo');
 const inputStock = document.getElementById('stock');
+const buttonAddProduct = document.getElementById('button-add-product');
+const buttonCancelForm = document.getElementById('button-cancel-form');
+const containerAddProduct = document.getElementById('container-add-product');
 
-let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
+let template;   // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 
-// GET template para car-images
-fetch("http://localhost:8080/templates/card-images.hbs")
-    .then(response => response.text())
-    .then(text => template = Handlebars.compile(text));
+buttonAddProduct.addEventListener('click', () => {
+    buttonAddProduct.classList.add('d-none');
+    containerAddProduct.className = 'mt-5';
+});
+
+buttonCancelForm.addEventListener('click', () => {
+    buttonAddProduct.classList.remove('d-none');
+    containerAddProduct.className = 'd-flex d-none';
+});
+
+// GET template para card-images
+(async () => {
+    const rawResponse = await fetch("http://localhost:8080/templates/card-images.hbs");
+    text = await rawResponse.text();
+    template = Handlebars.compile(text);
+})();
 
 // GET para obtener todos los productos y listarlos
-fetch("http://localhost:8080/api/productos")
-    .then(respose => respose.json())
-    .then(response => {
-        const products = response;
-        if (products.length > 0) {
-            // Se presentan productos con Handlebars.
-            const html = (products.map(products => template(products))).join('');
-            productTable.innerHTML = html;
-        }
-    });
+(async () => {
+    const rawResponse = await fetch("http://localhost:8080/api/productos");
+    const products = await rawResponse.json();
+    if (products.length > 0) {
+        // Se acomodan los precios con dos decimales
+        products.forEach(p => p.precio = parseFloat(p.precio).toFixed(2));
+
+        // Se presentan productos con Handlebars.
+        const html = (products.map(products => template(products))).join('');
+        productTable.innerHTML = html;
+    }
+})();
 
 // POST para agregar nuevo producto
-addEventListener('submit', (e) => {
+addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = {
         nombre: inputNombre.value,
@@ -48,15 +65,13 @@ addEventListener('submit', (e) => {
         stock: inputStock.value,
     };
     const dataJSON = JSON.stringify(data);
-    fetch("http://localhost:8080/api/productos", {
+    const response = await fetch("http://localhost:8080/api/productos", {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': dataJSON.length
         },
         method: 'POST',
         body: dataJSON
-    })
-        .then(response => {
-            (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
-        });
+    });
+    (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
 });
