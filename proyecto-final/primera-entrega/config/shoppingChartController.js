@@ -4,7 +4,7 @@ module.exports = class shoppingChartController {
   static nextID = 0;  // Control de ID para carritos
 
   /* Crear nuevo carrito de compras */
-  static async newChart() {
+  static async createChart() {
     try {
       const fs = require('fs');
 
@@ -59,6 +59,31 @@ module.exports = class shoppingChartController {
     }
     catch (e) {
       console.log(`🛒❌ Error al eliminar carrito 🛒❌\n ${e.message}`);
+    }
+  }
+
+  /* Retornar productos de carrito existente según ID */
+  static async getFromChart(idChart, idProduct) {
+    try {
+      const fs = require('fs');
+
+      // Lectura de carritos existentes.
+      let chartArray = await readFileShoppingCharts();
+
+      // Búsqueda de carrito solicitado
+      let chart = chartArray.find(c => c.id === idChart);
+
+      if (chart !== undefined) {
+        // Retorno de productos
+        return chart.products;
+      }
+      else {
+        console.log('🛒❌ Carrito de compras no encontrado ❌🛒');
+        return null;
+      }
+    }
+    catch (e) {
+      console.log(`🛒❌ Error al buscar producto en carrito 🛒❌\n ${e.message}`);
     }
   }
 

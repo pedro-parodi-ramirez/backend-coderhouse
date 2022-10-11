@@ -3,30 +3,40 @@ module.exports = class DB {
 
   /* Retornar todos los productos */
   static async getAllProducts() {
-    console.log('📁 Lectura de productos desde DB 📁');
-    // Lectura de archivo con productos.
-    const products = await readFileProducts();
-    if (products != null) {
-      return products;
+    try {
+      console.log('📁 Lectura de productos desde DB 📁');
+      // Lectura de archivo con productos.
+      const products = await readFileProducts();
+      if (products != null) {
+        return products;
+      }
+      else {
+        return [];
+      }
     }
-    else {
-      return [];
+    catch (e) {
+      console.log('📁❌ Error al buscar productos en la base de datos: ❌📁\n' + e.message);
     }
   }
 
   /* Retornar producto según ID */
   static async getProductById(id) {
-    console.log('📁 Búsqueda de producto según ID 📁');
-    // Lectura de archivo con productos.
-    const products = await readFileProducts();
-    const productRequested = products.find(p => p.id === id);
-    if (productRequested !== undefined) {
-      console.log('📁 Se retorna producto solicitado 📁');
-      return productRequested;
+    try {
+      console.log('📁 Búsqueda de producto según ID 📁');
+      // Lectura de archivo con productos.
+      const products = await readFileProducts();
+      const productRequested = products.find(p => p.id === id);
+      if (productRequested !== undefined) {
+        console.log('📁 Se retorna producto solicitado 📁');
+        return productRequested;
+      }
+      else {
+        console.log('📁❌ Producto no encontrado ❌📁');
+        return null;
+      }
     }
-    else {
-      console.log('📁❌ Producto no encontrado ❌📁');
-      return null;
+    catch (e) {
+      console.log('📁❌ Error al buscar producto en la base de datos: ❌📁\n' + e.message);
     }
   }
 
@@ -41,11 +51,11 @@ module.exports = class DB {
       const newProduct = {
         id: DB.nextID,
         timestamp: Date.now(),
-        name: data.name,
-        description: data.description,
-        code: data.code,
-        imgURL: data.imgURL,
-        price: parseFloat(parseFloat(data.price).toFixed(2)),
+        nombre: data.nombre,
+        descripcion: data.descripcion,
+        codigo: data.codigo,
+        foto: data.foto,
+        precio: parseFloat(parseFloat(data.precio).toFixed(2)),
         stock: parseInt(data.stock)
       }
       products.push(newProduct);
@@ -73,11 +83,11 @@ module.exports = class DB {
 
           // Se almacenan nuevos valores. En caso de que existan campos vacíos, se mantiene el valor anterior al update.
           p.timestamp = Date.now(),
-            p.name = body.name || p.name,
-            p.description = body.description || p.description,
-            p.code = body.code || p.code,
-            p.imgURL = body.imgURL || p.imgURL,
-            (newPrice !== "NaN") && (p.price = newPrice),
+            p.nombre = body.nombre || p.nombre,
+            p.descripcion = body.descripcion || p.descripcion,
+            p.codigo = body.codigo || p.codigo,
+            p.foto = body.foto || p.foto,
+            (newPrice !== "NaN") && (p.precio = newPrice),
             p.stock = body.stock || p.stock
 
           found = true;

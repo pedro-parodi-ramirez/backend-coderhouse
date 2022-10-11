@@ -8,7 +8,7 @@ router.get('/api/productos', async function (_, res, next) {
   try {
     console.log('\nSolicitud GET de listar los productos');
     const products = await DB.getAllProducts();
-    
+
     res.status(STATUS.OK).json(products);
   }
   catch (e) {
@@ -27,7 +27,7 @@ router.get('/api/productos/:id', async function (req, res, next) {
       res.status(STATUS.OK).json(productRequested);
     }
     else {
-      res.status(STATUS.BAD_REQUEST).json(productRequested);
+      res.status(STATUS.BAD_REQUEST).end();
     }
   }
   catch (e) {

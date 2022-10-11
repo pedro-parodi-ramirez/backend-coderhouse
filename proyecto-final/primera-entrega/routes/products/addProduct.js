@@ -10,7 +10,7 @@ router.post('/api/productos', async function (req, res, next) {
     if (ADMIN) {
       console.log('\nSolicitud POST para agregar producto');
       await DB.addProduct(req.body);
-      res.status(STATUS.ACCEPTED).json('Producto agregado.');
+      res.status(STATUS.ACCEPTED).end();
     }
     else {
       let message = {

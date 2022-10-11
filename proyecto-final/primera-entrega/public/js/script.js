@@ -10,11 +10,11 @@ const STATUS = {
 
 const productTable = document.getElementById('product-table');
 const addProduct = document.getElementById('form-add-product');
-const inputName = document.getElementById('name');
-const inputPrice = document.getElementById('price');
-const inputImgURL = document.getElementById('imgURL');
-const inputDescription = document.getElementById('description');
-const inputCode = document.getElementById('code');
+const inputNombre = document.getElementById('nombre');
+const inputPrecio = document.getElementById('precio');
+const inputFoto = document.getElementById('foto');
+const inputDescripcion = document.getElementById('descripcion');
+const inputCodigo = document.getElementById('codigo');
 const inputStock = document.getElementById('stock');
 
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
@@ -40,11 +40,11 @@ fetch("http://localhost:8080/api/productos")
 addEventListener('submit', (e) => {
     e.preventDefault();
     const data = {
-        name: inputName.value,
-        price: inputPrice.value,
-        imgURL: inputImgURL.value,
-        description: inputDescription.value,
-        code: inputCode.value,
+        nombre: inputNombre.value,
+        precio: inputPrecio.value,
+        foto: inputFoto.value,
+        descripcion: inputDescripcion.value,
+        codigo: inputCodigo.value,
         stock: inputStock.value,
     };
     const dataJSON = JSON.stringify(data);

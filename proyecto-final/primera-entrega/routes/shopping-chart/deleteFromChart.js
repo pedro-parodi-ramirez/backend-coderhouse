@@ -4,10 +4,10 @@ const { STATUS } = require('../../config/variables');
 const shoppingChartController = require('../../config/shoppingChartController');
 
 /* Eliminar producto de carrito */
-router.delete('/api/carrito/:id/productos', async function (req, res, next) {
+router.delete('/api/carrito/:idChart/productos/:idProduct', async function (req, res, next) {
     try {
-        let idChart = parseInt(req.params.id);
-        let idProduct = parseInt(req.body.id);
+        let idChart = parseInt(req.params.idChart);
+        let idProduct = parseInt(req.params.idProduct);
         console.log(`\nSolicitud DELETE para eliminar idProducto:${idProduct} de idCarrito:${idChart}`);
         let accepted = await shoppingChartController.deleteFromChart(idChart, idProduct);
 

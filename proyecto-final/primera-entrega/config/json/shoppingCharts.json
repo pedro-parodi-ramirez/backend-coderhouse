@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "id": 0,
+    "timestamp": 1665524742556,
+    "products": []
+  },
+  {
+    "id": 1,
+    "timestamp": 1665524743211,
+    "products": []
+  },
+  {
+    "id": 3,
+    "timestamp": 1665524744203,
+    "products": [
+      {
+        "id": 2,
+        "timestamp": 1665419816544,
+        "nombre": "Azúcar",
+        "descripcion": "Azúcar Superior Real LEDESMA 1 Kg",
+        "codigo": "ADC",
+        "foto": "https://cdn0.iconfinder.com/data/icons/breakfast-time-1/32/breakfast_cute_drink_food_eat_3-Sugar-512.png",
+        "precio": 229,
+        "stock": 60
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "timestamp": 1665524744729,
+    "products": []
+  }
+]

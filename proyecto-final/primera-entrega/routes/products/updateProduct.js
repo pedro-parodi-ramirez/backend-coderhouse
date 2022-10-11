@@ -12,10 +12,10 @@ router.put('/api/productos/:id', async function (req, res, next) {
             console.log(`\nSolicitud UPDATE para modificar producto id:${id}`);
             let accepted = await DB.updateProduct(id, req.body);
             if (accepted) {
-                res.status(STATUS.ACCEPTED).redirect('/');
+                res.status(STATUS.ACCEPTED).end();
             }
             else {
-                res.status(STATUS.BAD_REQUEST).redirect('/');
+                res.status(STATUS.BAD_REQUEST).end();
             }
         }
         else {
