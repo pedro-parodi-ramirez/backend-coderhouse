@@ -11,6 +11,9 @@ module.exports = class shoppingChartController {
       // Lectura de carritos existentes.
       const chartArray = await readFileShoppingCharts();
 
+      // Se actualiza nextID
+      shoppingChartController.nextID = getNextID(chartArray);
+
       // Formato de nuevo carrito de compras.
       const newChart = {
         id: shoppingChartController.nextID,
@@ -26,7 +29,6 @@ module.exports = class shoppingChartController {
 
       // Retorno de ID de carrito y actualización de nuevo ID.
       console.log('🛒 Carrito de compras creado 🛒');
-      shoppingChartController.nextID++;
       return newChart.id;
     }
     catch (e) {
@@ -185,4 +187,13 @@ async function readFileShoppingCharts() {
     console.log('🛒❌ Error al leer la base de datos de carritos: ❌🛒\n' + e.message);
     return [];
   }
+}
+
+// Buscar nuevo ID para carrito
+function getNextID(chartArray) {
+  const arrayID = chartArray.map(p => p.id);
+  let nextID;
+  nextID = Math.max(...arrayID) + 1;
+  ((nextID === -Infinity) || (nextID === null)) && (nextID = 0);
+  return nextID;
 }

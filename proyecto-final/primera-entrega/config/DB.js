@@ -1,5 +1,5 @@
 module.exports = class DB {
-  static nextID = 3; // Control de ID para productos
+  static nextID = 0; // Control de ID para productos
 
   /* Retornar todos los productos */
   static async getAllProducts() {
@@ -7,6 +7,8 @@ module.exports = class DB {
       console.log('📁 Lectura de productos desde DB 📁');
       // Lectura de archivo con productos.
       const products = await readFileProducts();
+
+      // Retorno de productos
       if (products != null) {
         return products;
       }
@@ -47,6 +49,9 @@ module.exports = class DB {
       // Se leen productos existentes
       const products = await DB.getAllProducts();
 
+      // Se actualiza nextID
+      DB.nextID = getNextID(products);
+
       // Se agrega nuevo producto
       const newProduct = {
         id: DB.nextID,
@@ -59,7 +64,6 @@ module.exports = class DB {
         stock: parseInt(data.stock)
       }
       products.push(newProduct);
-      DB.nextID++;
 
       // Se almacena nuevo producto en archivo
       await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
@@ -155,4 +159,13 @@ async function readFileProducts() {
     console.log('📁❌ Error al leer la base de datos de productos: ❌📁\n' + e.message);
     return null;
   }
+}
+
+// Buscar nuevo ID para producto
+function getNextID(products) {
+  const arrayID = products.map(p => p.id);
+  let nextID;
+  nextID = Math.max(...arrayID) + 1;
+  ((nextID === -Infinity) || (nextID === null)) && (nextID = 0);
+  return nextID;
 }
