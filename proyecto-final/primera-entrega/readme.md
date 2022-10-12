@@ -1,41 +1,29 @@
-# Desafío 6 - Websockets
-La aplicación cuenta con una única ruta para interactuar `localhost:3000`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. También cuenta con un chat en línea con todos los usuarios conectados.
-
-## Funcionamiento
-
-### Formulario
-Realiza método **post** a `localhost:3000/api/productos`. Se agrega nuevo producto a la DB y este se emite, haciendo uso de websockets, a todos los usuarios conectados.
-
-### Lista de productos
-Lista con todos los productos. Al inicio del servidor, se cuenta con tres productos, los cuales son obtenidos por los clientes a través de una solicitud **get** a `localhost:3000/api/productos`. Esta solicitud retorna un json con los productos iniciales.
-
-### Centro de mensajes
-Chat en línea con todos los usuarios conectados. Se deja registro del historial de mensajes en un archivo txt en la carpeta `config`.
-
-
-## Configuración
-
-1. El paquete nodemon debe instalarse de forma global. Caso contrario, modificar la ruta según corresponda para el comando `npm run dev` dentro del archivo `package.json`:
-```
-"script":{
-    "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
-}
-```
-2. Crear un archivo en la raíz del proyecto, con el nombre `.env` y el siguiente contenido:
-```
-PORT=3000
-ENV=local
-```
-3. Instalar las dependencias
-```
-npm install
-```
+# Proyecto Final - primera entrega
+La funcionalidad del servidor puede ser probada mediante una app desarrollada para el front-end, ingresando a la ruta `localhost:8080` en un navegador. Esta app realiza fetch al servidor con métodos GET, POST, DELETE y PUT tanto para las funcionalidades de los productos, como las del carrito de compras.
+El servidor genera mensajes en consola con cada solicitud recibida para control del funcionamiento.
+Las peticiones también pueden ser probadas mediante una collección de `postman` en la carpeta postman, en el directorio raíz.
 
 ## Ejecutar servidor
 ```
-npm run dev
+npm start
 ```
 Luego ingresar a la siguiente ruta para probar las funcionalidades de la app:
 ```
-localhost:3000
+localhost:8080
+```
+El comando `npm run dev` ejecuta nodemon y también es válido, pero al interactuar sobre los productos o el carrito de compras, el servidor se reiniciará constantemente. Dado que todos los cambios son registrados en archivos.
+
+## Configuración
+
+1. Crear un archivo en la raíz del proyecto, con el nombre `.env` y el siguiente contenido:
+```
+PORT=8080
+```
+2. Instalar las dependencias
+```
+npm install
+```
+3. En el directorio `./config` se encuentra el archivo `variables.js`. Modificar la variable `ADMIN` según los permisos que se desee establecer sobre la administración de los productos.
+```
+ADMIN = true; // modificar según sea necesario
 ```

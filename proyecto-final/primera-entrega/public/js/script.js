@@ -58,6 +58,7 @@ buttonCancelFormAdd.addEventListener('click', () => {
 // Eventos modificar producto
 buttonCancelFormUpdate.addEventListener('click', () => {
     containerUpdateProduct.classList.add('d-none');
+    buttonAddProduct.classList.remove('d-none');
     document.getElementById('form-update-product').reset();
     productContainer.className = '';
 });
@@ -86,13 +87,17 @@ buttonCancelFormUpdate.addEventListener('click', () => {
             // Eliminar producto de la DB
             document.getElementById(`button-delete-product-id${p.id}`).addEventListener('click', async () => {
                 // Solicitud DELETE a servidor y actualización de página
-                const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, {
+                const rawResponse = await fetch(`http://localhost:8080/api/productos/${p.id}`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     method: 'DELETE'
                 });
-                (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
+                if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
+                else {
+                    let message = await rawResponse.text();
+                    window.alert(message);
+                }
             });
 
             // Modificar producto de la DB
@@ -150,7 +155,7 @@ formAddProduct.addEventListener('submit', async (e) => {
         stock: inputStockAdd.value,
     };
     const dataJSON = JSON.stringify(data);
-    const response = await fetch("http://localhost:8080/api/productos", {
+    const rawResponse = await fetch("http://localhost:8080/api/productos", {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': dataJSON.length
@@ -158,7 +163,11 @@ formAddProduct.addEventListener('submit', async (e) => {
         method: 'POST',
         body: dataJSON
     });
-    (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
+    if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
+    else {
+        let message = await rawResponse.text();
+        window.alert(message);
+    }
 });
 
 // POST para modificar producto en base de datos
@@ -174,7 +183,7 @@ formUpdateProduct.addEventListener('submit', async (e) => {
         stock: inputStockUpdate.value,
     };
     const dataJSON = JSON.stringify(data);
-    const response = await fetch(`http://localhost:8080/api/productos/${idProduct}`, {
+    const rawResponse = await fetch(`http://localhost:8080/api/productos/${idProduct}`, {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': dataJSON.length
@@ -182,7 +191,11 @@ formUpdateProduct.addEventListener('submit', async (e) => {
         method: 'PUT',
         body: dataJSON
     });
-    (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
+    if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
+    else {
+        let message = await rawResponse.text();
+        window.alert(message);
+    }
 });
 
 // Listar productos en carrito de comrpas

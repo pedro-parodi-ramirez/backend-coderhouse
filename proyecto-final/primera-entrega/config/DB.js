@@ -81,18 +81,21 @@ module.exports = class DB {
       const products = await DB.getAllProducts();
       let found = false;
 
-      products.map(p => {
+      // Búsqueda y actualización de producto
+      products.forEach(p => {
         if (p.id === id) {
-          let newPrice = parseFloat(body.price).toFixed(2);
+          let newPrice = parseFloat(parseFloat(body.precio).toFixed(2));
+          console.log("newPrice", newPrice);
+          console.log(typeof newPrice);
 
           // Se almacenan nuevos valores. En caso de que existan campos vacíos, se mantiene el valor anterior al update.
-          p.timestamp = Date.now(),
-            p.nombre = body.nombre || p.nombre,
-            p.descripcion = body.descripcion || p.descripcion,
-            p.codigo = body.codigo || p.codigo,
-            p.foto = body.foto || p.foto,
-            (newPrice !== "NaN") && (p.precio = newPrice),
-            p.stock = body.stock || p.stock
+          p.timestamp = Date.now();
+          p.nombre = body.nombre || p.nombre;
+          p.descripcion = body.descripcion || p.descripcion;
+          p.codigo = body.codigo || p.codigo;
+          p.foto = body.foto || p.foto;
+          (!isNaN(newPrice)) && (p.precio = newPrice);
+          p.stock = body.stock || p.stock;
 
           found = true;
           console.log('📁 Se actualiza producto en DB 📁');
