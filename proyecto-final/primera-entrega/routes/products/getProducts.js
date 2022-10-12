@@ -27,7 +27,13 @@ router.get('/api/productos/:id', async function (req, res, next) {
       res.status(STATUS.OK).json(productRequested);
     }
     else {
-      res.status(STATUS.BAD_REQUEST).end();
+      let message = {
+        error: -2,
+        route: 'localhost:8080/api/productos/:id',
+        method: 'GET',
+        status: 'No implementado'
+      }
+      res.status(STATUS.NOT_FOUND).json(message);
     }
   }
   catch (e) {

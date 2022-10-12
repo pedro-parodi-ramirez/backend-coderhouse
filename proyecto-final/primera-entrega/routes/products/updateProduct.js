@@ -15,14 +15,20 @@ router.put('/api/productos/:id', async function (req, res, next) {
                 res.status(STATUS.ACCEPTED).end();
             }
             else {
-                res.status(STATUS.BAD_REQUEST).end();
+                let message = {
+                    error: -2,
+                    route: 'localhost:8080/api/productos/:id',
+                    method: 'PUT',
+                    status: 'No implementado'
+                }
+                res.status(STATUS.NOT_FOUND).json(message);
             }
         }
         else {
             let message = {
                 error: -1,
                 route: 'localhost:8080/api/productos/:id',
-                method: 'UPDATE',
+                method: 'PUT',
                 status: 'No autorizado'
             }
             res.status(STATUS.UNAUTHORIZED).json(message);

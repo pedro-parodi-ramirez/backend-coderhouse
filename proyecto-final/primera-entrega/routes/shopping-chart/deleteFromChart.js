@@ -15,7 +15,13 @@ router.delete('/api/carrito/:idChart/productos/:idProduct', async function (req,
             res.status(STATUS.ACCEPTED).json(chartProducts);
         }
         else {
-            res.status(STATUS.BAD_REQUEST).end();
+            let message = {
+                error: -2,
+                route: 'localhost:8080/api/carrito/:idChart/productos/:idProduct',
+                method: 'DELETE',
+                status: 'No implementado'
+            }
+            res.status(STATUS.NOT_FOUND).json(message);
         }
     }
     catch (e) {

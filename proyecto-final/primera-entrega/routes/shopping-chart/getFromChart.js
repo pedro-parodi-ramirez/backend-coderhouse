@@ -14,7 +14,13 @@ router.get('/api/carrito/:id/productos', async function (req, res, next) {
             res.status(STATUS.ACCEPTED).json(products);
         }
         else {
-            res.status(STATUS.BAD_REQUEST).end();
+            let message = {
+                error: -2,
+                route: 'localhost:8080/api/carrito/:id/productos',
+                method: 'GET',
+                status: 'No implementado'
+            }
+            res.status(STATUS.NOT_FOUND).json(message);
         }
     }
     catch (e) {
