@@ -126,26 +126,12 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                     method: 'POST',
                     body: dataJSON
                 });
-                
+
                 // La solicitud devuelve los productos del carrito
                 chartProducts = await rawResponse.json();
-                
+
                 // Se lista los productos del carrito y se actualiza el valor total de la compra
-                let total = 0;
-                chartList.innerHTML = '';
-                totalPrice.value = 0;
-                chartProducts.forEach(p => {
-                    total += (p.product.precio * p.cantidad);
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <h5>${p.product.nombre}</h5>
-                        <p>${p.product.descripcion}<br>
-                        <b>$ ${p.product.precio}</b><br>
-                        Cantidad: ${p.cantidad}</p>
-                    `;
-                    chartList.appendChild(li);
-                });
-                totalPrice.value = total.toFixed(2);
+                showChartProducts(chartProducts);
             });
 
         });
@@ -198,3 +184,37 @@ formUpdateProduct.addEventListener('submit', async (e) => {
     });
     (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
 });
+
+// Listar productos en carrito de comrpas
+function showChartProducts(chartProducts) {
+    let total = 0;
+    chartList.innerHTML = '';
+    totalPrice.value = 0;
+    chartProducts.forEach(p => {
+        total += (p.product.precio * p.cantidad);
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <h5>${p.product.nombre}</h5>
+            <p>${p.product.descripcion}<br>
+            <b>$ ${p.product.precio}</b><br>
+            Cantidad: ${p.cantidad}
+            <button id="button-delete-from-chart-id${p.product.id}" type="button" class="btn btn-danger ms-2">Eliminar</button>
+            </p>
+        `;
+        chartList.appendChild(li);
+
+        // Se agrega funcionalidad para eliminar producto del carrito de compras
+        document.getElementById(`button-delete-from-chart-id${p.product.id}`).addEventListener('click', async () => {
+            // Solicitud DELETE a servidor para eliminar producto de carrito
+            const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos/${p.product.id}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'DELETE'
+            });
+            const updatedChart = await rawResponse.json();
+            showChartProducts(updatedChart);
+        });
+    });
+    totalPrice.value = total.toFixed(2);
+}

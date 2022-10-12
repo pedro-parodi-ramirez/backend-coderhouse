@@ -9,10 +9,10 @@ router.delete('/api/carrito/:idChart/productos/:idProduct', async function (req,
         let idChart = parseInt(req.params.idChart);
         let idProduct = parseInt(req.params.idProduct);
         console.log(`\nSolicitud DELETE para eliminar idProducto:${idProduct} de idCarrito:${idChart}`);
-        let accepted = await shoppingChartController.deleteFromChart(idChart, idProduct);
+        const chartProducts = await shoppingChartController.deleteFromChart(idChart, idProduct);
 
-        if (accepted) {
-            res.status(STATUS.ACCEPTED).end();
+        if (chartProducts !== null) {
+            res.status(STATUS.ACCEPTED).json(chartProducts);
         }
         else {
             res.status(STATUS.BAD_REQUEST).end();

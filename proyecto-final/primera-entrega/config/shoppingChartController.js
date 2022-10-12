@@ -149,16 +149,18 @@ module.exports = class shoppingChartController {
 
       if (chart !== undefined) {
         // Búsqueda de producto a eliminar
-        let found = chart.products.some(p => p.id === idProduct);
+        let found = chart.products.some(p => p.product.id === idProduct);
 
         if (found) {
           // Se elimina producto
-          chart.products = chart.products.filter(p => p.id !== idProduct);
+          chart.products = chart.products.filter(p => p.product.id !== idProduct);
 
           // Se almacenan modificaciones en archivo
           await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
           console.log('🛒 Producto eliminado de carrito 🛒');
-          success = true;
+
+          // Se retornan los productos del carrito actualizados
+          return chart.products;
         }
         else {
           console.log('🛒❌ El producto no existe en el carrito ❌🛒');
@@ -167,7 +169,9 @@ module.exports = class shoppingChartController {
       else {
         console.log('🛒❌ Carrito de compras no encontrado ❌🛒');
       }
-      return success;
+
+      // Si llegó a este punto, hubo algún error
+      return null;
     }
     catch (e) {
       console.log(`🛒❌ Error al eliminar producto de carrito 🛒❌\n ${e.message}`);
