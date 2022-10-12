@@ -65,7 +65,7 @@ module.exports = class shoppingChartController {
   }
 
   /* Retornar productos de carrito existente según ID */
-  static async getFromChart(idChart, idProduct) {
+  static async getFromChart(idChart) {
     try {
       const fs = require('fs');
 
@@ -106,9 +106,16 @@ module.exports = class shoppingChartController {
         const productRequested = await DB.getProductById(idProduct);
 
         if (productRequested !== null) {
-          // Se agrega producto a carrito
-          chart.products.push(productRequested);
+          // Consulta de producto existente en carrito
+          const productsInChart = await shoppingChartController.getFromChart(chart.id);
 
+          // Se evalúa si el producto ya existe en el carrito
+          let inChartIndex = productsInChart.findIndex(p => p.product.id === productRequested.id);
+          
+          // Se agrega producto a carrito
+          if (inChartIndex === -1) { chart.products.push({ product: productRequested, cantidad: 0 }); }
+          else { chart.products[inChartIndex].cantidad++; }
+          
           // Se almacenan modificaciones en archivo
           await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
           console.log('🛒 Producto agregado a carrito 🛒');
