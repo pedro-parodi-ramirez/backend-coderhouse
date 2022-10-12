@@ -92,7 +92,6 @@ module.exports = class shoppingChartController {
   /* Agregar producto a carrito existente */
   static async addToChart(idChart, idProduct) {
     try {
-      let success = false;
       const fs = require('fs');
 
       // Lectura de carritos existentes.
@@ -106,20 +105,19 @@ module.exports = class shoppingChartController {
         const productRequested = await DB.getProductById(idProduct);
 
         if (productRequested !== null) {
-          // Consulta de producto existente en carrito
-          const productsInChart = await shoppingChartController.getFromChart(chart.id);
-
           // Se evalúa si el producto ya existe en el carrito
-          let inChartIndex = productsInChart.findIndex(p => p.product.id === productRequested.id);
-          
+          let inChartIndex = chart.products.findIndex(p => p.product.id === productRequested.id);
+
           // Se agrega producto a carrito
-          if (inChartIndex === -1) { chart.products.push({ product: productRequested, cantidad: 0 }); }
-          else { chart.products[inChartIndex].cantidad++; }
-          
+          if (inChartIndex === -1) { chart.products.push({ product: productRequested, cantidad: 1 }) }
+          else { chart.products[inChartIndex].cantidad++ }
+
           // Se almacenan modificaciones en archivo
           await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
           console.log('🛒 Producto agregado a carrito 🛒');
-          success = true;
+
+          // Se retornan los productos del carrito actualizados
+          return chart.products;
         }
         else {
           console.log('🛒❌ Operación cancelada ❌🛒');
@@ -128,7 +126,9 @@ module.exports = class shoppingChartController {
       else {
         console.log('🛒❌ Carrito de compras no encontrado ❌🛒');
       }
-      return success;
+
+      // Si llegó a este punto, hubo algún error
+      return null;
     }
     catch (e) {
       console.log(`🛒❌ Error al agregar producto a carrito 🛒❌\n ${e.message}`);

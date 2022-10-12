@@ -9,10 +9,11 @@ router.post('/api/carrito/:id/productos', async function (req, res, next) {
         let idChart = parseInt(req.params.id);
         let idProduct = parseInt(req.body.id);
         console.log(`\nSolicitud POST para agregar idProducto:${idProduct} a idCarrito:${idChart}`);
-        let accepted = await shoppingChartController.addToChart(idChart, idProduct);
+        let chartProducts = await shoppingChartController.addToChart(idChart, idProduct);
 
-        if (accepted) {
-            res.status(STATUS.ACCEPTED).end();
+        if (chartProducts !== null) {
+            // La respuesta son los productos del carrito
+            res.status(STATUS.ACCEPTED).json(chartProducts);
         }
         else {
             res.status(STATUS.BAD_REQUEST).end();

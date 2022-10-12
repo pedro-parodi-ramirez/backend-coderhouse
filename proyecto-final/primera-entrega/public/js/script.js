@@ -38,6 +38,8 @@ const formUpdateProduct = document.getElementById('form-update-product');
 // Elementos carrito de compras
 let shoppingChartID = null;
 const chartList = document.getElementById('chart-list');
+let chart = [];
+const totalPrice = document.getElementById('total');
 
 let template;   // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 
@@ -79,10 +81,11 @@ buttonCancelFormUpdate.addEventListener('click', () => {
         const html = (products.map(product => template(product))).join('');
         productTable.innerHTML = html;
 
-        // Se configuran eventos de los botones
+        // Se configuran eventos de los botones en las card-image
         products.forEach(p => {
             // Eliminar producto de la DB
             document.getElementById(`button-delete-product-id${p.id}`).addEventListener('click', async () => {
+                // Solicitud DELETE a servidor y actualización de página
                 const response = await fetch(`http://localhost:8080/api/productos/${p.id}`, {
                     headers: {
                         'Content-Type': 'application/json'
@@ -94,6 +97,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
 
             // Modificar producto de la DB
             document.getElementById(`button-update-product-id${p.id}`).addEventListener('click', () => {
+                // Muestra formulario para modificar producto
                 document.getElementById('idProduct').value = p.id;
                 buttonAddProduct.classList.add('d-none');
                 containerUpdateProduct.className = 'mt-5';
@@ -104,14 +108,17 @@ buttonCancelFormUpdate.addEventListener('click', () => {
             document.getElementById(`button-add-to-chart-id${p.id}`).addEventListener('click', async () => {
                 // Si carrito no existe, se crea
                 if (shoppingChartID === null) {
+                    // Solicitud POST para crear carrito en servidor
                     document.getElementById('chart-container').className = '';
                     const rawResponse = await fetch('http://localhost:8080/api/carrito', {
                         method: 'POST'
                     });
                     shoppingChartID = await rawResponse.json();
                 }
-                const dataJSON = JSON.stringify({id: p.id});
-                await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos`, {
+
+                // Solicitud POST para agregar producto a carrito
+                const dataJSON = JSON.stringify({ id: p.id });
+                const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Content-Length': dataJSON.length
@@ -119,20 +126,33 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                     method: 'POST',
                     body: dataJSON
                 });
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <h5>${p.nombre}</h5>
-                    <p>${p.descripcion}<br>
-                    <b>$ ${p.precio}</b></p>
-                `;
-                chartList.appendChild(li);
+                
+                // La solicitud devuelve los productos del carrito
+                chartProducts = await rawResponse.json();
+                
+                // Se lista los productos del carrito y se actualiza el valor total de la compra
+                let total = 0;
+                chartList.innerHTML = '';
+                totalPrice.value = 0;
+                chartProducts.forEach(p => {
+                    total += (p.product.precio * p.cantidad);
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <h5>${p.product.nombre}</h5>
+                        <p>${p.product.descripcion}<br>
+                        <b>$ ${p.product.precio}</b><br>
+                        Cantidad: ${p.cantidad}</p>
+                    `;
+                    chartList.appendChild(li);
+                });
+                totalPrice.value = total.toFixed(2);
             });
 
         });
     }
 })();
 
-// POST para agregar nuevo producto
+// POST para agregar nuevo producto en base de datos
 formAddProduct.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = {
@@ -155,7 +175,7 @@ formAddProduct.addEventListener('submit', async (e) => {
     (response.status === STATUS.ACCEPTED) && (window.location.href = "/");
 });
 
-// POST para modificar producto
+// POST para modificar producto en base de datos
 formUpdateProduct.addEventListener('submit', async (e) => {
     e.preventDefault();
     let idProduct = document.getElementById('idProduct').value;
