@@ -8,34 +8,40 @@ const STATUS = {
     INTERNAL_SERVER_ERROR: 500
 };
 
+// Lista de productos
 const productTable = document.getElementById('product-table');
 const productContainer = document.getElementById('product-container');
-const addProduct = document.getElementById('form-add-product');
 
+// Elementos agregar producto
 const inputNombreAdd = document.getElementById('nombre-add');
 const inputPrecioAdd = document.getElementById('precio-add');
 const inputFotoAdd = document.getElementById('foto-add');
 const inputDescripcionAdd = document.getElementById('descripcion-add');
 const inputCodigoAdd = document.getElementById('codigo-add');
 const inputStockAdd = document.getElementById('stock-add');
+const buttonAddProduct = document.getElementById('button-add-product');
+const buttonCancelFormAdd = document.getElementById('button-cancel-form-add');
+const containerAddProduct = document.getElementById('container-add-product');
+const formAddProduct = document.getElementById('form-add-product');
+
+// Elementos modificar producto
 const inputNombreUpdate = document.getElementById('nombre-update');
 const inputPrecioUpdate = document.getElementById('precio-update');
 const inputFotoUpdate = document.getElementById('foto-update');
 const inputDescripcionUpdate = document.getElementById('descripcion-update');
 const inputCodigoUpdate = document.getElementById('codigo-update');
 const inputStockUpdate = document.getElementById('stock-update');
-
-const buttonAddProduct = document.getElementById('button-add-product');
-const buttonCancelFormAdd = document.getElementById('button-cancel-form-add');
 const buttonCancelFormUpdate = document.getElementById('button-cancel-form-update');
-const containerAddProduct = document.getElementById('container-add-product');
 const containerUpdateProduct = document.getElementById('container-update-product');
-const buttonDeleteProduct = document.getElementById('button-delete-product');
-const formAddProduct = document.getElementById('form-add-product');
 const formUpdateProduct = document.getElementById('form-update-product');
+
+// Elementos carrito de compras
+let shoppingChartID = null;
+const chartList = document.getElementById('chart-list');
 
 let template;   // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 
+// Eventos agregar productos
 buttonAddProduct.addEventListener('click', () => {
     buttonAddProduct.classList.add('d-none');
     containerAddProduct.className = 'mt-5';
@@ -47,6 +53,7 @@ buttonCancelFormAdd.addEventListener('click', () => {
     containerAddProduct.className = 'd-flex d-none';
 });
 
+// Eventos modificar producto
 buttonCancelFormUpdate.addEventListener('click', () => {
     containerUpdateProduct.classList.add('d-none');
     document.getElementById('form-update-product').reset();
@@ -92,6 +99,35 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                 containerUpdateProduct.className = 'mt-5';
                 productContainer.className = 'd-flex d-none';
             });
+
+            // Agregar producto al carrito
+            document.getElementById(`button-add-to-chart-id${p.id}`).addEventListener('click', async () => {
+                // Si carrito no existe, se crea
+                if (shoppingChartID === null) {
+                    document.getElementById('chart-container').className = '';
+                    const rawResponse = await fetch('http://localhost:8080/api/carrito', {
+                        method: 'POST'
+                    });
+                    shoppingChartID = await rawResponse.json();
+                }
+                const dataJSON = JSON.stringify({id: p.id});
+                await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Content-Length': dataJSON.length
+                    },
+                    method: 'POST',
+                    body: dataJSON
+                });
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <h5>${p.nombre}</h5>
+                    <p>${p.descripcion}<br>
+                    <b>$ ${p.precio}</b></p>
+                `;
+                chartList.appendChild(li);
+            });
+
         });
     }
 })();
