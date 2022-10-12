@@ -77,7 +77,7 @@
                 DD: date.getDate(),
                 hh: date.getHours(),
                 mm: date.getMinutes(),
-                ss: date.getSeconds()                
+                ss: date.getSeconds()
             },
             message: inputUserMessage.value
         };

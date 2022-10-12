@@ -20,30 +20,64 @@
             <form id="form-add-product" action="/api/productos" method="POST">
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre del producto</label>
-                    <input type="text" name="nombre" class="form-control" id="nombre" required>
+                    <input type="text" name="nombre" class="form-control" id="nombre-add" required>
                 </div>
                 <div class="mb-3">
                     <label for="precio" class="form-label">Precio</label>
-                    <input type="number" name="precio" class="form-control" id="precio" step=".01" required>
+                    <input type="number" name="precio" class="form-control" id="precio-add" step=".01" required>
                 </div>
                 <div class="mb-3">
                     <label for="foto" class="form-label">Imagen URL</label>
-                    <input type="url" name="foto" class="form-control" id="foto" required>
+                    <input type="url" name="foto" class="form-control" id="foto-add" required>
                 </div>
                 <div class="mb-3">
                     <label for="descripcion" class="form-label">Descripción</label>
-                    <input type="text" name="descripcion" class="form-control" id="descripcion" required>
+                    <input type="text" name="descripcion" class="form-control" id="descripcion-add" required>
                 </div>
                 <div class="mb-3">
                     <label for="codigo" class="form-label">Código del producto</label>
-                    <input type="text" name="codigo" class="form-control" id="codigo" required>
+                    <input type="text" name="codigo" class="form-control" id="codigo-add" required>
                 </div>
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" class="form-control" id="stock" required>
+                    <input type="number" name="stock" class="form-control" id="stock-add" required>
                 </div>
                 <button type="submit" class="btn btn-success">Agregar</button>
-                <button id="button-cancel-form" type="button" class="btn btn-primary">Cancelar</button>
+                <button id="button-cancel-form-add" type="button" class="btn btn-primary">Cancelar</button>
+            </form>
+        </div>
+
+        <!-- Modificar productos -->
+        <div id="container-update-product" class="d-flex d-none">
+            <h2 class="text-center">Modificar producto</h2>
+            <input id="idProduct" type="hidden" value="">
+            <form id="form-update-product" action="/api/productos" method="POST">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre del producto</label>
+                    <input type="text" name="nombre" class="form-control" id="nombre-update">
+                </div>
+                <div class="mb-3">
+                    <label for="precio" class="form-label">Precio</label>
+                    <input type="number" name="precio" class="form-control" id="precio-update" step=".01">
+                </div>
+                <div class="mb-3">
+                    <label for="foto" class="form-label">Imagen URL</label>
+                    <input type="url" name="foto" class="form-control" id="foto-update">
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <input type="text" name="descripcion" class="form-control" id="descripcion-update">
+                </div>
+                <div class="mb-3">
+                    <label for="codigo" class="form-label">Código del producto</label>
+                    <input type="text" name="codigo" class="form-control" id="codigo-update">
+                </div>
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input type="number" name="stock" class="form-control" id="stock-update">
+                </div>
+                <button type="submit" class="btn btn-success">Modificar</button>
+                <button id="button-cancel-form-update" type="button" class="btn btn-primary">Cancelar</button>
             </form>
         </div>
 
