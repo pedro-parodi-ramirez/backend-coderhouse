@@ -3,7 +3,6 @@
     const database = require('../config/config');
     const DB = require("./db");
 
-    console.log("📂 Creando base de datos para mensajes ... 📂");
     /* Tabla MENSAJES */
     let knexInstance = knex(database.sqlite3);
 
@@ -18,17 +17,6 @@
             table.string('message')
     })
 
-    // Se inicializan valores de productos y mensajes
-    DB.addMessage({
-        email: "Coderhouse",
-        time: "",
-        message: "Bienvenido!"
-    });
-
-    console.log("📂✔ DB para mensajes creada ✔📂");
-
-
-    console.log("📂 Creando base de datos para productos ... 📂");
     /* Tabla PRODUCTOS */
     knexInstance = knex(database.sql);
 
@@ -42,6 +30,13 @@
             table.float('price'),
             table.string('thumbnail')
     })
+
+    // Se inicializan valores de productos y mensajes
+    DB.addMessage({
+        email: "Coderhouse",
+        time: "",
+        message: "Bienvenido!"
+    });
 
     DB.addProduct({
         title: "Leche",
@@ -58,6 +53,4 @@
         price: 522,
         thumbnail: "https://cdn0.iconfinder.com/data/icons/coffee-172/100/Coffe-04-512.png"
     });
-
-    console.log("📂✔ DB para productos creada ✔📂");
 })(true)
