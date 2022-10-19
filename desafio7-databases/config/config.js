@@ -2,7 +2,7 @@ const database = {
     sqlite3: {
         client: 'sqlite3',
         connection: {
-            filename: "./db/sqlite3/ecommerce.sqlite"
+            filename: "./db/ecommerce.sqlite"
         }
     },
     sql: {
