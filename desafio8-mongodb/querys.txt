@@ -1,0 +1,62 @@
+// Crear coleccion 'mensajes' e insertar documentos
+db.messages.insertMany([
+    { email: 'user1', time: "2022/10/24 20:02:23", message: "Hola! Soy el usuario 1" },
+    { email: 'user2', time: "2022/10/24 20:03:23", message: "Hola! Soy el usuario 2" },
+    { email: 'user3', time: "2022/10/24 20:04:23", message: "Hola! Soy el usuario 3" },
+    { email: 'user4', time: "2022/10/24 20:24:23", message: "Hola! Soy el usuario 4" },
+    { email: 'user5', time: "2022/10/24 20:25:23", message: "Hola! Soy el usuario 5" },
+    { email: 'user6', time: "2022/10/24 20:26:23", message: "Hola! Soy el usuario 6" },
+    { email: 'user7', time: "2022/10/24 20:27:23", message: "Hola! Soy el usuario 7" },
+    { email: 'user8', time: "2022/10/24 20:28:23", message: "Hola! Soy el usuario 8" },
+    { email: 'user9', time: "2022/10/24 20:29:23", message: "Hola! Soy el usuario 9" },
+    { email: 'user10', time: "2022/10/24 20:39:23", message: "Hola! Soy el usuario 10" }
+])
+
+// Crear coleccion 'productos' e insertar documentos
+db.products.insertMany([
+    { title: 'Fideos', price: 120, thumbnail: 'https://cdn0.iconfinder.com/data/icons/pasta-flat/300/Noodles_8-256.png' },
+    { title: 'Leche', price: 180, thumbnail: 'https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_7-256.png' },
+    { title: 'Mermelada', price: 900, thumbnail: 'https://cdn2.iconfinder.com/data/icons/bakery-kitchen-3/512/jam-jar-berries-256.png' },
+    { title: 'Yerba', price: 1280, thumbnail: 'https://cdn3.iconfinder.com/data/icons/argentina-3/504/tea-yerba-mate-drink-argentina-256.png' },
+    { title: 'Cafe', price: 1700, thumbnail: 'https://cdn2.iconfinder.com/data/icons/coffee-19/450/Coffee_bag-256.png' },
+    { title: 'Carne', price: 2300, thumbnail: 'https://cdn3.iconfinder.com/data/icons/meat-14/50/14-256.png' },
+    { title: 'Pescado', price: 2860, thumbnail: 'https://cdn0.iconfinder.com/data/icons/simple-mix-outline/160/fish-256.png' },
+    { title: 'Vodka', price: 3350, thumbnail: 'https://cdn3.iconfinder.com/data/icons/food-emoji/50/Vodka-256.png' },
+    { title: 'Champagne', price: 4320, thumbnail: 'https://cdn3.iconfinder.com/data/icons/christmas-and-new-year-27/64/xmas-11-256.png' },
+    { title: 'Whiskey', price: 4990, thumbnail: 'https://cdn0.iconfinder.com/data/icons/beverage-43/128/whiskey-alcohol-brandy-scotch-liquor-256.png' }
+])
+
+// Listar todos los elementos de cada colección
+db.messages.find({})
+db.products.find({})
+
+// Cantidad de elementos en cada colección
+db.messages.count({})
+db.products.count({})
+
+// Insertar un producto más a la colección
+db.products.insertOne({ title: 'Ketchup', price: 230, thumnail: 'https://cdn4.iconfinder.com/data/icons/food-ingredient/512/54-ketchup-tomato-sauce-256.png' })
+
+// Listar productos según su precio
+db.products.find({ price: { $lt: 1000 } }) // price < 1000
+db.products.find({ $and: [{ price: { $gte: 1000 } }, { price: { $lte: 3000 } }] }) // 1000 <= price <= 3000
+db.products.find({ price: { $gt: 3000 } }) // price > 3000
+db.products.find({}).sort({price: 1}).limit(1).skip(2)
+
+// Actualizar stock de productos a 100u
+db.products.updateMany({}, { $set: {stock: 100}})
+
+// Actualizar stocl a 0 de productos con precio > 4000
+db.products.updateMany({price: {$gt: 4000}}, { $set: {stock: 0}})
+
+// Eliminar productos con precio < 1000
+db.products.deleteMany({price: {$lt: 1000}})
+
+// Crear usuasario (desde DB 'admin')
+db.createUser({
+    user: 'pepe',
+    pwd: 'asd456',
+    roles: [
+        {role: 'read', db: 'ecommerce'}
+    ]
+})
