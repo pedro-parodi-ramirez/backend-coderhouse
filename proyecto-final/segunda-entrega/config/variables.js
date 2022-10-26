@@ -7,7 +7,7 @@ const STATUS = {
     NOT_FOUND: 404,
     INTERNAL_SERVER_ERROR: 500
 };
-
 const ADMIN = true;
+const PASSWORD = '3BDOYzW6BNOwzvI1';
 
-export { STATUS, ADMIN };
+export { STATUS, ADMIN, PASSWORD };

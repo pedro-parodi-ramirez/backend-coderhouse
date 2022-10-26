@@ -19,7 +19,7 @@ router.get('/api/productos', async function (_, res, next) {
 });
 
 /* Obtener producto según ID */
-router.get('/api/productos/:id', async function (req, res, next) {
+router.get('/api/productos/:_id', async function (req, res, next) {
   try {
     let id = parseInt(req.params.id);
     console.log(`\nSolicitud GET de mostrar producto id:${id}`);

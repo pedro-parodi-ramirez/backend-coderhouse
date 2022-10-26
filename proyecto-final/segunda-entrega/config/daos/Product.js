@@ -9,4 +9,4 @@ export default class Product {
         this.price = product.price,
         this.stock = product.stock
     }
-}
+};

@@ -1,26 +1,22 @@
-import fs from 'fs';
 import Product from './daos/Product.js';
+import mongoose from 'mongoose';
+import ProductModel from './models/product.js';
+import { PASSWORD } from './variables.js';
+
+const options = { dbName: 'ecommerce' };
+const URL = `mongodb+srv://pedropr:${PASSWORD}@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority`;
 
 export default class DB {
-  static nextID = 0; // Control de ID para productos
-
   /* Retornar todos los productos */
   static async getAllProducts() {
     try {
       console.log('📁 Lectura de productos desde DB 📁');
       // Lectura de archivo con productos.
-      const products = await readFileProducts();
-
-      // Retorno de productos
-      if (products != null) {
-        return products;
-      }
-      else {
-        return [];
-      }
+      const products = await dbGetProducts();
+      return products;
     }
     catch (e) {
-      console.log('📁❌ Error al buscar productos en la base de datos: ❌📁\n' + e.message);
+      console.log('📁❌ Error al buscar productos en DB: ❌📁\n' + e.message);
     }
   }
 
@@ -29,8 +25,8 @@ export default class DB {
     try {
       console.log('📁 Búsqueda de producto según ID 📁');
       // Lectura de archivo con productos.
-      const products = await readFileProducts();
-      const productRequested = products.find(p => p.id === id);
+      const products = await dbGetProducts();
+      const productRequested = products.find(p => p.id === id.id);
       if (productRequested !== undefined) {
         console.log('📁 Se retorna producto solicitado 📁');
         return productRequested;
@@ -41,22 +37,15 @@ export default class DB {
       }
     }
     catch (e) {
-      console.log('📁❌ Error al buscar producto en la base de datos: ❌📁\n' + e.message);
+      console.log('📁❌ Error al buscar producto en DB: ❌📁\n' + e.message);
     }
   }
 
   /* Agregar producto */
   static async addProduct(data) {
     try {
-      // Se leen productos existentes
-      const products = await DB.getAllProducts();
-
-      // Se actualiza nextID
-      DB.nextID = getNextID(products);
-
       // Se agrega nuevo producto
       const newProduct = new Product({
-        id: DB.nextID,
         timestamp: Date.now(),
         name: data.name,
         description: data.description,
@@ -65,14 +54,13 @@ export default class DB {
         price: parseFloat(parseFloat(data.price).toFixed(2)),
         stock: parseInt(data.stock)
       });
-      products.push(newProduct);
 
-      // Se almacena nuevo producto en archivo
-      await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
-      console.log('📁 Se agrega producto a DB 📁');
+      // Se agrega producto en DB
+      await dbInsertProduct(newProduct);
+      console.log('📁✔ Producto agregado en DB ✔📁');
     }
     catch (e) {
-      console.log('📁❌ Error al agregar producto a la base de datos: ❌📁\n' + e.message);
+      console.log('📁❌ Error al insertar producto en DB: ❌📁\n' + e.message);
     }
   }
 
@@ -143,43 +131,38 @@ export default class DB {
 }
 
 // Lectura de archivo con productos.
-async function readFileProducts() {
+async function dbGetProducts() {
   try {
-    // Lectura del archivo
-    const data = await fs.promises.readFile('./config/json/products.json', 'utf-8');
-    const products = [];
+    await mongoose.connect(URL, options);
 
-    if (data != null) {
-      let dataJSON = JSON.parse(data);
-      dataJSON.forEach(p => {
-        products.push(new Product({
-          id: p.id,
-          timestamp: p.timestamp,
-          name: p.name,
-          description: p.description,
-          code: p.code,
-          image: p.image,
-          price: parseFloat(parseFloat(p.price).toFixed(2)),
-          stock: parseInt(p.stock)
-        }));
-      });
-      return dataJSON;
-    }
-    else {
-      return null;
-    }
+    // Lectura de productos en DB
+    const products = await ProductModel.find({});
+    return products;
   }
   catch (e) {
-    console.log('📁❌ Error al leer la base de datos de productos: ❌📁\n' + e.message);
-    return null;
+    console.log('📂❌ Error al buscar productos en DB 📂❌\n' + e.message);
+    return [];
   }
 }
 
-// Buscar nuevo ID para producto
-function getNextID(products) {
-  const arrayID = products.map(p => p.id);
-  let nextID;
-  nextID = Math.max(...arrayID) + 1;
-  ((nextID === -Infinity) || (nextID === null)) && (nextID = 0);
-  return nextID;
+// Insertar nuevo producto en la DB
+async function dbInsertProduct(newProduct) {
+  try {
+    await mongoose.connect(URL, options);
+
+    // Se inserta producto en DB
+    const query = await ProductModel({
+      timestamp: newProduct.timestamp,
+      name: newProduct.name,
+      description: newProduct.description,
+      code: newProduct.code,
+      image: newProduct.image,
+      price: newProduct.price,
+      stock: newProduct.stock
+    });
+    await query.save();
+  }
+  catch (e) {
+    throw new Error(e.message);
+  }
 }

@@ -4,4 +4,4 @@ export default class ShoppingChart {
         this.timestamp = chart.timestamp,
         this.products = chart.products
     }
-}
+};
