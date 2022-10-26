@@ -1,0 +1,18 @@
+<div class="col">
+    <div class="card h-100" style="width: 12rem;">
+        <img src="{{this.foto}}" class="card-img-top bg-secondary" alt="...">
+        <div class="card-body bg-light">
+            <h5 class="card-title">{{this.nombre}}</h5>
+            <p class="card-text">
+                <b>$ {{this.precio}}</b><br>
+                {{this.descripcion}}<br>
+                <u>Disponible</u>: {{this.stock}}u
+            </p>
+        </div>
+        <button id="button-add-to-chart-id{{this.id}}" type="button" class="btn btn-success my-2 mx-auto">Agregar al carrito</button>
+        <div class="mx-auto">
+        <button id="button-update-product-id{{this.id}}" type="button" class="btn btn-primary">Actualizar</button>
+        <button id="button-delete-product-id{{this.id}}" type="button" class="btn btn-primary">Eliminar</button>
+        </div>
+    </div>
+</div>
