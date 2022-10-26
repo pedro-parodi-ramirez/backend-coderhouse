@@ -13,11 +13,11 @@ const productTable = document.getElementById('product-table');
 const productContainer = document.getElementById('product-container');
 
 // Elementos agregar producto
-const inputNombreAdd = document.getElementById('nombre-add');
-const inputPrecioAdd = document.getElementById('precio-add');
-const inputFotoAdd = document.getElementById('foto-add');
-const inputDescripcionAdd = document.getElementById('descripcion-add');
-const inputCodigoAdd = document.getElementById('codigo-add');
+const inputNameAdd = document.getElementById('name-add');
+const inputPriceAdd = document.getElementById('price-add');
+const inputPictureAdd = document.getElementById('picture-add');
+const inputDescriptionAdd = document.getElementById('description-add');
+const inputCodeAdd = document.getElementById('code-add');
 const inputStockAdd = document.getElementById('stock-add');
 const buttonAddProduct = document.getElementById('button-add-product');
 const buttonCancelFormAdd = document.getElementById('button-cancel-form-add');
@@ -25,11 +25,11 @@ const containerAddProduct = document.getElementById('container-add-product');
 const formAddProduct = document.getElementById('form-add-product');
 
 // Elementos modificar producto
-const inputNombreUpdate = document.getElementById('nombre-update');
-const inputPrecioUpdate = document.getElementById('precio-update');
-const inputFotoUpdate = document.getElementById('foto-update');
-const inputDescripcionUpdate = document.getElementById('descripcion-update');
-const inputCodigoUpdate = document.getElementById('codigo-update');
+const inputNameUpdate = document.getElementById('name-update');
+const inputPriceUpdate = document.getElementById('price-update');
+const inputPictureUpdate = document.getElementById('picture-update');
+const inputDescriptionUpdate = document.getElementById('description-update');
+const inputCodeUpdate = document.getElementById('code-update');
 const inputStockUpdate = document.getElementById('stock-update');
 const buttonCancelFormUpdate = document.getElementById('button-cancel-form-update');
 const containerUpdateProduct = document.getElementById('container-update-product');
@@ -76,7 +76,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
     const products = await rawResponse.json();
     if (products.length > 0) {
         // Se acomodan los precios con dos decimales
-        products.forEach(p => p.precio = parseFloat(p.precio).toFixed(2));
+        products.forEach(p => p.price = parseFloat(p.price).toFixed(2));
 
         // Se presentan productos con Handlebars.
         const html = (products.map(product => template(product))).join('');
@@ -147,11 +147,11 @@ buttonCancelFormUpdate.addEventListener('click', () => {
 formAddProduct.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = {
-        nombre: inputNombreAdd.value,
-        precio: inputPrecioAdd.value,
-        foto: inputFotoAdd.value,
-        descripcion: inputDescripcionAdd.value,
-        codigo: inputCodigoAdd.value,
+        name: inputNameAdd.value,
+        price: inputPriceAdd.value,
+        picture: inputPictureAdd.value,
+        description: inputDescriptionAdd.value,
+        code: inputCodeAdd.value,
         stock: inputStockAdd.value,
     };
     const dataJSON = JSON.stringify(data);
@@ -175,11 +175,11 @@ formUpdateProduct.addEventListener('submit', async (e) => {
     e.preventDefault();
     let idProduct = document.getElementById('idProduct').value;
     const data = {
-        nombre: inputNombreUpdate.value,
-        precio: inputPrecioUpdate.value,
-        foto: inputFotoUpdate.value,
-        descripcion: inputDescripcionUpdate.value,
-        codigo: inputCodigoUpdate.value,
+        name: inputNameUpdate.value,
+        price: inputPriceUpdate.value,
+        picture: inputPictureUpdate.value,
+        description: inputDescriptionUpdate.value,
+        code: inputCodeUpdate.value,
         stock: inputStockUpdate.value,
     };
     const dataJSON = JSON.stringify(data);
@@ -204,13 +204,13 @@ function showChartProducts(chartProducts) {
     chartList.innerHTML = '';
     totalPrice.value = 0;
     chartProducts.forEach(p => {
-        total += (p.product.precio * p.cantidad);
+        total += (p.product.price * p.quantity);
         const li = document.createElement('li');
         li.innerHTML = `
-            <h5>${p.product.nombre}</h5>
-            <p>${p.product.descripcion}<br>
-            <b>$ ${p.product.precio}</b><br>
-            Cantidad: ${p.cantidad}
+            <h5>${p.product.name}</h5>
+            <p>${p.product.description}<br>
+            <b>$ ${p.product.price}</b><br>
+            Cantidad: ${p.quantity}
             <button id="button-delete-from-chart-id${p.product.id}" type="button" class="btn btn-danger ms-2">Eliminar</button>
             </p>
         `;

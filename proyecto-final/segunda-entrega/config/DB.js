@@ -1,4 +1,5 @@
 import fs from 'fs';
+import Product from './daos/Product.js';
 
 export default class DB {
   static nextID = 0; // Control de ID para productos
@@ -54,16 +55,16 @@ export default class DB {
       DB.nextID = getNextID(products);
 
       // Se agrega nuevo producto
-      const newProduct = {
+      const newProduct = new Product({
         id: DB.nextID,
         timestamp: Date.now(),
-        nombre: data.nombre,
-        descripcion: data.descripcion,
-        codigo: data.codigo,
-        foto: data.foto,
-        precio: parseFloat(parseFloat(data.precio).toFixed(2)),
+        name: data.name,
+        description: data.description,
+        code: data.code,
+        picture: data.picture,
+        price: parseFloat(parseFloat(data.price).toFixed(2)),
         stock: parseInt(data.stock)
-      }
+      });
       products.push(newProduct);
 
       // Se almacena nuevo producto en archivo
@@ -84,16 +85,17 @@ export default class DB {
       // Búsqueda y actualización de producto
       products.forEach(p => {
         if (p.id === id) {
-          let newPrice = parseFloat(parseFloat(body.precio).toFixed(2));
+          let newPrice = parseFloat(parseFloat(body.price).toFixed(2));
+          let newStock = parseInt(body.stock)
 
           // Se almacenan nuevos valores. En caso de que existan campos vacíos, se mantiene el valor anterior al update.
           p.timestamp = Date.now();
-          p.nombre = body.nombre || p.nombre;
-          p.descripcion = body.descripcion || p.descripcion;
-          p.codigo = body.codigo || p.codigo;
-          p.foto = body.foto || p.foto;
-          (!isNaN(newPrice)) && (p.precio = newPrice);
-          p.stock = body.stock || p.stock;
+          p.name = body.name || p.name;
+          p.description = body.description || p.description;
+          p.code = body.code || p.code;
+          p.picture = body.picture || p.picture;
+          (!isNaN(newPrice)) && (p.price = newPrice);
+          (!isNaN(newStock)) && (p.stock = newStock);
 
           found = true;
           console.log('📁 Se actualiza producto en DB 📁');
@@ -145,9 +147,22 @@ async function readFileProducts() {
   try {
     // Lectura del archivo
     const data = await fs.promises.readFile('./config/json/products.json', 'utf-8');
+    const products = [];
 
     if (data != null) {
       let dataJSON = JSON.parse(data);
+      dataJSON.forEach(p => {
+        products.push(new Product({
+          id: p.id,
+          timestamp: p.timestamp,
+          name: p.name,
+          description: p.description,
+          code: p.code,
+          picture: p.picture,
+          price: parseFloat(parseFloat(p.price).toFixed(2)),
+          stock: parseInt(p.stock)
+        }));
+      });
       return dataJSON;
     }
     else {

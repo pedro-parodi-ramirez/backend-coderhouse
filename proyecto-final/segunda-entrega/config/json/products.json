@@ -2,31 +2,41 @@
   {
     "id": 0,
     "timestamp": 1665419816542,
-    "nombre": "Leche",
-    "descripcion": "Leche Entera LA SERENÍSIMA 3% Sachet 1 L",
-    "codigo": "APL",
-    "foto": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_7-256.png",
-    "precio": 207.8,
+    "name": "Leche",
+    "description": "Leche Entera LA SERENÍSIMA 3% Sachet 1 L",
+    "code": "APL",
+    "picture": "https://cdn0.iconfinder.com/data/icons/food-set-4/64/Artboard_7-256.png",
+    "price": 207.8,
     "stock": 50
   },
   {
     "id": 1,
     "timestamp": 1665419816543,
-    "nombre": "Café",
-    "descripcion": "Café Instántaneo Suave Y Espumoso Arlistan Fra 170 Grm",
-    "codigo": "CCI",
-    "foto": "https://cdn0.iconfinder.com/data/icons/coffee-172/100/Coffe-04-512.png",
-    "precio": 1017.25,
+    "name": "Café",
+    "description": "Café Instántaneo Suave Y Espumoso Arlistan Fra 170 Grm",
+    "code": "CCI",
+    "picture": "https://cdn0.iconfinder.com/data/icons/coffee-172/100/Coffe-04-512.png",
+    "price": 1017.25,
     "stock": 20
   },
   {
     "id": 2,
     "timestamp": 1665419816544,
-    "nombre": "Azúcar",
-    "descripcion": "Azúcar Superior Real LEDESMA 1 Kg",
-    "codigo": "ADC",
-    "foto": "https://cdn0.iconfinder.com/data/icons/breakfast-time-1/32/breakfast_cute_drink_food_eat_3-Sugar-512.png",
-    "precio": 229,
+    "name": "Azúcar",
+    "description": "Azúcar Superior Real LEDESMA 1 Kg",
+    "code": "ADC",
+    "picture": "https://cdn0.iconfinder.com/data/icons/breakfast-time-1/32/breakfast_cute_drink_food_eat_3-Sugar-512.png",
+    "price": 229,
     "stock": 60
+  },
+  {
+    "id": 3,
+    "timestamp": 1666810843816,
+    "name": "asd",
+    "description": "123",
+    "code": "123",
+    "picture": "https://cdn-icons-png.flaticon.com/512/2366/2366857.png",
+    "price": 123,
+    "stock": 123
   }
 ]

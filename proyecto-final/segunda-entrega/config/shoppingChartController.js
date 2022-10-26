@@ -1,4 +1,5 @@
 import DB from './DB.js';
+import ShoppingChart from './daos/ShoppingChart.js';
 import fs from 'fs';
 
 export class shoppingChartController {
@@ -14,11 +15,11 @@ export class shoppingChartController {
       shoppingChartController.nextID = getNextID(chartArray);
 
       // Formato de nuevo carrito de compras.
-      const newChart = {
+      const newChart = new ShoppingChart({
         id: shoppingChartController.nextID,
         timestamp: Date.now(),
         products: []
-      }
+      });
 
       // Se agrega nuevo carrrito al array existente
       chartArray.push(newChart);
@@ -102,8 +103,8 @@ export class shoppingChartController {
           let inChartIndex = chart.products.findIndex(p => p.product.id === productRequested.id);
 
           // Se agrega producto a carrito
-          if (inChartIndex === -1) { chart.products.push({ product: productRequested, cantidad: 1 }) }
-          else { chart.products[inChartIndex].cantidad++ }
+          if (inChartIndex === -1) { chart.products.push({ product: productRequested, quantity: 1 }) }
+          else { chart.products[inChartIndex].quantity++ }
 
           // Se almacenan modificaciones en archivo
           await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
@@ -173,9 +174,17 @@ export class shoppingChartController {
 async function readFileShoppingCharts() {
   try {
     const data = await fs.promises.readFile('./config/json/shoppingCharts.json', 'utf-8');
+    const charts = [];
 
     if (data !== null) {
       let dataJSON = JSON.parse(data);
+      dataJSON.forEach(c => {
+        charts.push(new ShoppingChart({
+          id: c.id,
+          timestamp: c.timestamp,
+          products: c.products
+        }));
+      });
       return dataJSON;
     }
     else {
