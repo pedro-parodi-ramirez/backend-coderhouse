@@ -5,7 +5,7 @@ export default class Product {
         this.name = product.name,
         this.description = product.description,
         this.code = product.code,
-        this.picture = product.picture,
+        this.image = product.image,
         this.price = product.price,
         this.stock = product.stock
     }

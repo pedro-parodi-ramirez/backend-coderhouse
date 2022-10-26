@@ -15,7 +15,7 @@ const productContainer = document.getElementById('product-container');
 // Elementos agregar producto
 const inputNameAdd = document.getElementById('name-add');
 const inputPriceAdd = document.getElementById('price-add');
-const inputPictureAdd = document.getElementById('picture-add');
+const inputImageAdd = document.getElementById('image-add');
 const inputDescriptionAdd = document.getElementById('description-add');
 const inputCodeAdd = document.getElementById('code-add');
 const inputStockAdd = document.getElementById('stock-add');
@@ -27,7 +27,7 @@ const formAddProduct = document.getElementById('form-add-product');
 // Elementos modificar producto
 const inputNameUpdate = document.getElementById('name-update');
 const inputPriceUpdate = document.getElementById('price-update');
-const inputPictureUpdate = document.getElementById('picture-update');
+const inputImageUpdate = document.getElementById('image-update');
 const inputDescriptionUpdate = document.getElementById('description-update');
 const inputCodeUpdate = document.getElementById('code-update');
 const inputStockUpdate = document.getElementById('stock-update');
@@ -149,7 +149,7 @@ formAddProduct.addEventListener('submit', async (e) => {
     const data = {
         name: inputNameAdd.value,
         price: inputPriceAdd.value,
-        picture: inputPictureAdd.value,
+        image: inputImageAdd.value,
         description: inputDescriptionAdd.value,
         code: inputCodeAdd.value,
         stock: inputStockAdd.value,
@@ -177,7 +177,7 @@ formUpdateProduct.addEventListener('submit', async (e) => {
     const data = {
         name: inputNameUpdate.value,
         price: inputPriceUpdate.value,
-        picture: inputPictureUpdate.value,
+        image: inputImageUpdate.value,
         description: inputDescriptionUpdate.value,
         code: inputCodeUpdate.value,
         stock: inputStockUpdate.value,

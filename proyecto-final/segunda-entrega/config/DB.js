@@ -61,7 +61,7 @@ export default class DB {
         name: data.name,
         description: data.description,
         code: data.code,
-        picture: data.picture,
+        image: data.image,
         price: parseFloat(parseFloat(data.price).toFixed(2)),
         stock: parseInt(data.stock)
       });
@@ -93,7 +93,7 @@ export default class DB {
           p.name = body.name || p.name;
           p.description = body.description || p.description;
           p.code = body.code || p.code;
-          p.picture = body.picture || p.picture;
+          p.image = body.image || p.image;
           (!isNaN(newPrice)) && (p.price = newPrice);
           (!isNaN(newStock)) && (p.stock = newStock);
 
@@ -158,7 +158,7 @@ async function readFileProducts() {
           name: p.name,
           description: p.description,
           code: p.code,
-          picture: p.picture,
+          image: p.image,
           price: parseFloat(parseFloat(p.price).toFixed(2)),
           stock: parseInt(p.stock)
         }));
