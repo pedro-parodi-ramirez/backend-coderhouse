@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { STATUS, ADMIN } from '../../config/variables.js';
-import DB from '../../config/DB.js';
+import { STATUS, ADMIN } from '../../config/config.js';
+import { productDAO as productAPI } from '../../daos/index.js';
 
 const router = Router();
 
@@ -10,7 +10,7 @@ router.delete('/api/productos/:id', async function (req, res, next) {
         if (ADMIN) {
             let id = parseInt(req.params.id);
             console.log(`\nSolicitud DELETE para eliminar producto id:${id}`);
-            let accepted = await DB.deleteProduct(id);
+            let accepted = await productAPI.deleteProduct(id);
             if (accepted) {
                 res.status(STATUS.ACCEPTED).end();
             }

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { STATUS } from '../../config/variables.js';
-import DB from '../../config/DB.js';
+import { STATUS } from '../../config/config.js';
+import { productDAO as productAPI } from '../../daos/index.js';
 
 const router = Router();
 
@@ -8,7 +8,7 @@ const router = Router();
 router.get('/api/productos', async function (_, res, next) {
   try {
     console.log('\nSolicitud GET de listar los productos');
-    const products = await DB.getAllProducts();
+    const products = await productAPI.getAllProducts();
 
     res.status(STATUS.OK).json(products);
   }
@@ -19,11 +19,11 @@ router.get('/api/productos', async function (_, res, next) {
 });
 
 /* Obtener producto según ID */
-router.get('/api/productos/:_id', async function (req, res, next) {
+router.get('/api/productos/:id', async function (req, res, next) {
   try {
     let id = parseInt(req.params.id);
-    console.log(`\nSolicitud GET de mostrar producto id:${id}`);
-    const productRequested = await DB.getProductById(id);
+    console.log(`\nSolicitud GET para buscar producto id:${id}`);
+    const productRequested = await ProductDaoMongoDB.getProductById(id);
     if (productRequested !== null) {
       res.status(STATUS.OK).json(productRequested);
     }

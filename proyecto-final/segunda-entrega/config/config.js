@@ -9,5 +9,6 @@ const STATUS = {
 };
 const ADMIN = true;
 const PASSWORD = '3BDOYzW6BNOwzvI1';
+const URI = `mongodb+srv://pedropr:${PASSWORD}@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority`;
 
-export { STATUS, ADMIN, PASSWORD };
+export { STATUS, ADMIN, URI };

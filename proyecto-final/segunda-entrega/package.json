@@ -2,9 +2,10 @@
   "name": "hbs",
   "version": "0.0.0",
   "private": true,
+  "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node ./app.js",
+    "start": "PERSISTANCE_TYPE=mongodb node .",
     "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
   },
   "dependencies": {

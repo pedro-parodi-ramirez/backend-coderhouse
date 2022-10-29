@@ -1,5 +1,4 @@
-import DB from './DB.js';
-import ShoppingChart from './daos/ShoppingChart.js';
+import ProductDaoMongoDB from '../daos/products/ProductDaoMongoDB.js';
 import fs from 'fs';
 
 export class shoppingChartController {
@@ -15,17 +14,17 @@ export class shoppingChartController {
       shoppingChartController.nextID = getNextID(chartArray);
 
       // Formato de nuevo carrito de compras.
-      const newChart = new ShoppingChart({
+      const newChart = {
         id: shoppingChartController.nextID,
         timestamp: Date.now(),
         products: []
-      });
+      };
 
       // Se agrega nuevo carrrito al array existente
       chartArray.push(newChart);
 
       // Se almacena nuevo carrito en archivo.
-      await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+      await fs.promises.writeFile('../config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
 
       // Retorno de ID de carrito y actualización de nuevo ID.
       console.log('🛒 Carrito de compras creado 🛒');
@@ -48,7 +47,7 @@ export class shoppingChartController {
         chartArray = chartArray.filter(c => c.id !== id);
 
         // Se almacenan modificaciones en archivo
-        await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+        await fs.promises.writeFile('../config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
         console.log('🛒 Carrito de compras eliminado 🛒');
       }
       else {
@@ -96,7 +95,7 @@ export class shoppingChartController {
 
       if (chart !== undefined) {
         // Búsqueda de producto a agregar a carrito
-        const productRequested = await DB.getProductById(idProduct);
+        const productRequested = await ProductDaoMongoDB.getProductById(idProduct);
 
         if (productRequested !== null) {
           // Se evalúa si el producto ya existe en el carrito
@@ -107,7 +106,7 @@ export class shoppingChartController {
           else { chart.products[inChartIndex].quantity++ }
 
           // Se almacenan modificaciones en archivo
-          await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+          await fs.promises.writeFile('../config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
           console.log('🛒 Producto agregado a carrito 🛒');
 
           // Se retornan los productos del carrito actualizados
@@ -147,7 +146,7 @@ export class shoppingChartController {
           chart.products = chart.products.filter(p => p.product.id !== idProduct);
 
           // Se almacenan modificaciones en archivo
-          await fs.promises.writeFile('./config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
+          await fs.promises.writeFile('../config/json/shoppingCharts.json', JSON.stringify(chartArray, null, 2));
           console.log('🛒 Producto eliminado de carrito 🛒');
 
           // Se retornan los productos del carrito actualizados
@@ -173,17 +172,17 @@ export class shoppingChartController {
 // Lectura de archivo con carritos existentes.
 async function readFileShoppingCharts() {
   try {
-    const data = await fs.promises.readFile('./config/json/shoppingCharts.json', 'utf-8');
+    const data = await fs.promises.readFile('../config/json/shoppingCharts.json', 'utf-8');
     const charts = [];
 
     if (data !== null) {
       let dataJSON = JSON.parse(data);
       dataJSON.forEach(c => {
-        charts.push(new ShoppingChart({
+        charts.push({
           id: c.id,
           timestamp: c.timestamp,
           products: c.products
-        }));
+        });
       });
       return dataJSON;
     }

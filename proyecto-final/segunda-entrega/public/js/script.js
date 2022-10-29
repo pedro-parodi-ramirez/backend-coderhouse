@@ -85,9 +85,9 @@ buttonCancelFormUpdate.addEventListener('click', () => {
         // Se configuran eventos de los botones en las card-image
         products.forEach(p => {
             // Eliminar producto de la DB
-            document.getElementById(`button-delete-product-id${p.id}`).addEventListener('click', async () => {
+            document.getElementById(`button-delete-product-id${p._id}`).addEventListener('click', async () => {
                 // Solicitud DELETE a servidor y actualización de página
-                const rawResponse = await fetch(`http://localhost:8080/api/productos/${p.id}`, {
+                const rawResponse = await fetch(`http://localhost:8080/api/productos/${p._id}`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -101,16 +101,16 @@ buttonCancelFormUpdate.addEventListener('click', () => {
             });
 
             // Modificar producto de la DB
-            document.getElementById(`button-update-product-id${p.id}`).addEventListener('click', () => {
+            document.getElementById(`button-update-product-id${p._id}`).addEventListener('click', () => {
                 // Muestra formulario para modificar producto
-                document.getElementById('idProduct').value = p.id;
+                document.getElementById('idProduct').value = p._id;
                 buttonAddProduct.classList.add('d-none');
                 containerUpdateProduct.className = 'mt-5';
                 productContainer.className = 'd-flex d-none';
             });
 
             // Agregar producto al carrito
-            document.getElementById(`button-add-to-chart-id${p.id}`).addEventListener('click', async () => {
+            document.getElementById(`button-add-to-chart-id${p._id}`).addEventListener('click', async () => {
                 // Si carrito no existe, se crea
                 if (shoppingChartID === null) {
                     // Solicitud POST para crear carrito en servidor
@@ -122,7 +122,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                 }
 
                 // Solicitud POST para agregar producto a carrito
-                const dataJSON = JSON.stringify({ id: p.id });
+                const dataJSON = JSON.stringify({ id: p._id });
                 const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos`, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ function showChartProducts(chartProducts) {
             <p>${p.product.description}<br>
             <b>$ ${p.product.price}</b><br>
             Cantidad: ${p.quantity}
-            <button id="button-delete-from-chart-id${p.product.id}" type="button" class="btn btn-danger ms-2">Eliminar</button>
+            <button id="button-delete-from-chart-id${p.product._id}" type="button" class="btn btn-danger ms-2">Eliminar</button>
             </p>
         `;
         chartList.appendChild(li);
@@ -219,7 +219,7 @@ function showChartProducts(chartProducts) {
         // Se agrega funcionalidad para eliminar producto del carrito de compras
         document.getElementById(`button-delete-from-chart-id${p.product.id}`).addEventListener('click', async () => {
             // Solicitud DELETE a servidor para eliminar producto de carrito
-            const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos/${p.product.id}`, {
+            const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos/${p.product._id}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },

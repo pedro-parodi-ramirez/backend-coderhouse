@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { STATUS, ADMIN } from '../../config/variables.js';
-import DB from '../../config/DB.js';
+import { STATUS, ADMIN } from '../../config/config.js';
+import { productDAO as productAPI } from '../../daos/index.js';
 
 const router = Router();
 
@@ -9,7 +9,7 @@ router.post('/api/productos', async function (req, res, next) {
   try {
     if (ADMIN) {
       console.log('\nSolicitud POST para agregar producto');
-      await DB.addProduct(req.body);
+      await productAPI.addProduct(req.body);
       res.status(STATUS.ACCEPTED).end();
     }
     else {

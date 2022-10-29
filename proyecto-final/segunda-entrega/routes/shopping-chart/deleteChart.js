@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { STATUS } from '../../config/variables.js';
-import { shoppingChartController } from '../../config/shoppingChartController.js';
+import { STATUS } from '../../config/config.js';
+import { shoppingChartController } from '../../containers/shoppingChartController.js';
 
 const router = Router();
 

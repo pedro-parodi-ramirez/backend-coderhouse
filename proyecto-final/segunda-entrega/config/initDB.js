@@ -1,18 +1,17 @@
 import mongoose from 'mongoose';
-import ProductModel from './models/product.js';
-import { PASSWORD } from './variables.js';
+import { URI } from './config.js';
+import ProductDaoMongoDB from '../daos/products/ProductDaoMongoDB.js';
 
 const options = { dbName: 'ecommerce' };
-const URL = `mongodb+srv://pedropr:${PASSWORD}@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority`;
 
 (async () => {
     try {
-        await mongoose.connect(URL, options);
+        await mongoose.connect(URI, options);
 
         // Se eliminan colecciones previas, en caso de que existan
-        await ProductModel.deleteMany({});
+        await ProductDaoMongoDB.deleteMany({});
 
-        await ProductModel.insertMany([
+        await ProductDaoMongoDB.insertMany([
             {
                 timestamp: 1665419816542,
                 name: "Leche",

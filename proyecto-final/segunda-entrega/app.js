@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { STATUS } from './config/variables.js';
+import { STATUS } from './config/config.js';
 import index from './routes/index.js';
 
 

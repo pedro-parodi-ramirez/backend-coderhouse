@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { STATUS } from '../../config/variables.js';
-import { shoppingChartController } from '../../config/shoppingChartController.js';
+import { STATUS } from '../../config/config.js';
+import { shoppingChartController } from '../../containers/shoppingChartController.js';
 
 const router = Router();
 
@@ -18,7 +18,7 @@ router.delete('/api/carrito/:idChart/productos/:idProduct', async function (req,
         else {
             let message = {
                 error: -2,
-                route: 'localhost:8080/api/carrito/:idChart/productos/:idProduct',
+                route: 'localhost:8080/api/carrito/:idChart/productos/:id_Product',
                 method: 'DELETE',
                 status: 'No implementado'
             }
