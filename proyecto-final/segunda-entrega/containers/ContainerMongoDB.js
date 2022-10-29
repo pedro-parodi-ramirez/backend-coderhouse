@@ -35,28 +35,25 @@ export default class ContainerMongoDB {
     }
   }
 
-  // /* Agregar producto */
-  // async addProduct(data) {
-  //   try {
-  //     // Se agrega nuevo producto
-  //     const newProduct = new Product({
-  //       timestamp: Date.now(),
-  //       name: data.name,
-  //       description: data.description,
-  //       code: data.code,
-  //       image: data.image,
-  //       price: parseFloat(parseFloat(data.price).toFixed(2)),
-  //       stock: parseInt(data.stock)
-  //     });
-
-  //     // Se agrega producto en DB
-  //     await mongodbInsertProduct(newProduct);
-  //     console.log('📁✔ Producto agregado en DB ✔📁');
-  //   }
-  //   catch (e) {
-  //     console.log('📁❌ Error al insertar producto en DB: ❌📁\n' + e.message);
-  //   }
-  // }
+  /* Agregar producto */
+  async addProduct(data) {
+    try {
+      // Se agrega nuevo producto
+      this.collection.create({
+        timestamp: Date.now(),
+        name: data.name,
+        description: data.description,
+        code: data.code,
+        image: data.image,
+        price: parseFloat(parseFloat(data.price).toFixed(2)),
+        stock: parseInt(data.stock)
+      });
+      console.log('📁✔ Producto agregado en DB ✔📁');
+    }
+    catch (e) {
+      console.log('📁❌ Error al insertar producto en DB: ❌📁\n' + e.message);
+    }
+  }
 
   // /* Actualizar producto según ID */
   // static async updateProduct(id, body) {
@@ -122,37 +119,9 @@ export default class ContainerMongoDB {
   //     console.log('📁❌ Error al eliminar producto de la base de datos: ❌📁\n' + e.message);
   //   }
   // }
+
+  /* Eliminar todos los productos */
+  async deleteAll(){
+    this.collection.deleteMany({});
+  }
 }
-
-// // Lectura de archivo con productos.
-// async function mongodbGetProducts() {
-//   try {
-//     // Lectura de productos en DB
-//     const products = await ProductModel.find({});
-//     return products;
-//   }
-//   catch (e) {
-//     console.log('📂❌ Error al buscar productos en DB 📂❌\n' + e.message);
-//     return [];
-//   }
-// }
-
-// // Insertar nuevo producto en la DB
-// async function mongodbInsertProduct(newProduct) {
-//   try {
-//     // Se inserta producto en DB
-//     const query = await ProductModel({
-//       timestamp: newProduct.timestamp,
-//       name: newProduct.name,
-//       description: newProduct.description,
-//       code: newProduct.code,
-//       image: newProduct.image,
-//       price: newProduct.price,
-//       stock: newProduct.stock
-//     });
-//     await query.save();
-//   }
-//   catch (e) {
-//     throw new Error(e.message);
-//   }
-// }
