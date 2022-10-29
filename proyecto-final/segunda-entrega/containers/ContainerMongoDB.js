@@ -23,26 +23,17 @@ export default class ContainerMongoDB {
     }
   }
 
-  // /* Retornar producto según ID */
-  // async getProductById(id) {
-  //   try {
-  //     console.log('📁 Búsqueda de producto según ID 📁');
-  //     // Lectura de archivo con productos.
-  //     const products = await mongodbGetProducts();
-  //     const productRequested = products.find(p => p.id === id.id);
-  //     if (productRequested !== undefined) {
-  //       console.log('📁 Se retorna producto solicitado 📁');
-  //       return productRequested;
-  //     }
-  //     else {
-  //       console.log('📁❌ Producto no encontrado ❌📁');
-  //       return null;
-  //     }
-  //   }
-  //   catch (e) {
-  //     console.log('📁❌ Error al buscar producto en DB: ❌📁\n' + e.message);
-  //   }
-  // }
+  /* Retornar producto según ID */
+  async getProductById(id) {
+    try {
+      console.log('📁 Búsqueda de producto según ID 📁');
+      const productRequested = await this.collection.find({ _id: id });
+      return productRequested;
+    }
+    catch (e) {
+      console.log('📁❌ Error al buscar producto en DB: ❌📁\n' + e.message);
+    }
+  }
 
   // /* Agregar producto */
   // async addProduct(data) {

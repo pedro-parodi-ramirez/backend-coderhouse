@@ -21,10 +21,10 @@ router.get('/api/productos', async function (_, res, next) {
 /* Obtener producto según ID */
 router.get('/api/productos/:id', async function (req, res, next) {
   try {
-    let id = parseInt(req.params.id);
+    let id = req.params.id;
     console.log(`\nSolicitud GET para buscar producto id:${id}`);
-    const productRequested = await ProductDaoMongoDB.getProductById(id);
-    if (productRequested !== null) {
+    const productRequested = await productAPI.getProductById(id);
+    if (productRequested !== []) {
       res.status(STATUS.OK).json(productRequested);
     }
     else {
