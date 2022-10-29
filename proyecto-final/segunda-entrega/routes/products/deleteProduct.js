@@ -8,21 +8,11 @@ const router = Router();
 router.delete('/api/productos/:id', async function (req, res, next) {
     try {
         if (ADMIN) {
-            let id = parseInt(req.params.id);
+            let id = req.params.id;
             console.log(`\nSolicitud DELETE para eliminar producto id:${id}`);
-            let accepted = await productAPI.deleteProduct(id);
-            if (accepted) {
-                res.status(STATUS.ACCEPTED).end();
-            }
-            else {
-                let message = {
-                    error: -2,
-                    route: 'localhost:8080/api/productos/:id',
-                    method: 'DELETE',
-                    status: 'No implementado'
-                }
-                res.status(STATUS.NOT_FOUND).json(message);
-            }
+            let accepted = await productAPI.deleteById(id);
+            if (accepted) { res.status(STATUS.ACCEPTED).end(); }
+            else { res.status(STATUS.BAD_REQUEST).end(); }
         }
         else {
             let message = {
@@ -36,7 +26,7 @@ router.delete('/api/productos/:id', async function (req, res, next) {
     }
     catch (e) {
         console.log(e.message);
-        next(e);
+        res.status(STATUS.INTERNAL_SERVER_ERROR).json(e.message);
     }
 });
 

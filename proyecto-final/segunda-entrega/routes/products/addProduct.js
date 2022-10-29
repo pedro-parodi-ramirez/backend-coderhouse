@@ -9,7 +9,7 @@ router.post('/api/productos', async function (req, res, next) {
   try {
     if (ADMIN) {
       console.log('\nSolicitud POST para agregar producto');
-      await productAPI.addProduct(req.body);
+      await productAPI.add(req.body);
       res.status(STATUS.ACCEPTED).end();
     }
     else {
@@ -24,7 +24,7 @@ router.post('/api/productos', async function (req, res, next) {
   }
   catch (e) {
     console.log(e.message);
-    next(e);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json(e.message);
   }
 })
 

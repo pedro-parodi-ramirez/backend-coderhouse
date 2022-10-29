@@ -11,13 +11,13 @@ const options = { dbName: 'ecommerce' };
         // Se crea modelo del producto
         const ProductModel = mongoose.model('Product', new Schema({
             timestamp: { type: Date, default: Date.now },
-            name: { type: String, require: true },
-            description: { type: String, require: true },
-            code: { type: String, require: true },
-            image: { type: String, require: true },
-            image: { type: String, require: true },
-            price: { type: Number, require: true },
-            stock: { type: Number, require: true }
+            name: { type: String, required: true },
+            description: { type: String, required: true },
+            code: { type: String, required: true },
+            image: { type: String, required: true },
+            image: { type: String, required: true },
+            price: { type: Number, required: true },
+            stock: { type: Number, required: true }
         }));
 
         // Se eliminan colecciones previas, en caso de que existan
@@ -115,7 +115,7 @@ const options = { dbName: 'ecommerce' };
                 stock: 60
             }
         ]);
-        console.log('📂✔ Se agregaron productos a la ✔DB: 📂\n');
+        console.log('📂✔ Se agregaron productos a la DB: ✔📂\n');
     }
     catch (e) {
         console.log('📂 Error al insertar datos en la DB: 📂\n' + e.message);

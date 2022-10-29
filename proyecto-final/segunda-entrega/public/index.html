@@ -54,27 +54,27 @@
             <form id="form-update-product" action="/api/productos" method="POST">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nombre del producto</label>
-                    <input type="text" name="name" class="form-control" id="name-update">
+                    <input type="text" name="name" class="form-control" id="name-update"  required>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Precio</label>
-                    <input type="number" name="price" class="form-control" id="price-update" step=".01">
+                    <input type="number" name="price" class="form-control" id="price-update" step=".01"  required>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Imagen URL</label>
-                    <input type="url" name="image" class="form-control" id="image-update">
+                    <input type="url" name="image" class="form-control" id="image-update"  required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Descripción</label>
-                    <input type="text" name="description" class="form-control" id="description-update">
+                    <input type="text" name="description" class="form-control" id="description-update"  required>
                 </div>
                 <div class="mb-3">
                     <label for="code" class="form-label">Código del producto</label>
-                    <input type="text" name="code" class="form-control" id="code-update">
+                    <input type="text" name="code" class="form-control" id="code-update"  required>
                 </div>
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" class="form-control" id="stock-update">
+                    <input type="number" name="stock" class="form-control" id="stock-update"  required>
                 </div>
                 <button type="submit" class="btn btn-success">Modificar</button>
                 <button id="button-cancel-form-update" type="button" class="btn btn-primary">Cancelar</button>

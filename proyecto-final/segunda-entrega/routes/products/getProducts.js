@@ -8,13 +8,13 @@ const router = Router();
 router.get('/api/productos', async function (_, res, next) {
   try {
     console.log('\nSolicitud GET de listar los productos');
-    const products = await productAPI.getAllProducts();
+    const products = await productAPI.getAll();
 
     res.status(STATUS.OK).json(products);
   }
   catch (e) {
     console.log(e.message);
-    next(e);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json([]);
   }
 });
 
@@ -23,23 +23,17 @@ router.get('/api/productos/:id', async function (req, res, next) {
   try {
     let id = req.params.id;
     console.log(`\nSolicitud GET para buscar producto id:${id}`);
-    const productRequested = await productAPI.getProductById(id);
-    if (productRequested !== []) {
-      res.status(STATUS.OK).json(productRequested);
-    }
+    const productRequested = await productAPI.getById(id);
+
+    if (productRequested.length !== 0) { res.status(STATUS.OK).json(productRequested); }
     else {
-      let message = {
-        error: -2,
-        route: 'localhost:8080/api/productos/:id',
-        method: 'GET',
-        status: 'No implementado'
-      }
-      res.status(STATUS.NOT_FOUND).json(message);
+      console.log('📁❌ Producto no encontrado ❌📁');
+      res.status(STATUS.BAD_REQUEST).end();
     }
   }
   catch (e) {
     console.log(e.message);
-    next(e);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json([]);
   }
 });
 

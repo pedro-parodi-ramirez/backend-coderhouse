@@ -11,35 +11,34 @@ export default class ContainerMongoDB {
   }
 
   /* Retornar todos los productos */
-  async getAllProducts() {
+  async getAll() {
     try {
       console.log('📁 Lectura de productos desde DB 📁');
       const products = await this.collection.find({});
       return products;
     }
     catch (e) {
-      console.log('📁❌ Error al buscar productos en DB: ❌📁\n' + e.message);
-      return [];
+      throw new Error('📁❌ Error al buscar productos en DB ❌📁');
     }
   }
 
   /* Retornar producto según ID */
-  async getProductById(id) {
+  async getById(id) {
     try {
       console.log('📁 Búsqueda de producto según ID 📁');
       const productRequested = await this.collection.find({ _id: id });
       return productRequested;
     }
     catch (e) {
-      console.log('📁❌ Error al buscar producto en DB: ❌📁\n' + e.message);
+      throw new Error('📁❌ Error al buscar producto en DB ❌📁\n');
     }
   }
 
   /* Agregar producto */
-  async addProduct(data) {
+  async add(data) {
     try {
       // Se agrega nuevo producto
-      this.collection.create({
+      await this.collection.create({
         timestamp: Date.now(),
         name: data.name,
         description: data.description,
@@ -51,77 +50,61 @@ export default class ContainerMongoDB {
       console.log('📁✔ Producto agregado en DB ✔📁');
     }
     catch (e) {
-      console.log('📁❌ Error al insertar producto en DB: ❌📁\n' + e.message);
+      throw new Error('📁❌ Error al agregar producto en DB ❌📁');
     }
   }
 
-  // /* Actualizar producto según ID */
-  // static async updateProduct(id, body) {
-  //   try {
-  //     const products = await DB.getAllProducts();
-  //     let found = false;
+  /* Actualizar producto según ID */
+  async update(id, body) {
+    try {
+      let newPrice = parseFloat(parseFloat(body.price).toFixed(2));
+      let newStock = parseInt(body.stock)
 
-  //     // Búsqueda y actualización de producto
-  //     products.forEach(p => {
-  //       if (p.id === id) {
-  //         let newPrice = parseFloat(parseFloat(body.price).toFixed(2));
-  //         let newStock = parseInt(body.stock)
+      // Intento de modificar producto
+      const response = await this.collection.updateOne({ _id: id }, {
+        $set: {
+          timestamp: Date.now(),
+          name: body.name,
+          description: body.description,
+          code: body.code,
+          image: body.image,
+          price: newPrice,
+          stock: newStock,
+        }
+      });
 
-  //         // Se almacenan nuevos valores. En caso de que existan campos vacíos, se mantiene el valor anterior al update.
-  //         p.timestamp = Date.now();
-  //         p.name = body.name || p.name;
-  //         p.description = body.description || p.description;
-  //         p.code = body.code || p.code;
-  //         p.image = body.image || p.image;
-  //         (!isNaN(newPrice)) && (p.price = newPrice);
-  //         (!isNaN(newStock)) && (p.stock = newStock);
+      if (response.modifiedCount > 0) {
+        console.log('📁✔ Se actualiza producto en DB ✔📁');
+        return true;
+      }
+      else {
+        console.log('📁❌ Producto no encontrado en DB ❌📁');
+        return false;
+      }
+    }
+    catch (e) {
+      throw new Error('📁❌ Error al modificar producto a la base de datos ❌📁');
+    }
+  }
 
-  //         found = true;
-  //         console.log('📁 Se actualiza producto en DB 📁');
-  //       }
-  //     })
+  /* Eliminar producto según ID */
+  async deleteById(id) {
+    try {
+      // Intento de eliminar producto
+      const response = await this.collection.deleteOne({ _id: id });
 
-  //     if (found) {
-  //       // Se almacenan modificaciones en archivo
-  //       await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
-  //     }
-  //     else {
-  //       console.log('📁❌ Producto no encontrado ❌📁');
-  //     }
-
-  //     return found;
-  //   }
-  //   catch (e) {
-  //     console.log('📁❌ Error al agregar producto a la base de datos: ❌📁\n' + e.message);
-  //   }
-  // }
-
-  // /* Eliminar producto según ID */
-  // static async deleteProduct(id) {
-  //   try {
-  //     let products = await DB.getAllProducts();
-  //     let found = products.some(p => p.id === id);
-
-  //     if (found) {
-  //       products = products.filter(p => p.id !== id);
-
-  //       // Se almacenan modificaciones en archivo
-  //       await fs.promises.writeFile('./config/json/products.json', JSON.stringify(products, null, 2));
-  //       console.log('📁 Se elimina producto de DB 📁');
-  //     }
-  //     else {
-  //       console.log('📁❌ Producto no encontrado ❌📁');
-  //     }
-
-  //     return found;
-  //   }
-  //   catch (e) {
-  //     console.log('📁❌ Error al eliminar producto de la base de datos: ❌📁\n' + e.message);
-  //   }
-  // }
-
-  /* Eliminar todos los productos */
-  async deleteAll(){
-    this.collection.deleteMany({});
+      // Respuesta según el resultado de la operación
+      if (response.deletedCount > 0) {
+        console.log('📁✔ Se elimina producto de DB ✔📁');
+        return true;
+      }
+      else {
+        console.log('📁❌ Producto no encontrado en DB ❌📁');
+        return false;
+      }
+    }
+    catch (e) {
+      throw new Error('📁❌ Error al eliminar producto de la base de datos ❌📁');
+    }
   }
 }
