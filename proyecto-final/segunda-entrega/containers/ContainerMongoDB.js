@@ -35,7 +35,8 @@ export default class ContainerMongoDB {
   /* Agregar elemento */
   async add(obj) {
     try {
-      await this.collection.create(obj);
+      const response = await this.collection.create(obj);
+      return response.id;
     }
     catch (e) {
       throw new Error('📁❌ Error al agregar elemento en DB ❌📁');
