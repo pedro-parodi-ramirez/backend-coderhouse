@@ -5,11 +5,23 @@ import { productDAO as productAPI } from '../../daos/index.js';
 const router = Router();
 
 /* Agregar nuevo producto */
-router.post('/api/productos', async function (req, res, next) {
+router.post('/api/productos', async function (req, res) {
   try {
     if (ADMIN) {
       console.log('\nSolicitud POST para agregar producto');
-      await productAPI.add(req.body);
+
+      const product = {
+        timestamp: Date.now(),
+        name: req.body.name,
+        description: req.body.description,
+        code: req.body.code,
+        image: req.body.image,
+        price: parseFloat(parseFloat(req.body.price).toFixed(2)),
+        stock: parseInt(req.body.stock)
+      }
+
+      await productAPI.add(product);
+      console.log('📁✔ Producto agregado en DB ✔📁');
       res.status(STATUS.ACCEPTED).end();
     }
     else {

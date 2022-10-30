@@ -5,14 +5,20 @@ import { productDAO as productAPI } from '../../daos/index.js';
 const router = Router();
 
 /* Eliminar producto según ID */
-router.delete('/api/productos/:id', async function (req, res, next) {
+router.delete('/api/productos/:id', async function (req, res) {
     try {
         if (ADMIN) {
             let id = req.params.id;
             console.log(`\nSolicitud DELETE para eliminar producto id:${id}`);
-            let accepted = await productAPI.deleteById(id);
-            if (accepted) { res.status(STATUS.ACCEPTED).end(); }
-            else { res.status(STATUS.BAD_REQUEST).end(); }
+            let response = await productAPI.deleteById(id);
+            if (response.deletedCount > 0) {
+                console.log('📁✔ Producto eliminado en DB ✔📁');
+                res.status(STATUS.ACCEPTED).end();
+            }
+            else {
+                console.log('📁❌ Producto no encontrado ❌📁');
+                res.status(STATUS.BAD_REQUESTD).end();
+            }
         }
         else {
             let message = {
