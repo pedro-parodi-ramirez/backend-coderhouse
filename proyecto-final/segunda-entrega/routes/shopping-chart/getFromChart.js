@@ -1,32 +1,23 @@
 import { Router } from 'express';
 import { STATUS } from '../../config/config.js';
-import { shoppingChartController } from '../../containers/shoppingChartController.js';
+import { chartDAO as chartAPI } from '../../daos/index.js';
 
 const router = Router();
 
 /* Buscar productos en carrito */
-router.get('/api/carrito/:id/productos', async function (req, res, next) {
+router.get('/api/carrito/:id/productos', async function (req, res) {
     try {
-        let idChart = parseInt(req.params.id);
+        let idChart = req.params.id;
         console.log(`\nSolicitud GET para mostrar productos en idCarrito:${idChart}`);
-        let products = await shoppingChartController.getFromChart(idChart);
+        let products = await chartAPI.getAllFromChart(idChart);
+        console.log(products);
 
-        if (products !== null) {
-            res.status(STATUS.ACCEPTED).json(products);
-        }
-        else {
-            let message = {
-                error: -2,
-                route: 'localhost:8080/api/carrito/:id/productos',
-                method: 'GET',
-                status: 'No implementado'
-            }
-            res.status(STATUS.NOT_FOUND).json(message);
-        }
+        (products.length >= 0) && console.log('🛒✔ Lectura de productos en carrito ✔🛒');
+        res.status(STATUS.OK).json(products);
     }
     catch (e) {
         console.log(e.message);
-        next(e);
+        res.status(STATUS.INTERNAL_SERVER_ERROR).json(e.message);
     }
 });
 

@@ -1,32 +1,28 @@
 import { Router } from 'express';
 import { STATUS } from '../../config/config.js';
-import { shoppingChartController } from '../../containers/shoppingChartController.js';
+import { chartDAO as chartAPI } from '../../daos/index.js';
 
 const router = Router();
 
 /* Eliminar carrito según ID */
-router.delete('/api/carrito/:id', async function (req, res, next) {
+router.delete('/api/carrito/:id', async function (req, res) {
     try {
-        let id = parseInt(req.params.id);
-        console.log(`\nSolicitud DELETE eliminar carrito id:${id}`);       
-        let accepted = await shoppingChartController.deleteChart(id);
-        
-        if(accepted){
+        let id = req.params.id;
+        console.log(`\nSolicitud DELETE eliminar carrito id:${id}`);
+        let response = await chartAPI.deleteById(id);
+
+        if (response.deletedCount > 0) {
+            console.log('🛒✔ Carrito eliminado ✔🛒');
             res.status(STATUS.ACCEPTED).end();
         }
-        else{
-            let message = {
-                error: -2,
-                route: 'localhost:8080/api/carrito/:id',
-                method: 'DELETE',
-                status: 'No implementado'
-            }
-            res.status(STATUS.NOT_FOUND).json(message);
+        else {
+            console.log('🛒❌ Carrito no encontrado ❌🛒');
+            res.status(STATUS.BAD_REQUEST).end();
         }
     }
     catch (e) {
         console.log(e.message);
-        next(e);
+        res.status(STATUS.INTERNAL_SERVER_ERROR).json(e.message);
     }
 });
 

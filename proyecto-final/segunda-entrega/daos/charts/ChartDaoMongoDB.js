@@ -12,6 +12,18 @@ class ChartDaoMongoDB extends ContainerMongoDB {
         }))
     }
 
+    /* Obtener todos los productos de carrito existente */
+    async getAllFromChart(idChart) {
+        try {
+            const query = await this.collection.find({ _id: idChart }, { products: 1, _id: 0 });
+            return query[0].products;
+        }
+        catch (e) {
+            throw new Error('🛒❌ Error al buscar productos en carrito 🛒❌');
+        }
+    }
+
+    /* Agregar producto a carrito existente */
     async addToChart(idChart, product) {
         try {
             // Si el producto existe, se aumenta la cantidad
