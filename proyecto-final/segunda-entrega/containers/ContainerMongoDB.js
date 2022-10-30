@@ -33,7 +33,7 @@ export default class ContainerMongoDB {
   }
 
   /* Agregar elemento */
-  async add(obj) {
+  async create(obj) {
     try {
       const response = await this.collection.create(obj);
       return response.id;

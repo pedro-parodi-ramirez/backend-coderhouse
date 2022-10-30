@@ -8,7 +8,10 @@ const router = Router();
 router.post('/api/carrito', async function (_, res) {
     try {
         console.log('\nSolicitud POST para crear nuevo carrito');
-        let id = await chartAPI.add();
+        let id = await chartAPI.create({
+            timestamp: Date.now(),
+            products: []
+        });
         console.log('🛒 Carrito de compras creado 🛒');
         res.status(STATUS.CREATED).json(id);
     }

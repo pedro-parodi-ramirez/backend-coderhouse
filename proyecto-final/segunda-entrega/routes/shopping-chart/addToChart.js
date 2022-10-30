@@ -1,34 +1,29 @@
 import { Router } from 'express';
 import { STATUS } from '../../config/config.js';
-import { shoppingChartController } from '../../containers/shoppingChartController.js';
+import { chartDAO as chartAPI } from '../../daos/index.js';
 
 const router = Router();
 
 /* Agregar producto a carrito */
-router.post('/api/carrito/:id/productos', async function (req, res, next) {
+router.post('/api/carrito/:id/productos', async function (req, res) {
     try {
-        let idChart = parseInt(req.params.id);
-        let idProduct = parseInt(req.body.id);
-        console.log(`\nSolicitud POST para agregar idProducto:${idProduct} a idCarrito:${idChart}`);
-        let chartProducts = await shoppingChartController.addToChart(idChart, idProduct);
+        let idChart = req.params.id;
+        let product = req.body;
+        console.log(`\nSolicitud POST para agregar idProducto:${product._id} a idCarrito:${idChart}`);
+        const succeed = await chartAPI.addToChart(idChart, product);
 
-        if (chartProducts !== null) {
-            // La respuesta son los productos del carrito
-            res.status(STATUS.ACCEPTED).json(chartProducts);
+        if(succeed){
+            console.log('🛒✔ Producto agregado a carrito ✔🛒');
+            res.status(STATUS.ACCEPTED).json();
         }
-        else {
-            let message = {
-                error: -2,
-                route: 'localhost:8080/api/carrito/:id/productos',
-                method: 'POST',
-                status: 'No implementado'
-            }
-            res.status(STATUS.NOT_FOUND).json(message);
+        else{
+            console.log('🛒❌ Error al agregar producto a carrito ❌🛒');
+            res.status(STATUS.BAD_REQUEST).end();
         }
     }
     catch (e) {
         console.log(e.message);
-        next(e);
+        res.status(STATUS.INTERNAL_SERVER_ERROR).json(e.message);
     }
 });
 

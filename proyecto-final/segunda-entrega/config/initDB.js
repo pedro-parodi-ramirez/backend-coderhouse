@@ -20,9 +20,17 @@ const options = { dbName: 'ecommerce' };
             stock: { type: Number, required: true }
         }));
 
-        // Se eliminan colecciones previas, en caso de que existan
-        await ProductModel.deleteMany({});
+        // Se crea modelo del carrito
+        const ChartModel = mongoose.model('Chart', new Schema({
+            timestamp: { type: Date, default: Date.now },
+            products: { type: Object, default: [] }
+        }));
 
+        // Se eliminan documentos previos, en caso de que existan
+        await ProductModel.deleteMany({});
+        await ChartModel.deleteMany({});
+
+        // Se agregan 10 productos iniciales a la DB
         await ProductModel.insertMany([
             {
                 timestamp: 1665419816542,
