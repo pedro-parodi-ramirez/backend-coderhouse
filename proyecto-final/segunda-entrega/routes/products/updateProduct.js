@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { STATUS, ADMIN } from '../../config/config.js';
+import { variables } from '../../config/config.js';
 import { productDAO as productAPI } from '../../daos/index.js';
 
 const router = Router();
+const STATUS = variables.STATUS;
+const ADMIN = variables.ADMIN;
 
 /* Actualizar producto según ID */
 router.put('/api/productos/:id', async function (req, res) {

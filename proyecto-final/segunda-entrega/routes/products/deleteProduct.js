@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { STATUS, ADMIN } from '../../config/config.js';
+import { variables } from '../../config/config.js';
 import { productDAO as productAPI } from '../../daos/index.js';
 
 const router = Router();
+const STATUS = variables.STATUS;
+const ADMIN = variables.ADMIN;
 
 /* Eliminar producto según ID */
 router.delete('/api/productos/:id', async function (req, res) {
@@ -17,7 +19,7 @@ router.delete('/api/productos/:id', async function (req, res) {
             }
             else {
                 console.log('📁❌ Producto no encontrado ❌📁');
-                res.status(STATUS.BAD_REQUESTD).end();
+                res.status(STATUS.BAD_REQUEST).end();
             }
         }
         else {

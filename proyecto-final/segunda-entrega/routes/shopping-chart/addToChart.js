@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { STATUS } from '../../config/config.js';
+import { variables } from '../../config/config.js';
 import { chartDAO as chartAPI } from '../../daos/index.js';
 
 const router = Router();
+const STATUS = variables.STATUS;
 
 /* Agregar producto a carrito */
 router.post('/api/carrito/:id/productos', async function (req, res) {

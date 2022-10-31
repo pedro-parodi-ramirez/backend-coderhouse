@@ -1,14 +1,14 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { STATUS } from './config/config.js';
+import { variables } from './config/config.js';
 import index from './routes/index.js';
-
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const STATUS = variables.STATUS;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

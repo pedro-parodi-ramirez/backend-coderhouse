@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { URI } from '../config/config.js';
+import { config } from '../config/config.js';
 
 const options = { dbName: 'ecommerce' };
 
-await mongoose.connect(URI, options);
+await mongoose.connect(config.mongoDB.URI, options);
 
 export default class ContainerMongoDB {
   constructor(modelName, schema) {

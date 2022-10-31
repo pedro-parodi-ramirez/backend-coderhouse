@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 import ContainerMongoDB from '../../containers/ContainerMongoDB.js'
 
@@ -44,22 +43,8 @@ class ChartDaoMongoDB extends ContainerMongoDB {
 
     /* Eliminar producto por ID en carrito existente */
     async deleteFromChart(idChart, idProduct) {
-        let idProductValue = idProduct.valueOf();
-        let idProductString = idProduct.toString();
-        let idProductObjectId = mongoose.Types.ObjectId(idProduct);
         try {
             let response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "products._id": idProduct } } });
-            console.log(response);
-
-            response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "products._id": idProductValue } } });
-            console.log(response);
-
-            response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "products._id": idProductString } } });
-            console.log(response);
-
-            response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "products._id": idProductObjectId } } });
-            console.log(response);
-
             // db.charts.updateOne({ _id: ObjectId('635f1bfb9f6358629fb8ba6e') }, { $pull: { "products": { "product._id": '635f03ae005f81888470fd06' } } });
 
             return response.modifiedCount && response.matchedCount;
