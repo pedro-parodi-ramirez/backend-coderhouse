@@ -10,8 +10,7 @@ router.get('/api/carrito/:id/productos', async function (req, res) {
         let idChart = req.params.id;
         console.log(`\nSolicitud GET para mostrar productos en idCarrito:${idChart}`);
         let products = await chartAPI.getAllFromChart(idChart);
-        console.log(products);
-
+        
         (products.length >= 0) && console.log('🛒✔ Lectura de productos en carrito ✔🛒');
         res.status(STATUS.OK).json(products);
     }

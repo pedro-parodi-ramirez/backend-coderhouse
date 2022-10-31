@@ -12,12 +12,15 @@ router.post('/api/carrito/:id/productos', async function (req, res) {
         console.log(`\nSolicitud POST para agregar idProducto:${product._id} a idCarrito:${idChart}`);
         const succeed = await chartAPI.addToChart(idChart, product);
 
-        if(succeed){
+        if (succeed) {
             console.log('🛒✔ Producto agregado a carrito ✔🛒');
-            res.status(STATUS.ACCEPTED).json();
+
+            // Se retornan los productos del carrito actualizado
+            const products = await chartAPI.getAllFromChart(idChart);
+            res.status(STATUS.ACCEPTED).json(products);
         }
-        else{
-            console.log('🛒❌ Error al agregar producto a carrito ❌🛒');
+        else {
+            console.log('🛒❌ Carrito no encontrado ❌🛒');
             res.status(STATUS.BAD_REQUEST).end();
         }
     }
