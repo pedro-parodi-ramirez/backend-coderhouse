@@ -55,10 +55,7 @@ class ChartDaoMongoDB extends ContainerMongoDB {
     /* Eliminar producto por ID en carrito existente */
     async deleteFromChart(idChart, idProduct) {
         try {
-            let response = await this.collection.updateOne({ _id: idChart }, { $pull: { products: { "products.product_id": idProduct } } });
-            // db.charts.updateOne({ _id: ObjectId('636046ad3644785875febeba') }, { $pull: { "products": { "product._id": '635f03ae005f81888470fd05' } } });
-            // db.charts.find({ _id: ObjectId('636055cce2cb8b63ec0671cd') }, { "products.product": 1, _id: 0 })
-
+            let response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "product._id": idProduct } } });
             return response.matchedCount && response.modifiedCount;
         }
         catch (e) {

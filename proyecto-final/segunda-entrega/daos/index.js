@@ -1,7 +1,9 @@
 let productDAO;
 let chartDAO
 
-switch (process.env.PERSISTANCE_TYPE) {
+let PERSISTANCE_TYPE='mongodb'
+
+switch (PERSISTANCE_TYPE) {
     case 'mongodb':
         const { default: ProductDaoMongoDB } = await import('./products/ProductDaoMongoDB.js');
         const { default: ChartDaoMongoDB } = await import('./charts/ChartDaoMongoDB.js');
