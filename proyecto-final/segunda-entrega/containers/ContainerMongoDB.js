@@ -13,8 +13,8 @@ export default class ContainerMongoDB {
   /* Retornar todos los elementos */
   async getAll() {
     try {
-      const products = await this.collection.find({});
-      return products;
+      const array = await this.collection.find({});
+      return array;
     }
     catch (e) {
       throw new Error('📁❌ Error al buscar en DB ❌📁');
@@ -24,8 +24,8 @@ export default class ContainerMongoDB {
   /* Retornar elemento según ID */
   async getById(id) {
     try {
-      const productRequested = await this.collection.find({ _id: id });
-      return productRequested;
+      const element = await this.collection.find({ _id: id });
+      return element;
     }
     catch (e) {
       throw new Error('📁❌ Error al buscar en DB ❌📁');
@@ -33,9 +33,9 @@ export default class ContainerMongoDB {
   }
 
   /* Agregar elemento */
-  async create(obj) {
+  async create(data) {
     try {
-      const response = await this.collection.create(obj);
+      const response = await this.collection.create(data);
       return response.id;
     }
     catch (e) {

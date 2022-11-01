@@ -1,9 +1,7 @@
 let productDAO;
 let chartDAO
 
-let PERSISTANCE_TYPE = 'firebase'
-
-switch (PERSISTANCE_TYPE) {
+switch (process.env.PERSISTANCE_TYPE) {
     case 'mongodb':
         const { default: ProductDaoMongoDB } = await import('./products/ProductDaoMongoDB.js');
         const { default: ChartDaoMongoDB } = await import('./charts/ChartDaoMongoDB.js');

@@ -2,7 +2,7 @@ import ContainerFirebase from '../../containers/ContainerFirebase.js';
 
 class ProductDaoFirebase extends ContainerFirebase {
     constructor() {
-        super('products')
+        super('products');
     }
 }
 

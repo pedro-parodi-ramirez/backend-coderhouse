@@ -24,7 +24,7 @@ export default class ContainerMemory {
     }
 
     /* Agregar elemento */
-    async create(obj) {
+    async create(data) {
         try {
             // Se genera el siguiente ID del elemento
             let nextID = getNextID(this.array);
@@ -32,7 +32,7 @@ export default class ContainerMemory {
             // Se agrega nuevo elemento
             const newElement = {
                 _id: nextID,
-                ...obj
+                ...data
             }
             this.array.push(newElement);
 

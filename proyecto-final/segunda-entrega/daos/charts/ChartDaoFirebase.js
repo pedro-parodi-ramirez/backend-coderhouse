@@ -2,14 +2,16 @@ import ContainerFirebase from '../../containers/ContainerFirebase.js';
 
 class ChartDaoFirebase extends ContainerFirebase {
     constructor() {
-        super('charts')
+        super('charts');
     }
 
     /* Obtener todos los productos de carrito existente */
     async getAllFromChart(idChart) {
         try {
-            const query = await this.collection.find({ _id: idChart }, { products: 1, _id: 0 });
-            return query[0].products;
+            // Búsqueda de elementos
+            const snapshot = await this.collection.get(idChart);
+            const chartProducts = snapshot.docs.map(product => product.data().product);
+            return chartProducts;
         }
         catch (e) {
             throw new Error('🛒❌ Error al buscar productos en carrito 🛒❌');

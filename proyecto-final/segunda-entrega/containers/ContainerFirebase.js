@@ -21,10 +21,13 @@ export default class ContainerFirebase {
   /* Retornar todos los elementos */
   async getAll() {
     try {
-      const products = await this.collection.find({});
-      return products;
+      // Búsqueda de elementos
+      const snapshot = await this.collection.get();
+      const array = snapshot.docs.map(e => ({ _id: e.id, ...e.data() }));
+      return array;
     }
     catch (e) {
+      console.log(e);
       throw new Error('📁❌ Error al buscar en DB ❌📁');
     }
   }
@@ -32,8 +35,16 @@ export default class ContainerFirebase {
   /* Retornar elemento según ID */
   async getById(id) {
     try {
-      // const productRequested = await this.collection.find({ _id: id });
-      // return productRequested;
+      // Búsqueda de elemento
+      const doc = await this.collection.doc(id);
+      const snapshot = await doc.get();
+
+      // Se convierte el resultado a formato requerido
+      const elementRequested = [{ _id: snapshot.id, ...snapshot.data() }];
+
+      // Retorno de elemento
+      if (snapshot.exists) { return elementRequested; }
+      else { return []; }
     }
     catch (e) {
       throw new Error('📁❌ Error al buscar en DB ❌📁');
@@ -57,13 +68,13 @@ export default class ContainerFirebase {
   async update(id, data) {
     try {
       let succeed = false;
-      // Intento de modificar elemento
+      // Búsqueda de elemento
       const doc = await this.collection.doc(id);
       const snapshot = await doc.get();
-      console.log(snapshot);
-      if (snapshot.exist) {
+
+      // Si existe, se modifica
+      if (snapshot.exists) {
         const response = await doc.set(data);
-        console.log(response);
         succeed = true;
       }
       return succeed;
@@ -77,9 +88,17 @@ export default class ContainerFirebase {
   /* Eliminar elemento según ID */
   async deleteById(id) {
     try {
-      // // Intento de eliminar elemento
-      // const response = await this.collection.deleteOne({ _id: id });
-      // return response.deletedCount;
+      let succeed = false;
+      // Búsqueda de elemento
+      const doc = await this.collection.doc(id);
+      const snapshot = await doc.get();
+
+      // Si existe, se modifica
+      if (snapshot.exists) {
+        await doc.delete();
+        succeed = true;
+      }
+      return succeed;
     }
     catch (e) {
       throw new Error('📁❌ Error al eliminar elemento en DB ❌📁');

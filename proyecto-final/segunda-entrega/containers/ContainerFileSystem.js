@@ -43,7 +43,7 @@ export default class ContainerMongoDB {
     }
 
     /* Agregar elemento */
-    async create(obj) {
+    async create(data) {
         try {
             // Lectura de elementos existentes
             const array = await readFileJSON(this.path);
@@ -54,7 +54,7 @@ export default class ContainerMongoDB {
             // Se agrega nuevo elemento
             const newElement = {
                 _id: nextID,
-                ...obj
+                ...data
             }
             array.push(newElement);
 
