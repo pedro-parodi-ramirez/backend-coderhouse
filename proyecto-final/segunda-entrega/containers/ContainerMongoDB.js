@@ -28,7 +28,7 @@ export default class ContainerMongoDB {
       return productRequested;
     }
     catch (e) {
-      throw new Error('📁❌ Error al buscar en DB ❌📁\n');
+      throw new Error('📁❌ Error al buscar en DB ❌📁');
     }
   }
 
@@ -48,7 +48,7 @@ export default class ContainerMongoDB {
     try {
       // Intento de modificar elemento
       const response = await this.collection.updateOne({ _id: id }, { $set: data });
-      return response;
+      return response.modifiedCount;
     }
     catch (e) {
       throw new Error('📁❌ Error al modificar elemento en DB ❌📁');
@@ -60,7 +60,7 @@ export default class ContainerMongoDB {
     try {
       // Intento de eliminar elemento
       const response = await this.collection.deleteOne({ _id: id });
-      return response;
+      return response.deletedCount;
     }
     catch (e) {
       throw new Error('📁❌ Error al eliminar elemento en DB ❌📁');

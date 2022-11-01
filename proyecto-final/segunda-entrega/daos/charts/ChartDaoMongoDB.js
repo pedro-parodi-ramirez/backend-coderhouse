@@ -45,7 +45,7 @@ class ChartDaoMongoDB extends ContainerMongoDB {
                     $push: { "products": { product, quantity: 1 } }
                 });
             }
-            return response.modifiedCount;
+            return response.matchedCount && response.modifiedCount;
         }
         catch (e) {
             console.log(e);
@@ -56,11 +56,11 @@ class ChartDaoMongoDB extends ContainerMongoDB {
     /* Eliminar producto por ID en carrito existente */
     async deleteFromChart(idChart, idProduct) {
         try {
-            let response = await this.collection.updateOne({ _id: idChart }, { $pull: { products: { "products._id": '63604fc9a187a092dadb83ca' } } });
+            let response = await this.collection.updateOne({ _id: idChart }, { $pull: { products: { "products.product_id": idProduct } } });
             // db.charts.updateOne({ _id: ObjectId('636046ad3644785875febeba') }, { $pull: { "products": { "product._id": '635f03ae005f81888470fd05' } } });
             // db.charts.find({ _id: ObjectId('636055cce2cb8b63ec0671cd') }, { "products.product": 1, _id: 0 })
 
-            return response.modifiedCount && response.matchedCount;
+            return response.matchedCount && response.modifiedCount;
         }
         catch (e) {
             console.log(e);

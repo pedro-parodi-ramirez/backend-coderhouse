@@ -10,9 +10,9 @@ router.delete('/api/carrito/:id', async function (req, res) {
     try {
         let id = req.params.id;
         console.log(`\nSolicitud DELETE eliminar carrito id:${id}`);
-        let response = await chartAPI.deleteById(id);
+        let succeed = await chartAPI.deleteById(id);
 
-        if (response.deletedCount > 0) {
+        if (succeed > 0) {
             console.log('🛒✔ Carrito eliminado ✔🛒');
             res.status(STATUS.ACCEPTED).end();
         }

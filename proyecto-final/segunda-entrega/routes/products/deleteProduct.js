@@ -12,8 +12,9 @@ router.delete('/api/productos/:id', async function (req, res) {
         if (ADMIN) {
             let id = req.params.id;
             console.log(`\nSolicitud DELETE para eliminar producto id:${id}`);
-            let response = await productAPI.deleteById(id);
-            if (response.deletedCount > 0) {
+            let succeed = await productAPI.deleteById(id);
+            
+            if (succeed > 0) {
                 console.log('📁✔ Producto eliminado en DB ✔📁');
                 res.status(STATUS.ACCEPTED).end();
             }

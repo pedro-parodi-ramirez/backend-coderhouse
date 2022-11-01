@@ -26,13 +26,13 @@ router.put('/api/productos/:id', async function (req, res) {
             };
 
             let response = await productAPI.update(id, data);
-            if (response.modifiedCount > 0) {
+            if (response > 0) {
                 console.log('📁✔ Producto actualizado en DB ✔📁');
                 res.status(STATUS.ACCEPTED).end();
             }
             else {
                 console.log('📁❌ Producto no encontrado ❌📁');
-                res.status(STATUS.BAD_REQUESTD).end();
+                res.status(STATUS.BAD_REQUEST).end();
             }
         }
         else {

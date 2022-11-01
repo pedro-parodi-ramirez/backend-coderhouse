@@ -1,4 +1,4 @@
-import fs, { readFile } from 'fs';
+import fs from 'fs';
 
 export default class ContainerMongoDB {
     constructor(path) {
@@ -20,19 +20,19 @@ export default class ContainerMongoDB {
             }
         }
         catch (e) {
-            throw new Error('📁❌ Error a leer archivo en DB ❌📁\n');
+            throw new Error('📁❌ Error a leer archivo en DB ❌📁');
         }
     }
 
     /* Retornar elemento según ID */
     async getById(id) {
         try {
-            // Lectura de archivo
+            // Lectura de elementos existentes
             const data = await readFileJSON(this.path);
 
             // Búsqueda de elemento
-            const elementRequested = data.find(p => p._id === id);
-            
+            const elementRequested = data.find(e => e._id === id);
+
             // Retorno de elemento
             if (elementRequested != undefined) { return [elementRequested]; }
             else { return []; }
@@ -45,8 +45,23 @@ export default class ContainerMongoDB {
     /* Agregar elemento */
     async create(obj) {
         try {
-            const response = await this.collection.create(obj);
-            return response.id;
+            // Lectura de elementos existentes
+            const array = await readFileJSON(this.path);
+
+            // Se actualiza nextID
+            let nextID = getNextID(array);
+
+            // Se agrega nuevo elemento
+            const newElement = {
+                _id: nextID,
+                ...obj
+            }
+            array.push(newElement);
+
+            // Se almacena nuevo elemento en archivo
+            await fs.promises.writeFile(this.path, JSON.stringify(array, null, 2));
+
+            return nextID;
         }
         catch (e) {
             throw new Error('📁❌ Error al agregar elemento en DB ❌📁');
@@ -56,9 +71,31 @@ export default class ContainerMongoDB {
     /* Actualizar elemento según ID */
     async update(id, data) {
         try {
-            // Intento de modificar elemento
-            const response = await this.collection.updateOne({ _id: id }, { $set: data });
-            return response;
+            // Lectura de elementos existentes
+            const array = await readFileJSON(this.path);
+            let modifiedCount = 0;
+            
+            // Búsqueda y actualización de elemento
+            array.forEach(e => {
+                if (e._id === id) {
+                    // Se almacenan nuevos valores
+                    e.timestamp = data.timestamp,
+                    e.name = data.name,
+                    e.description = data.description,
+                    e.code = data.code,
+                    e.image = data.image,
+                    e.price = data.price,
+                    e.stock = data.stock
+
+                    modifiedCount++;
+                }
+            })
+
+            if (modifiedCount) {
+                // Se almacenan modificaciones en archivo
+                await fs.promises.writeFile(this.path, JSON.stringify(array, null, 2));
+            }
+            return modifiedCount;
         }
         catch (e) {
             throw new Error('📁❌ Error al modificar elemento en DB ❌📁');
@@ -68,9 +105,17 @@ export default class ContainerMongoDB {
     /* Eliminar elemento según ID */
     async deleteById(id) {
         try {
-            // Intento de eliminar elemento
-            const response = await this.collection.deleteOne({ _id: id });
-            return response;
+            // Lectura de elementos existentes
+            let array = await readFileJSON(this.path);
+            let found = array.some(e => e._id === id);
+
+            if (found) {
+                array = array.filter(e => e._id !== id);
+
+                // Se almacenan modificaciones en archivo
+                await fs.promises.writeFile(this.path, JSON.stringify(array, null, 2));
+            }
+            return found;
         }
         catch (e) {
             throw new Error('📁❌ Error al eliminar elemento en DB ❌📁');
@@ -87,4 +132,13 @@ async function readFileJSON(path) {
     catch (e) {
         throw new Error();
     }
+}
+
+// Buscar nuevo ID para elemento
+function getNextID(array) {
+    const arrayID = array.map(e => e._id);
+    let nextID;
+    nextID = Math.max(...arrayID) + 1;
+    ((nextID === -Infinity) || (nextID === null)) && (nextID = 0);
+    return nextID.toString();
 }
