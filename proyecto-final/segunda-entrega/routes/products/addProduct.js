@@ -22,9 +22,9 @@ router.post('/api/productos', async function (req, res) {
         stock: parseInt(req.body.stock)
       }
 
-      await productAPI.create(product);
+      const response = await productAPI.create(product);
       console.log('📁✔ Producto agregado en DB ✔📁');
-      res.status(STATUS.ACCEPTED).end();
+      res.status(STATUS.ACCEPTED).json(response);
     }
     else {
       let message = {
