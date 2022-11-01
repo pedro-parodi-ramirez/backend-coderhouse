@@ -10,9 +10,9 @@ switch (process.env.PERSISTANCE_TYPE) {
         break;
     case 'fileSystem':
         const { default: ProductDaoFileSystem } = await import('./products/ProductDaoFileSystem.js');
-        // const { default: ChartDaoFileSystem } = await import('./charts/ProductDaoFileSystem.js');
+        const { default: ChartDaoFileSystem } = await import('./charts/ChartDaoFileSystem.js');
         productDAO = new ProductDaoFileSystem('products.json');
-        // chartDAO = new ChartDaoFileSystem();
+        chartDAO = new ChartDaoFileSystem('shoppingCharts.json');
         break;
     default:
         const { default: ProductDaoMongoDB_ } = await import('./products/ProductDaoMongoDB.js');

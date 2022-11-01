@@ -48,7 +48,6 @@ class ChartDaoMongoDB extends ContainerMongoDB {
             return response.matchedCount && response.modifiedCount;
         }
         catch (e) {
-            console.log(e);
             throw new Error('🛒❌ Error al agregar producto a carrito 🛒❌');
         }
     }
@@ -63,7 +62,6 @@ class ChartDaoMongoDB extends ContainerMongoDB {
             return response.matchedCount && response.modifiedCount;
         }
         catch (e) {
-            console.log(e);
             throw new Error('🛒❌ Error al eliminar producto en carrito 🛒❌');
         }
     }

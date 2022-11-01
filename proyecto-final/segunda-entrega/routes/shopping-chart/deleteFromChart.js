@@ -14,6 +14,7 @@ router.delete('/api/carrito/:idChart/productos/:idProduct', async function (req,
         const succeed = await chartAPI.deleteFromChart(idChart, idProduct);
 
         if (succeed) {
+            console.log('🛒✔ Producto eliminado de carrito ✔🛒');
             // Se retornan los productos del carrito actualizado
             const products = await chartAPI.getAllFromChart(idChart);
             res.status(STATUS.ACCEPTED).json(products);

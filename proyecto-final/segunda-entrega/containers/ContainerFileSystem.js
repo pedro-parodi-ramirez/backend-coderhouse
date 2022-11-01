@@ -34,7 +34,7 @@ export default class ContainerMongoDB {
             const elementRequested = data.find(e => e._id === id);
 
             // Retorno de elemento
-            if (elementRequested != undefined) { return [elementRequested]; }
+            if (elementRequested !== undefined) { return [elementRequested]; }
             else { return []; }
         }
         catch (e) {
@@ -139,6 +139,6 @@ function getNextID(array) {
     const arrayID = array.map(e => e._id);
     let nextID;
     nextID = Math.max(...arrayID) + 1;
-    ((nextID === -Infinity) || (nextID === null)) && (nextID = 0);
+    ((nextID === -Infinity) || (nextID === null)) && (nextID = 1);
     return nextID.toString();
 }
