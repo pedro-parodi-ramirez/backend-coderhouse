@@ -14,6 +14,12 @@ switch (process.env.PERSISTANCE_TYPE) {
         productDAO = new ProductDaoFileSystem('products.json');
         chartDAO = new ChartDaoFileSystem('shoppingCharts.json');
         break;
+    case 'memory':
+    const { default: ProductDaoMemory } = await import('./products/ProductDaoMemory.js');
+    const { default: ChartDaoMemory } = await import('./charts/ChartDaoMemory.js');
+    productDAO = new ProductDaoMemory();
+    chartDAO = new ChartDaoMemory();
+    break;
     default:
         const { default: ProductDaoMongoDB_ } = await import('./products/ProductDaoMongoDB.js');
         const { default: ChartDaoMongoDB_ } = await import('./charts/ChartDaoMongoDB.js');

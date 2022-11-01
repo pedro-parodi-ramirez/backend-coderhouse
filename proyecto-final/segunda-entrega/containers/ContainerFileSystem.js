@@ -48,7 +48,7 @@ export default class ContainerMongoDB {
             // Lectura de elementos existentes
             const array = await readFileJSON(this.path);
 
-            // Se actualiza nextID
+            // Se genera el siguiente ID del elemento
             let nextID = getNextID(array);
 
             // Se agrega nuevo elemento
@@ -89,7 +89,7 @@ export default class ContainerMongoDB {
 
                     modifiedCount++;
                 }
-            })
+            });
 
             if (modifiedCount) {
                 // Se almacenan modificaciones en archivo
@@ -110,6 +110,7 @@ export default class ContainerMongoDB {
             let found = array.some(e => e._id === id);
 
             if (found) {
+                // Se elimina elemento
                 array = array.filter(e => e._id !== id);
 
                 // Se almacenan modificaciones en archivo
