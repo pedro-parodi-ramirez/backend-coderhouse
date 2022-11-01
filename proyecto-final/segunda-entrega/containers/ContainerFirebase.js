@@ -44,12 +44,11 @@ export default class ContainerFirebase {
   async create(obj) {
     try {
       let id = uuidv4();
-      const doc = this.collection.doc(id);
+      const doc = await this.collection.doc(id);
       doc.create(obj)
       return id;
     }
     catch (e) {
-      console.log(e);
       throw new Error('📁❌ Error al agregar elemento en DB ❌📁');
     }
   }
@@ -57,11 +56,20 @@ export default class ContainerFirebase {
   /* Actualizar elemento según ID */
   async update(id, data) {
     try {
-      // // Intento de modificar elemento
-      // const response = await this.collection.updateOne({ _id: id }, { $set: data });
-      // return response.modifiedCount;
+      let succeed = false;
+      // Intento de modificar elemento
+      const doc = await this.collection.doc(id);
+      const snapshot = await doc.get();
+      console.log(snapshot);
+      if (snapshot.exist) {
+        const response = await doc.set(data);
+        console.log(response);
+        succeed = true;
+      }
+      return succeed;
     }
     catch (e) {
+      console.log(e);
       throw new Error('📁❌ Error al modificar elemento en DB ❌📁');
     }
   }
