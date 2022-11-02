@@ -1,6 +1,6 @@
 export default class ContainerMemory {
-    constructor() {
-        this.array = [];
+    constructor(array) {
+        this.array = array || [];
     }
 
     /* Retornar todos los elementos */

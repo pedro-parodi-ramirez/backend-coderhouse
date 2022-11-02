@@ -10,7 +10,7 @@ router.get('/api/productos', async function (_, res) {
   try {
     console.log('\nSolicitud GET de listar los productos');
     const products = await productAPI.getAll();
-
+    
     (products.length >= 0) && console.log('📁✔ Lectura de productos en DB ✔📁');
 
     res.status(STATUS.OK).json(products);

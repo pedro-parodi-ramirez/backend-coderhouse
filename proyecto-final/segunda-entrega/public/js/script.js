@@ -77,7 +77,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
     if (products.length > 0) {
         // Se acomodan los precios con dos decimales
         products.forEach(p => p.price = parseFloat(p.price).toFixed(2));
-
+        
         // Se presentan productos con Handlebars.
         const html = (products.map(product => template(product))).join('');
         productTable.innerHTML = html;
@@ -122,7 +122,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                 }
 
                 // Solicitud POST para agregar producto a carrito
-                const dataJSON = JSON.stringify({ id: p._id });
+                const dataJSON = JSON.stringify(p);
                 const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos`, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ function showChartProducts(chartProducts) {
         chartList.appendChild(li);
 
         // Se agrega funcionalidad para eliminar producto del carrito de compras
-        document.getElementById(`button-delete-from-chart-id${p.product.id}`).addEventListener('click', async () => {
+        document.getElementById(`button-delete-from-chart-id${p.product._id}`).addEventListener('click', async () => {
             // Solicitud DELETE a servidor para eliminar producto de carrito
             const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos/${p.product._id}`, {
                 headers: {

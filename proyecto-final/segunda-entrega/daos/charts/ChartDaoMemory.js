@@ -1,6 +1,7 @@
 import ContainerMemory from '../../containers/ContainerMemory.js';
 
 class ChartDaoMemory extends ContainerMemory {
+
     /* Obtener todos los productos de carrito existente */
     async getAllFromChart(idChart) {
         try {
