@@ -74,7 +74,7 @@ export default class ContainerFirebase {
 
       // Si existe, se modifica
       if (snapshot.exists) {
-        const response = await doc.set(data);
+        await doc.set(data);
         succeed = true;
       }
       return succeed;
