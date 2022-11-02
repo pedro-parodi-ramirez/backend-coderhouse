@@ -11,14 +11,14 @@ const STATUS = {
     NOT_FOUND: 404,
     INTERNAL_SERVER_ERROR: 500
 };
-const PASSWORD = '3BDOYzW6BNOwzvI1';
+const PASSWORD = 'x6JYg18ip3N7gsky';
 const variables = {
     ADMIN: true,
     STATUS: STATUS
 }
 const config = {
     mongoDB: {
-        URI: `mongodb+srv://pedropr:${PASSWORD}@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority`
+        URI: `mongodb+srv://developer:${PASSWORD}@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority`
     },
     fileSystem: {
         path: path.join(__dirname, '/DB')
