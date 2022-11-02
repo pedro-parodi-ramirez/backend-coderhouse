@@ -9,6 +9,7 @@ class ProductDaoMemory extends ContainerMemory {
 export default ProductDaoMemory;
 
 function initDB() {
+    console.log("📂 Inicializando datos en memoria 📂");
     return [
         {
             _id: "1",

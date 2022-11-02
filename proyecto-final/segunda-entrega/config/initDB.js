@@ -98,6 +98,7 @@
 
         switch (process.env.PERSISTANCE_TYPE) {
             case 'mongodb':
+                console.log("📂 Inicializando datos en MongoDB 📂");
                 const { default: ProductDaoMongoDB } = await import('../daos/products/ProductDaoMongoDB.js');
                 const { default: ChartDaoMongoDB } = await import('../daos/charts/ChartDaoMongoDB.js');
                 productDAO = new ProductDaoMongoDB();
@@ -113,6 +114,7 @@
                 }
                 break;
             case 'firebase':
+                console.log("📂 Inicializando datos en Firebase 📂");
                 const { default: ProductDaoFirebase } = await import('../daos/products/ProductDaoFirebase.js');
                 const { default: ChartDaoFirebase } = await import('../daos/charts/ChartDaoFirebase.js');
                 productDAO = new ProductDaoFirebase();
@@ -137,6 +139,7 @@
                 }
                 break;
             case 'filesystem':
+                console.log("📂 Inicializando datos en archivos 📂");
                 const { default: fs } = await import('fs/promises');
                 const { default: ProductDaoFileSystem } = await import('../daos/products/ProductDaoFileSystem.js');
                 productDAO = new ProductDaoFileSystem('products.json');

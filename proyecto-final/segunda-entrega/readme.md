@@ -15,7 +15,7 @@ localhost:8080
 ## Inicializar DB
 Esto es opcional, en caso de querer llevar la inicializar la DB con sus valores originales (10 productos iniciales y ningún carrito de compras creado).
 ```
-node PERSISTANCE_TYPE='choose' ./config/initDB.js
+PERSISTANCE_TYPE=<choose> node ./config/initDB.js
 ```
 Elegir el método de persistencia de la información que se desee y reemplazar `<choose>`. Las opciones para PERSISTANCE_TYPE son `mongodb`, `firebase` o `filesystem`. Para le persistencia en memoria, no es necesario inicializar la DB dado que se realiza automáticamente al inicio de la app.
 
@@ -31,7 +31,7 @@ npm install
 ```
 3. Configurar el modo de persistencia de la información deseado en el `package.json`:
 ```
-"start": "PERSISTANCE_TYPE='choose' node ."
+"start": "PERSISTANCE_TYPE=<choose> node ."
 ```
 Las opciones para PERSISTANCE_TYPE son `mongodb`, `firebase`, `filesystem` o `memory`.
 
