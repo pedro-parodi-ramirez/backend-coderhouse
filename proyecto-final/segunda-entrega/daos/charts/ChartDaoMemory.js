@@ -3,7 +3,7 @@ import ContainerMemory from '../../containers/ContainerMemory.js';
 class ChartDaoMemory extends ContainerMemory {
 
     /* Obtener todos los productos de carrito existente */
-    async getAllFromChart(idChart) {
+    getAllFromChart(idChart) {
         try {
             // Búsqueda de carrito solicitado
             let chart = this.array.find(c => c._id === idChart);
@@ -22,7 +22,7 @@ class ChartDaoMemory extends ContainerMemory {
     }
 
     /* Agregar producto a carrito existente */
-    async addToChart(idChart, product) {
+    addToChart(idChart, product) {
         try {
             let succeed = false;
 
@@ -49,7 +49,7 @@ class ChartDaoMemory extends ContainerMemory {
     }
 
     /* Eliminar producto por ID en carrito existente */
-    async deleteFromChart(idChart, idProduct) {
+    deleteFromChart(idChart, idProduct) {
         try {
             let succeed = false;
 

@@ -1,37 +1,9 @@
-import mongoose, { Schema } from 'mongoose';
-const PASSWORD = '3BDOYzW6BNOwzvI1';
-const URI = `mongodb+srv://pedropr:${PASSWORD}@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority`;
-const options = { dbName: 'ecommerce' };
-
 (async () => {
     try {
-        // Se conecta a la DB        
-        await mongoose.connect(URI, options);
-
-        // Se crea modelo del producto
-        const ProductModel = mongoose.model('Product', new Schema({
-            timestamp: { type: Date, default: Date.now },
-            name: { type: String, required: true },
-            description: { type: String, required: true },
-            code: { type: String, required: true },
-            image: { type: String, required: true },
-            image: { type: String, required: true },
-            price: { type: Number, required: true },
-            stock: { type: Number, required: true }
-        }));
-
-        // Se crea modelo del carrito
-        const ChartModel = mongoose.model('Chart', new Schema({
-            timestamp: { type: Date, default: Date.now },
-            products: { type: Object, default: [] }
-        }));
-
-        // Se eliminan documentos previos, en caso de que existan
-        await ProductModel.deleteMany({});
-        await ChartModel.deleteMany({});
-
-        // Se agregan 10 productos iniciales a la DB
-        await ProductModel.insertMany([
+        let productDAO;
+        let chartDAO;
+       
+        let products = [
             {
                 timestamp: 1665419816542,
                 name: "Fideos",
@@ -122,10 +94,68 @@ const options = { dbName: 'ecommerce' };
                 price: 3571.77,
                 stock: 60
             }
-        ]);
-        console.log('📂✔ Se agregaron productos a la DB: ✔📂\n');
+        ];
+
+        switch (process.env.PERSISTANCE_TYPE) {
+            case 'mongodb':
+                const { default: ProductDaoMongoDB } = await import('../daos/products/ProductDaoMongoDB.js');
+                const { default: ChartDaoMongoDB } = await import('../daos/charts/ChartDaoMongoDB.js');
+                productDAO = new ProductDaoMongoDB();
+                chartDAO = new ChartDaoMongoDB();
+
+                // Se eliminan documentos previos, en caso de que existan
+                await productDAO.collection.deleteMany({});
+                await chartDAO.collection.deleteMany({});
+
+                // Se agregan productos a la DB
+                for (let i = 0; i < products.length; i++) {
+                    await productDAO.create(products[i]);
+                }
+                break;
+            case 'firebase':
+                const { default: ProductDaoFirebase } = await import('../daos/products/ProductDaoFirebase.js');
+                const { default: ChartDaoFirebase } = await import('../daos/charts/ChartDaoFirebase.js');
+                productDAO = new ProductDaoFirebase();
+                chartDAO = new ChartDaoFirebase();
+
+                let docs;
+                // Se eliminan productos existentes
+                docs = await productDAO.collection.listDocuments();
+                docs.forEach(d => {
+                    d.delete();
+                });
+
+                // Se eliminan carritos existentes
+                docs = await chartDAO.collection.listDocuments();
+                docs.forEach(d => {
+                    d.delete();
+                });
+
+                // Se agregan productos a la DB
+                for (let i = 0; i < products.length; i++) {
+                    await productDAO.create(products[i]);
+                }
+                break;
+            case 'filesystem':
+                const { default: fs } = await import('fs/promises');
+                const { default: ProductDaoFileSystem } = await import('../daos/products/ProductDaoFileSystem.js');
+                productDAO = new ProductDaoFileSystem('products.json');
+
+                // Se eliminan elementos previos
+                await fs.writeFile('./config/DB/shoppingCharts.json', JSON.stringify([], null, 2));
+                await fs.writeFile('./config/DB/products.json', JSON.stringify([], null, 2));
+
+                // Se agregan productos a la DB
+                for (let i = 0; i < products.length; i++) {
+                    await productDAO.create(products[i]);
+                }
+                break;
+            default:
+                throw new Error('PERSISTANCE_TYPE no definido.');
+        }
+        console.log('📂✔ DB inicializada con éxito ✔📂');
     }
     catch (e) {
-        console.log('📂 Error al insertar datos en la DB: 📂\n' + e.message);
+        console.log('📂❌ Error al inicializar la base de datos ❌📂\n' + e);
     }
-})(true);
+})(true)

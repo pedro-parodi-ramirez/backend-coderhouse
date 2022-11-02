@@ -47,10 +47,10 @@ export default class ContainerMongoDB {
         try {
             // Lectura de elementos existentes
             const array = await readFileJSON(this.path);
-
+            
             // Se genera el siguiente ID del elemento
             let nextID = getNextID(array);
-
+            
             // Se agrega nuevo elemento
             const newElement = {
                 _id: nextID,
@@ -74,18 +74,18 @@ export default class ContainerMongoDB {
             // Lectura de elementos existentes
             const array = await readFileJSON(this.path);
             let modifiedCount = 0;
-            
+
             // Búsqueda y actualización de elemento
             array.forEach(e => {
                 if (e._id === id) {
                     // Se almacenan nuevos valores
                     e.timestamp = data.timestamp,
-                    e.name = data.name,
-                    e.description = data.description,
-                    e.code = data.code,
-                    e.image = data.image,
-                    e.price = data.price,
-                    e.stock = data.stock
+                        e.name = data.name,
+                        e.description = data.description,
+                        e.code = data.code,
+                        e.image = data.image,
+                        e.price = data.price,
+                        e.stock = data.stock
 
                     modifiedCount++;
                 }
@@ -140,6 +140,6 @@ function getNextID(array) {
     const arrayID = array.map(e => e._id);
     let nextID;
     nextID = Math.max(...arrayID) + 1;
-    ((nextID === -Infinity) || (nextID === null)) && (nextID = 1);
+    ((nextID === -Infinity) || (nextID === null) || (isNaN(nextID))) && (nextID = 1);
     return nextID.toString();
 }

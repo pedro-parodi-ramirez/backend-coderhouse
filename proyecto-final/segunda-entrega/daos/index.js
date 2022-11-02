@@ -1,5 +1,5 @@
 let productDAO;
-let chartDAO
+let chartDAO;
 
 switch (process.env.PERSISTANCE_TYPE) {
     case 'mongodb':
@@ -14,7 +14,7 @@ switch (process.env.PERSISTANCE_TYPE) {
         productDAO = new ProductDaoFirebase();
         chartDAO = new ChartDaoFirebase();
         break;
-    case 'fileSystem':
+    case 'filesystem':
         const { default: ProductDaoFileSystem } = await import('./products/ProductDaoFileSystem.js');
         const { default: ChartDaoFileSystem } = await import('./charts/ChartDaoFileSystem.js');
         productDAO = new ProductDaoFileSystem('products.json');

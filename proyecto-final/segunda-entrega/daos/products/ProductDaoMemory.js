@@ -1,8 +1,8 @@
 import ContainerMemory from '../../containers/ContainerMemory.js';
 
 class ProductDaoMemory extends ContainerMemory {
-    constructor(){
-        super();
+    constructor() {
+        super(initDB());
     }
 }
 

@@ -4,12 +4,12 @@ export default class ContainerMemory {
     }
 
     /* Retornar todos los elementos */
-    async getAll() {
+    getAll() {
         return this.array;
     }
 
     /* Retornar elemento según ID */
-    async getById(id) {
+    getById(id) {
         try {
             // Búsqueda de elemento
             const elementRequested = this.array.find(e => e._id === id);
@@ -24,7 +24,7 @@ export default class ContainerMemory {
     }
 
     /* Agregar elemento */
-    async create(data) {
+    create(data) {
         try {
             // Se genera el siguiente ID del elemento
             let nextID = getNextID(this.array);
@@ -44,7 +44,7 @@ export default class ContainerMemory {
     }
 
     /* Actualizar elemento según ID */
-    async update(id, data) {
+    update(id, data) {
         try {
             let modifiedCount = 0;
 
@@ -72,7 +72,7 @@ export default class ContainerMemory {
     }
 
     /* Eliminar elemento según ID */
-    async deleteById(id) {
+    deleteById(id) {
         try {
             // Check si elemento existe en array
             let found = this.array.some(e => e._id === id);

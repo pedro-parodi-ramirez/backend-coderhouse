@@ -63,23 +63,27 @@ buttonCancelFormUpdate.addEventListener('click', () => {
     productContainer.className = '';
 });
 
-// GET template para card-images
-(async () => {
-    const rawResponse = await fetch("http://localhost:8080/templates/card-images.hbs");
-    text = await rawResponse.text();
-    template = Handlebars.compile(text);
-})();
+// // GET template para card-images
+// (async () => {
+//     const rawResponse = await fetch("http://localhost:8080/templates/card-images.hbs");
+//     text = await rawResponse.text();
+//     template = Handlebars.compile(text);
+// })();
 
 // GET para obtener todos los productos y listarlos
 (async () => {
+    const rawResponseHandlebards = await fetch("http://localhost:8080/templates/card-images.hbs");
+    text = await rawResponseHandlebards.text();
+    template = Handlebars.compile(text);
+
     const rawResponse = await fetch("http://localhost:8080/api/productos");
     const products = await rawResponse.json();
     if (products.length > 0) {
         // Se acomodan los precios con dos decimales
-        products.forEach(p => p.price = parseFloat(p.price).toFixed(2));
-        
+        await products.forEach(p => p.price = parseFloat(p.price).toFixed(2));
+
         // Se presentan productos con Handlebars.
-        const html = (products.map(product => template(product))).join('');
+        const html = await (products.map(product => template(product))).join('');
         productTable.innerHTML = html;
 
         // Se configuran eventos de los botones en las card-image
