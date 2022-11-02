@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "PERSISTANCE_TYPE=firebase PORT=3000 node .",
+    "start": "PERSISTANCE_TYPE=firebase node .",
     "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
   },
   "dependencies": {

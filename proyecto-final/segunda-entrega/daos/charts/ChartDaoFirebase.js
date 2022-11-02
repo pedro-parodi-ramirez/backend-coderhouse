@@ -25,19 +25,19 @@ class ChartDaoFirebase extends ContainerFirebase {
             let succeed = false;
             const doc = await this.collection.doc(idChart);
             const snapshot = await doc.get();
-            console.log("snapshot exists", snapshot.exists);
-
+            
+            // Si carrito existe, se agrega producto
             if (snapshot.exists) {
                 const chartProducts = [...(snapshot.data().products)];
-                console.log("chartProducts", chartProducts);
-
+                
                 // Se evalúa si el producto ya existe en el carrito
-                let inChartIndex = chartProducts.findIndex(p => p.product._id === product._id);
+                let inChartIndex = chartProducts.findIndex(c => c.product._id === product._id);
 
                 // Se agrega producto a carrito
                 if (inChartIndex === -1) { chartProducts.push({ product: product, quantity: 1 }) }
                 else { chartProducts[inChartIndex].quantity++ }
 
+                // Se actualiza en DB los cambios
                 doc.set({ products: chartProducts });
                 succeed = true;
             }
@@ -47,7 +47,6 @@ class ChartDaoFirebase extends ContainerFirebase {
             return succeed;
         }
         catch (e) {
-            console.log(e);
             throw new Error('🛒❌ Error al agregar producto a carrito 🛒❌');
         }
     }
@@ -55,8 +54,22 @@ class ChartDaoFirebase extends ContainerFirebase {
     /* Eliminar producto por ID en carrito existente */
     async deleteFromChart(idChart, idProduct) {
         try {
-            let response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "product._id": idProduct } } });
-            return response.matchedCount && response.modifiedCount;
+            let succeed = false;
+            const doc = await this.collection.doc(idChart);
+            const snapshot = await doc.get();
+            
+            // Si carrito existe, se elimina producto
+            if (snapshot.exists) {
+                let chartProducts = [...(snapshot.data().products)];
+                
+                // Se elimina producto
+                chartProducts = chartProducts.filter(c => c.product._id !== idProduct);
+
+                // Se actualiza en DB los cambios
+                doc.set({ products: chartProducts });
+                succeed = true;
+            }
+            return succeed;
         }
         catch (e) {
             throw new Error('🛒❌ Error al eliminar producto en carrito 🛒❌');
