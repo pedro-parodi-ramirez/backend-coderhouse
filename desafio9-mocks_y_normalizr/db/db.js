@@ -10,7 +10,7 @@ class DB {
     static async addProduct(newProduct) {
         const data = {
             title: newProduct.title,
-            price: parseInt(newProduct.price),
+            price: parseFloat(newProduct.price),
             thumbnail: newProduct.thumbnail
         }
         await insertOnTable(database.sql, 'products', data);

@@ -21,7 +21,7 @@ import DB from './db.js';
     // Se inicializan valores de productos y mensajes
     DB.addMessage({
         email: "Coderhouse",
-        time: "",
+        time: Date.now(),
         message: "Bienvenido!"
     });
 
