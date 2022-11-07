@@ -1,0 +1,20 @@
+{
+  "name": "hbs",
+  "version": "0.0.0",
+  "private": true,
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "dotenv": "^16.0.2",
+    "express": "~4.16.1",
+    "knex": "^2.3.0",
+    "mysql": "^2.18.1",
+    "socket.io": "^4.5.2",
+    "sqlite3": "^5.1.2"
+  }
+}
