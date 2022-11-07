@@ -1,29 +1,30 @@
 import knex from 'knex';
 import database from '../config/config.js';
-// import { schema, normalize, denormalize } from 'normalizr';
+import { schema, normalize, denormalize } from 'normalizr';
 import { v4 as uuidv4 } from 'uuid';
 import { writeFile, readFile } from 'fs/promises';
 
-// const idSchema = new schema.Entity('identifications');
-// const nameSchema = new schema.Entity('names');
-// const lastNameSchema = new schema.Entity('lastNames');
-// const ageSchema = new schema.Entity('ages');
-// const aliasSchema = new schema.Entity('alias');
-// const avatarSchema = new schema.Entity('avatars');
-// const textSchema = new schema.Entity('texts')
-// const authorSchema = new schema.Entity('authors', {
-//     id: idSchema,
-//     name: nameSchema,
-//     lastName: lastNameSchema,
-//     age: ageSchema,
-//     alias: aliasSchema,
-//     avatar: avatarSchema
-// });
-// const messageSchema = new schema.Entity('messages', {
-//     id: idSchema,
-//     author: authorSchema,
-//     text: [textSchema]
-// });
+const idSchema = new schema.Entity('identifications');
+const emailSchema = new schema.Entity('emails');
+const nameSchema = new schema.Entity('names');
+const lastNameSchema = new schema.Entity('lastNames');
+const ageSchema = new schema.Entity('ages');
+const aliasSchema = new schema.Entity('alias');
+const avatarSchema = new schema.Entity('avatars');
+const textSchema = new schema.Entity('texts')
+const authorSchema = new schema.Entity('authors', {
+    email: emailSchema,
+    name: nameSchema,
+    lastName: lastNameSchema,
+    age: ageSchema,
+    alias: aliasSchema,
+    avatar: avatarSchema
+}, { idAttribute: 'email' });
+const messageSchema = new schema.Entity('messages', {
+    id: idSchema,
+    author: authorSchema,
+    text: [textSchema]
+});
 
 class DB {
     static async getProducts() {
@@ -44,9 +45,8 @@ class DB {
         const messages = await this.readMessages();
         const data = {
             id: uuidv4(),
-            email: newMessage.email,
-            time: newMessage.time,
-            message: newMessage.message
+            author: newMessage.author,
+            text: newMessage.text
         }
         messages.push(data);
         await writeFile('./db/json/messages.json', JSON.stringify(messages, null, 2));
