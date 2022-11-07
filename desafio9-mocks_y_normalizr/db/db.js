@@ -41,13 +41,15 @@ class DB {
     }
 
     static async addMessage(newMessage) {
+        const messages = await this.readMessages();
         const data = {
             id: uuidv4(),
             email: newMessage.email,
             time: newMessage.time,
             message: newMessage.message
         }
-        await writeFile('./db/json/messages.json', JSON.stringify(data, null, 2));
+        messages.push(data);
+        await writeFile('./db/json/messages.json', JSON.stringify(messages, null, 2));
     }
 
     static async readMessages() {
