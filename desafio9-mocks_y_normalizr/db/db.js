@@ -47,12 +47,12 @@ class DB {
             time: newMessage.time,
             message: newMessage.message
         }
-        await writeFile('./json/messages.json', JSON.stringify(data, null, 2));
+        await writeFile('./db/json/messages.json', JSON.stringify(data, null, 2));
     }
 
     static async readMessages() {
-        const messages = await readFile('./json/messages.json', 'utf-8');
-        return messages;
+        const data = await readFile('./db/json/messages.json', 'utf-8');
+        return JSON.parse(data);
     }
 }
 
