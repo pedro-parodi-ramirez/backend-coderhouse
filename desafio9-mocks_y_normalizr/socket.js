@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import DB from './db/DB.js';
+import DB from './db/db.js';
 
 let io;
 let messages = [];      // Arreglo local de mensajes del Centro de Mensajes.

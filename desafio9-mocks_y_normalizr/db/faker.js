@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import { writeFile } from 'fs/promises';
 
 class dbFaker {
     static async getProduct() {
