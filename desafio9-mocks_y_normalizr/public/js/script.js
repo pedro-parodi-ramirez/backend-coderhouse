@@ -35,8 +35,8 @@ const postSchema = new normalizr.schema.Entity('posts', {
 });
 
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
-let messages = [];      // Arreglo local de mensajes del Centro de Mensajes.
 let products = [];      // Arreglo local de la lista de productos
+let messages;
 
 // Solicitud GET para obtener el template de las card-image de los productos
 fetch('http://localhost:3000/templates/card-images.hbs')
@@ -59,26 +59,22 @@ socket.on('init-products', (data) => {
 });
 
 // Se recibe log histórico de mensajes al momento de la conexión.
-socket.on('log-messages', logMessages => {
-    messageList.innerHTML = '';
+socket.on('log-messages', (logMessages) => {
+    console.log("LOG-MESSAGES");
     messages = logMessages;
-    showMessages(messages);
+    messageList.innerHTML = '';
+    showMessages(logMessages);
 });
 
 // Se recibe nuevo mensaje desde el Centro de Mensajes.
 socket.on('new-message', (data) => {
-    // messages.push(newMessage);
-
-    console.log(data);
     let bytesIN = JSON.stringify(data).length;
-    console.log("bytesIN", bytesIN);
     const denormalized = normalizr.denormalize(data.result, postSchema, data.entities);
     let bytesOUT = JSON.stringify(denormalized).length;
-    console.log("bytesOUT", bytesOUT);
     console.log("Denormalized", JSON.stringify(denormalized, null, 2));
     console.log("Porcentaje de compresión: %", ((1 - bytesOUT / bytesIN) * 100).toFixed(2));
 
-    showMessages(messages);
+    showMessages(denormalized);
 })
 
 // Se recibe un nuevo producto agregado a través del formulario. Se agrega a arreglo local y se presenta.
@@ -130,14 +126,15 @@ formMessage.addEventListener('submit', (e) => {
 });
 
 // Función para presentar nuevos mensajes en el Centro de Mensajes, según formato requerido.
-function showMessages(array) {
+function showMessages(denormalized) {
+    console.log(denormalized);
     messageList.innerHTML = '';
-    array.forEach(m => {
+    (denormalized.messages).forEach(m => {
         const li = document.createElement('li');
         li.innerHTML = `
-            <b style="color:#6495ED"> ${m.author.email}</b>
-            <span style="color:#CD7F32">[${m.timestamp.YY}/${m.timestamp.MM}/${m.timestamp.DD} ${m.timestamp.hh}:${m.timestamp.mm}:${m.timestamp.ss}]</span>:
-            <i style="color:#00A36C">${m.content}</i>`;
+            <b style="color:#6495ED"> ${m.authors.email}</b>
+            <span style="color:#CD7F32">[${m.comments.timestamp.YY}/${m.comments.timestamp.MM}/${m.comments.timestamp.DD} ${m.comments.timestamp.hh}:${m.comments.timestamp.mm}:${m.comments.timestamp.ss}]</span>:
+            <i style="color:#00A36C">${m.comments.content}</i>`;
         messageList.appendChild(li);
     })
 }

@@ -2,8 +2,8 @@ import { Server } from 'socket.io';
 import DB from './db/db.js';
 
 let io;
-let messages = [];      // Arreglo local de mensajes del Centro de Mensajes.
-let products = [];      // Arreglo local de la lista de productos
+let products = [];  // Arreglo local de la lista de productos
+let messagesNormalized;
 
 function initSocket(httpServer) {
     io = new Server(httpServer);
@@ -15,12 +15,13 @@ function setEvent(io) {
         console.log(`Nuevo usuario ${socketClient.id} conectado.`);
 
         // Se emite la lista de productos vigente, al momento de la conexión del cliente.
+        messagesNormalized = await DB.readMessagesNormalized();
         products = await DB.getProducts();
 
         socketClient.emit('init-products', products);
 
         // Se emite el registro histórico de mensajes, al momento de la conexión del cliente.
-        socketClient.emit('log-messages', messages);
+        // socketClient.emit('log-messages', messagesNormalized);
 
         // Nuevo producto agregado, se emite a todos los clientes.
         socketClient.on('new-product', (data) => {
@@ -30,7 +31,6 @@ function setEvent(io) {
 
         // Se almacena nuevo mensaje en arrreglo local y en un archivo json en DB. Luego, se emite el array completo a todos los clientes.
         socketClient.on('send-message', async (data) => {
-            messages.push(data);
             await DB.addMessage(data);
             const messagesNormalized = await DB.readMessagesNormalized();
             io.emit('new-message', messagesNormalized);
