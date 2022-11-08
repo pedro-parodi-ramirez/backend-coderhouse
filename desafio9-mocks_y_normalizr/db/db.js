@@ -11,7 +11,7 @@ const lastNameSchema = new schema.Entity('lastNames');
 const ageSchema = new schema.Entity('ages');
 const aliasSchema = new schema.Entity('alias');
 const avatarSchema = new schema.Entity('avatars');
-const textSchema = new schema.Entity('texts')
+const commentSchema = new schema.Entity('comments');
 const authorSchema = new schema.Entity('authors', {
     email: emailSchema,
     name: nameSchema,
@@ -19,12 +19,41 @@ const authorSchema = new schema.Entity('authors', {
     age: ageSchema,
     alias: aliasSchema,
     avatar: avatarSchema
-}, { idAttribute: 'email' });
-const messageSchema = new schema.Entity('messages', {
-    id: idSchema,
-    author: authorSchema,
-    text: [textSchema]
+},
+    { idAttribute: 'email' }
+);
+const messageScheme = new schema.Entity('messages', {
+    authors: [authorSchema],
+    comments: [commentSchema]
 });
+
+// const commentSchema = new schema.Entity('comments');
+// const authorSchema = new schema.Entity('authors');
+// const messageScheme = new schema.Entity('messages', {
+//     author: authorSchema,
+//     comments: [commentSchema]
+// });
+// const blog = {
+//     id: 'asd',
+//     author: {
+//         id: '3',
+//         nombre: 'Marcos'
+//     },
+//     comments: [
+//         {
+//             id: '1',
+//             author: 'Hector',
+//             content: "hola"
+//         },
+//         {
+//             id: '2',
+//             author: 'Belen',
+//             content: "chau"
+//         }
+//     ]
+// }
+// const normalized = normalize(blog, messageScheme);
+// console.log("Normalized", JSON.stringify(normalized));
 
 class DB {
     static async getProducts() {
@@ -42,14 +71,18 @@ class DB {
     }
 
     static async addMessage(newMessage) {
-        const messages = await this.readMessages();
-        const data = {
+        const data = await this.readMessages();
+        
+        const message = {
             id: uuidv4(),
-            author: newMessage.author,
-            text: newMessage.text
+            content: newMessage.text
         }
-        messages.push(data);
-        await writeFile('./db/json/messages.json', JSON.stringify(messages, null, 2));
+        data[0].comments.push(message);
+        data[0].authors.push(newMessage.author);
+
+        const normalized = normalize(data[0], messageScheme);
+        console.log("Normalized", JSON.stringify(normalized));
+        await writeFile('./db/json/messages.json', JSON.stringify(data, null, 2));
     }
 
     static async readMessages() {
@@ -69,3 +102,41 @@ async function insertOnTable(database, table, newRegister) {
     const knexInstance = knex(database);
     await knexInstance(table).insert(newRegister);
 }
+
+
+
+/*
+static async addMessage(newMessage) {
+        const data = await this.readMessages();
+        console.log("Original", data);
+
+        const message = {
+            // author: newMessage.author,
+            id: uuidv4(),
+            content: newMessage.text
+        }
+        data[0].comments.push(message);
+        // data[0].authors.push(newMessage.author);
+
+        const normalized = normalize(data[0], messageScheme);
+        console.log("Normalized", JSON.stringify(normalized));
+        await writeFile('./db/json/messages.json', JSON.stringify(data, null, 2));
+    }
+
+JSON
+[
+  {
+    "id": "Pedro", // hard-codeado
+    "comments": [
+      {
+        "id": "6123b59e-0c36-4703-b01c-4d9a3af16d31",
+        "content": "asd"
+      },
+      {
+        "id": "2354481d-8b52-4c54-9e4b-1074b7c80e2e",
+        "content": "1qwetry"
+      }
+    ]
+  }
+]
+*/

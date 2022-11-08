@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "id": "messages",
+    "authors": [
+      {
+        "email": "asd@asd",
+        "name": "name",
+        "lastName": "lastName",
+        "age": "age",
+        "alias": "alias",
+        "avatar": "avatar"
+      },
+      {
+        "email": "asd@asd",
+        "name": "name",
+        "lastName": "lastName",
+        "age": "age",
+        "alias": "alias",
+        "avatar": "avatar"
+      }
+    ],
+    "comments": [
+      {
+        "id": "969c44d9-a93b-411b-bc2d-e848378e8618",
+        "content": "asd"
+      },
+      {
+        "id": "9fe7b27b-6b34-4c34-8b20-ae9d0113f241",
+        "content": "asd"
+      }
+    ]
+  }
+]
