@@ -1,8 +1,9 @@
 import knex from 'knex';
 import database from '../config/config.js';
-import { schema, normalize } from 'normalizr';
+import { schema, normalize, denormalize } from 'normalizr';
 import { v4 as uuidv4 } from 'uuid';
 import { writeFile, readFile } from 'fs/promises';
+import util from 'util';
 
 const emailSchema = new schema.Entity('emails');
 const nameSchema = new schema.Entity('names');
@@ -22,8 +23,6 @@ const authorSchema = new schema.Entity('authors', {
     { idAttribute: 'email' }
 );
 const postSchema = new schema.Entity('posts', {
-    authors: [authorSchema],
-    comments: [commentSchema],
     messages: [{
         authors: authorSchema,
         comments: commentSchema
@@ -52,14 +51,13 @@ class DB {
             content: newMessage.content,
             timestamp: newMessage.timestamp
         }
+
         data[0].messages.push({
-            id: uuidv4(),
             authors: newMessage.author,
             comments: comment,
         });
 
         await writeFile('./db/json/messages.json', JSON.stringify(data, null, 2));
-        await this.readMessagesNormalized();
     }
 
     static async readMessages() {

@@ -9,6 +9,31 @@ const formMessage = document.getElementById('form-message');
 const inputUserEmail = document.getElementById('user-email');
 const inputUserContent = document.getElementById('user-content');
 
+// Normalizer
+const emailSchema = new normalizr.schema.Entity('emails');
+const nameSchema = new normalizr.schema.Entity('names');
+const lastNameSchema = new normalizr.schema.Entity('lastNames');
+const ageSchema = new normalizr.schema.Entity('ages');
+const aliasSchema = new normalizr.schema.Entity('alias');
+const avatarSchema = new normalizr.schema.Entity('avatars');
+const commentSchema = new normalizr.schema.Entity('comments');
+const authorSchema = new normalizr.schema.Entity('authors', {
+    email: emailSchema,
+    name: nameSchema,
+    lastName: lastNameSchema,
+    age: ageSchema,
+    alias: aliasSchema,
+    avatar: avatarSchema
+},
+    { idAttribute: 'email' }
+);
+const postSchema = new normalizr.schema.Entity('posts', {
+    messages: [{
+        authors: authorSchema,
+        comments: commentSchema
+    }]
+});
+
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 let messages = [];      // Arreglo local de mensajes del Centro de Mensajes.
 let products = [];      // Arreglo local de la lista de productos
@@ -41,8 +66,18 @@ socket.on('log-messages', logMessages => {
 });
 
 // Se recibe nuevo mensaje desde el Centro de Mensajes.
-socket.on('new-message', newMessage => {
-    messages.push(newMessage);
+socket.on('new-message', (data) => {
+    // messages.push(newMessage);
+
+    console.log(data);
+    let bytesIN = JSON.stringify(data).length;
+    console.log("bytesIN", bytesIN);
+    const denormalized = normalizr.denormalize(data.result, postSchema, data.entities);
+    let bytesOUT = JSON.stringify(denormalized).length;
+    console.log("bytesOUT", bytesOUT);
+    console.log("Denormalized", JSON.stringify(denormalized, null, 2));
+    console.log("Porcentaje de compresión: %", ((1 - bytesOUT / bytesIN) * 100).toFixed(2));
+
     showMessages(messages);
 })
 
@@ -106,12 +141,3 @@ function showMessages(array) {
         messageList.appendChild(li);
     })
 }
-
-
-// let bytesIN = JSON.stringify(data[0]).length;
-// const normalized = normalize(data[0], messageScheme);
-// console.log("Normalized", JSON.stringify(normalized));
-// let bytesOUT = JSON.stringify(data[0]).length;
-// const denormalized = denormalize(normalized, normalized.entities, messageScheme);
-// console.log("Denormalized", JSON.stringify(denormalized, null, 2));
-// console.log("Porcentaje de compresión: %", ((1 - bytesOUT / bytesIN) * 100).toFixed(2));

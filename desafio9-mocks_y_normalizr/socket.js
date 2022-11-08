@@ -28,11 +28,12 @@ function setEvent(io) {
             io.emit('update-products', data);
         });
 
-        // Se almacena nuevo mensaje en arrreglo local y en un archivo de texto en la DB. Luego, se emite a todos los clientes conectados.
-        socketClient.on('send-message', (data) => {
+        // Se almacena nuevo mensaje en arrreglo local y en un archivo json en DB. Luego, se emite el array completo a todos los clientes.
+        socketClient.on('send-message', async (data) => {
             messages.push(data);
-            DB.addMessage(data);
-            io.emit('new-message', data);
+            await DB.addMessage(data);
+            const messagesNormalized = await DB.readMessagesNormalized();
+            io.emit('new-message', messagesNormalized);
         });
 
         socketClient.on('disconnect', () => {
