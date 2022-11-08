@@ -103,3 +103,12 @@ function showMessage(message) {
         <i style="color:#00A36C">${message.text}</i>`;
     messageList.appendChild(li);
 }
+
+
+let bytesIN = JSON.stringify(data[0]).length;
+const normalized = normalize(data[0], messageScheme);
+        console.log("Normalized", JSON.stringify(normalized));
+let bytesOUT = JSON.stringify(data[0]).length;
+const denormalized = denormalize(normalized, normalized.entities, messageScheme);
+        console.log("Denormalized", JSON.stringify(denormalized, null, 2));
+console.log("Porcentaje de compresión: %", ((1 - bytesOUT / bytesIN) * 100).toFixed(2));

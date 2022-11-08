@@ -5,10 +5,10 @@ let io;
 let messages = [];      // Arreglo local de mensajes del Centro de Mensajes.
 let products = [];      // Arreglo local de la lista de productos
 
-(async () => {
-    products = await DB.getProducts();
-    messages = await DB.readMessages();
-})();
+// (async () => {
+//     products = await DB.getProducts();
+//     messages = await DB.readMessages();
+// })();
 
 function initSocket(httpServer) {
     io = new Server(httpServer);
@@ -16,13 +16,12 @@ function initSocket(httpServer) {
 }
 
 function setEvent(io) {
-    io.on('connection', (socketClient) => {
+    io.on('connection', async (socketClient) => {
         console.log(`Nuevo usuario ${socketClient.id} conectado.`);
 
         // Se emite la lista de productos vigente, al momento de la conexión del cliente.
-        (async () => {
-            products = await DB.getProducts();
-        })();
+        products = await DB.getProducts();
+        
         socketClient.emit('init-products', products);
 
         // Se emite el registro histórico de mensajes, al momento de la conexión del cliente.
