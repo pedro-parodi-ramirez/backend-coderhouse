@@ -1,13 +1,23 @@
+// Socket IO
 const socket = io();
+
+// Productos
 const productTable = document.getElementById('product-table');
 const addProduct = document.getElementById('form-add-product');
 const inputTitle = document.getElementById('title');
 const inputPrice = document.getElementById('price');
 const inputThumbnail = document.getElementById('thumbnail');
+
+// Centro de mensajes
 const messageList = document.getElementById('list-messages');
 const formMessage = document.getElementById('form-message');
 const inputUserEmail = document.getElementById('user-email');
 const inputUserContent = document.getElementById('user-content');
+const inputUserName = document.getElementById('user-name');
+const inputUserLastName = document.getElementById('user-lastName');
+const inputUserAlias = document.getElementById('user-alias');
+const inputUserAvatar = document.getElementById('user-avatar');
+const inputUserAge = document.getElementById('user-age');
 const outputCompression = document.getElementById('compression');
 
 // Normalizer
@@ -86,15 +96,16 @@ formMessage.addEventListener('submit', (e) => {
     const data = {
         author: {
             email: inputUserEmail.value,
-            name: 'name',
-            lastName: 'lastName',
-            age: 'age',
-            alias: 'alias',
-            avatar: 'avatar',
+            name: inputUserName.value,
+            lastName: inputUserLastName.value,
+            age: inputUserAge.value,
+            alias: inputUserAlias.value,
+            avatar: inputUserAvatar.value,
         },
         content: inputUserContent.value,
         timestamp: time
     };
+    console.log(data);
     socket.emit('send-message', data);
     inputUserContent.value = '';
     inputUserContent.focus();
@@ -102,10 +113,10 @@ formMessage.addEventListener('submit', (e) => {
 
 // Función para presentar nuevos mensajes en el Centro de Mensajes, según formato requerido.
 function showMessages(normalized) {
+    console.log(normalized);
     let bytesNormalized = JSON.stringify(normalized).length;
     const denormalized = normalizr.denormalize(normalized.result, postSchema, normalized.entities);
     let bytesDenormalized = JSON.stringify(denormalized).length;
-    console.log(normalized);
     console.log(denormalized);
     outputCompression.value = ((1 - bytesNormalized / bytesDenormalized) * 100).toFixed(2);
 

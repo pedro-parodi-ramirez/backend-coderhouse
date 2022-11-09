@@ -1,36 +1,21 @@
 import knex from 'knex';
 import database from '../config/config.js';
 import DB from './db.js';
+import { readFile, writeFile } from 'fs/promises';
 
 (async () => {
     console.log("📂 Creando base de datos para mensajes ... 📂");
-    /* Tabla MENSAJES */
-    let knexInstance = knex(database.sqlite3);
-
-    // Se elimina tabla 'messages' si ya existe
-    (await knexInstance.schema.hasTable('messages')) && (await knexInstance.schema.dropTable('messages'));
-
-    // Tabla mensajes
-    await knexInstance.schema.createTable('messages', (table) => {
-        table.increments('id_message'),
-            table.string('email'),
-            table.timestamp('time').defaultTo(knexInstance.fn.now()),
-            table.string('message')
-    })
-
+    const knexInstance = knex(database.sql);
+    let data = await readFile('./db/json/messages_init.json', 'utf-8');
+    let messages = JSON.parse(data);
+    
     // Se inicializan valores de productos y mensajes
-    DB.addMessage({
-        email: "Coderhouse",
-        time: Date.now(),
-        message: "Bienvenido!"
-    });
-
+    await writeFile('./db/json/messages.json', JSON.stringify(messages, null, 2));
     console.log("📂✔ DB para mensajes creada ✔📂");
 
 
     console.log("📂 Creando base de datos para productos ... 📂");
     /* Tabla PRODUCTOS */
-    knexInstance = knex(database.sql);
 
     // Se elimina tabla 'productos' si ya existe
     (await knexInstance.schema.hasTable('products')) && (await knexInstance.schema.dropTable('products'));

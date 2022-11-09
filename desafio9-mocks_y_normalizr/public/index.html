@@ -40,10 +40,12 @@
         <!-- Centro de mensajes -->
         <h2 class="mt-4">Centro de mensajes</h2>
         <form id="form-message">
-            <div class="mb-3">
-                <label for="user-email" class="form-label">Ingerese su correo:</label>
-                <input type="email" name="user-email" class="form-control" id="user-email" required>
-            </div>
+            <input type="email" name="user-email" class="form-control mb-1" id="user-email" placeholder="Email" required>
+            <input type="text" name="user-name" class="form-control mb-1" id="user-name" placeholder="Nombre" required>
+            <input type="text" name="user-lastName" class="form-control mb-1" id="user-lastName" placeholder="Apellidos" required>
+            <input type="text" name="user-alias" class="form-control mb-1" id="user-alias" placeholder="Alias" required>
+            <input type="url" name="user-avatar" class="form-control mb-1" id="user-avatar" placeholder="Avatar url" required>
+            <input type="number" name="user-age" class="form-control mb-1" id="user-age" placeholder="Edad" required>
             <span><b>Porcentaje de compresión: </b>% <output id="compression" type="number"></output></span>
             <div id="messages-container">
                 <ul id="list-messages"></ul>

@@ -1,6 +1,6 @@
-# Desafío 7 - databases
+# Desafío 9 - Mocks y Normalizr
 La aplicación cuenta con una única ruta para interactuar `localhost:3000`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. También cuenta con un chat en línea con todos los usuarios conectados.
-Los productos y mensajes son almacenados en bases de datos con MySQL y SQLite3, utilizando Knex.
+Los productos cuentan con persistencia en MySQL usando Knex; los mensajes hacen uso de archivos.
 
 ## Ejecutar servidor
 Una vez realizada la configuración de las herramientas e instalado las depeendencias, ejectuar en VSCode:
@@ -41,7 +41,7 @@ sql: {
         client: 'mysql',
         connection: {
             host: '127.0.0.1',
-            port: 3307,
+            port: 3306,
             user: 'root',
             password: '',
             database: 'ecommerce_products'
@@ -49,7 +49,7 @@ sql: {
     }
 ```
 
-4. Situado en la raíz del proyecto, ejecutar el siguiente comando para inicializar la base de datos con tablas y elementos.
+4. Opcional: situado en la raíz del proyecto, ejecutar el siguiente comando para inicializar la base de datos con tablas y elementos.
 ```
 node ./db/initDB.js
 ```
