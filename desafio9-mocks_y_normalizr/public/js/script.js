@@ -23,7 +23,6 @@ const postSchema = new normalizr.schema.Entity('posts', {
 
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 let products = [];      // Arreglo local de la lista de productos
-let messages = [];
 
 // Solicitud GET para obtener el template de las card-image de los productos
 fetch('http://localhost:3000/templates/card-images.hbs')
@@ -35,33 +34,22 @@ socket.on('connect', () => {
     console.log('Conectado al servidor');
 });
 
-// Se capta lista de productos al momento de la conexión.
-socket.on('init-products', (data) => {
+// Se capta lista de productos y mensajes al momento de la conexión.
+socket.on('init-elements', (data) => {
     // Actualización del arreglo local de productos
-    products = data;
+    products = data.products;
 
     // Se presentan productos con Handlebars.
     const html = (products.map(products => template(products))).join('');
     productTable.innerHTML = html;
-});
 
-// Se recibe log histórico de mensajes al momento de la conexión.
-socket.on('log-messages', (logMessages) => {
-    console.log("LOG-MESSAGES");
-    messages = logMessages;
-    messageList.innerHTML = '';
-    showMessages(logMessages);
+    // Se presentan log histórico de mensajes en patalla
+    showMessages(data.messagesNormalized);
 });
 
 // Se recibe nuevo mensaje desde el Centro de Mensajes.
 socket.on('new-message', (data) => {
-    let bytesNormalized = JSON.stringify(data).length;
-    const denormalized = normalizr.denormalize(data.result, postSchema, data.entities);
-    let bytesDenormalized = JSON.stringify(denormalized).length;
-    console.log(data);
-    console.log(denormalized);
-    outputCompression.value = ((1 - bytesNormalized / bytesDenormalized) * 100).toFixed(2);
-    showMessages(denormalized);
+    showMessages(data);
 })
 
 // Se recibe un nuevo producto agregado a través del formulario. Se agrega a arreglo local y se presenta.
@@ -113,8 +101,14 @@ formMessage.addEventListener('submit', (e) => {
 });
 
 // Función para presentar nuevos mensajes en el Centro de Mensajes, según formato requerido.
-function showMessages(denormalized) {
+function showMessages(normalized) {
+    let bytesNormalized = JSON.stringify(normalized).length;
+    const denormalized = normalizr.denormalize(normalized.result, postSchema, normalized.entities);
+    let bytesDenormalized = JSON.stringify(denormalized).length;
+    console.log(normalized);
     console.log(denormalized);
+    outputCompression.value = ((1 - bytesNormalized / bytesDenormalized) * 100).toFixed(2);
+
     messageList.innerHTML = '';
     (denormalized.messages).forEach(m => {
         const li = document.createElement('li');

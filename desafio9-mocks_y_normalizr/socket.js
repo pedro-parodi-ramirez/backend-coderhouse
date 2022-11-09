@@ -18,7 +18,7 @@ function setEvent(io) {
         messagesNormalized = await DB.readMessagesNormalized();
         products = await DB.getProducts();
 
-        socketClient.emit('init-products', products);
+        socketClient.emit('init-elements', { products, messagesNormalized });
 
         // Se emite el registro histórico de mensajes, al momento de la conexión del cliente.
         // socketClient.emit('log-messages', messagesNormalized);
