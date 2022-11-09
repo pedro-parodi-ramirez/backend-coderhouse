@@ -1,26 +1,11 @@
 import knex from 'knex';
 import database from '../config/config.js';
-import { schema, normalize, denormalize } from 'normalizr';
+import { schema, normalize } from 'normalizr';
 import { v4 as uuidv4 } from 'uuid';
 import { writeFile, readFile } from 'fs/promises';
-import util from 'util';
 
-const emailSchema = new schema.Entity('emails');
-const nameSchema = new schema.Entity('names');
-const lastNameSchema = new schema.Entity('lastNames');
-const ageSchema = new schema.Entity('ages');
-const aliasSchema = new schema.Entity('alias');
-const avatarSchema = new schema.Entity('avatars');
 const commentSchema = new schema.Entity('comments');
-const authorSchema = new schema.Entity('authors', {
-    email: emailSchema,
-    name: nameSchema,
-    lastName: lastNameSchema,
-    age: ageSchema,
-    alias: aliasSchema,
-    avatar: avatarSchema
-},
-    { idAttribute: 'email' }
+const authorSchema = new schema.Entity('authors', {}, { idAttribute: 'email' }
 );
 const postSchema = new schema.Entity('posts', {
     messages: [{

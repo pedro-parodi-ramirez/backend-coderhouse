@@ -8,24 +8,11 @@ const messageList = document.getElementById('list-messages');
 const formMessage = document.getElementById('form-message');
 const inputUserEmail = document.getElementById('user-email');
 const inputUserContent = document.getElementById('user-content');
+const outputCompression = document.getElementById('compression');
 
 // Normalizer
-const emailSchema = new normalizr.schema.Entity('emails');
-const nameSchema = new normalizr.schema.Entity('names');
-const lastNameSchema = new normalizr.schema.Entity('lastNames');
-const ageSchema = new normalizr.schema.Entity('ages');
-const aliasSchema = new normalizr.schema.Entity('alias');
-const avatarSchema = new normalizr.schema.Entity('avatars');
 const commentSchema = new normalizr.schema.Entity('comments');
-const authorSchema = new normalizr.schema.Entity('authors', {
-    email: emailSchema,
-    name: nameSchema,
-    lastName: lastNameSchema,
-    age: ageSchema,
-    alias: aliasSchema,
-    avatar: avatarSchema
-},
-    { idAttribute: 'email' }
+const authorSchema = new normalizr.schema.Entity('authors', {}, { idAttribute: 'email' }
 );
 const postSchema = new normalizr.schema.Entity('posts', {
     messages: [{
@@ -36,7 +23,7 @@ const postSchema = new normalizr.schema.Entity('posts', {
 
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 let products = [];      // Arreglo local de la lista de productos
-let messages;
+let messages = [];
 
 // Solicitud GET para obtener el template de las card-image de los productos
 fetch('http://localhost:3000/templates/card-images.hbs')
@@ -68,12 +55,12 @@ socket.on('log-messages', (logMessages) => {
 
 // Se recibe nuevo mensaje desde el Centro de Mensajes.
 socket.on('new-message', (data) => {
-    let bytesIN = JSON.stringify(data).length;
+    let bytesNormalized = JSON.stringify(data).length;
     const denormalized = normalizr.denormalize(data.result, postSchema, data.entities);
-    let bytesOUT = JSON.stringify(denormalized).length;
-    console.log("Denormalized", JSON.stringify(denormalized, null, 2));
-    console.log("Porcentaje de compresión: %", ((1 - bytesOUT / bytesIN) * 100).toFixed(2));
-
+    let bytesDenormalized = JSON.stringify(denormalized).length;
+    console.log(data);
+    console.log(denormalized);
+    outputCompression.value = ((1 - bytesNormalized / bytesDenormalized) * 100).toFixed(2);
     showMessages(denormalized);
 })
 
