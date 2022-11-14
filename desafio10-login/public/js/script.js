@@ -9,6 +9,7 @@ mainContainer.classList.add('d-none');
 const loginForm = document.getElementById('form-login');
 const logOn = document.getElementById('log-on');
 const logOff = document.getElementById('log-off');
+const username = document.getElementById('username');
 
 // Productos
 const productTable = document.getElementById('product-table');
@@ -53,6 +54,7 @@ loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = { username: e.target.elements[0].value };
     const dataJSON = JSON.stringify(data);
+    let name = '';
 
     const rawResponse = await fetch("http://localhost:3000/login", {
         headers: {
@@ -66,6 +68,8 @@ loginForm.addEventListener('submit', async (e) => {
         mainContainer.classList.remove('d-none');
         logOff.classList.add('d-none');
         logOn.classList.remove('d-none');
+        name = await rawResponse.json();
+        username.innerText = name.username;
     }
 })
 
