@@ -4,10 +4,10 @@ const router = Router();
 
 router.post('/login', (req, res) => {
     try {
-        const { username } = req.body;
+        const username = req.body;
         req.session.username = username;
         req.session.isAuth = true;
-        res.status(200).send('Auth OK');
+        res.status(200).json('Auth OK');
     }
     catch (e) {
         console.log("Error al loguearse:\n" + e);

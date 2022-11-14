@@ -1,6 +1,15 @@
 // Socket IO
 const socket = io();
 
+// Main website
+const mainContainer = document.getElementById('main-container');
+mainContainer.classList.add('d-none');
+
+// Login
+const loginForm = document.getElementById('form-login');
+const logOn = document.getElementById('log-on');
+const logOff = document.getElementById('log-off');
+
 // Productos
 const productTable = document.getElementById('product-table');
 const addProduct = document.getElementById('form-add-product');
@@ -38,6 +47,27 @@ let products = [];      // Arreglo local de la lista de productos
 fetch('http://localhost:3000/templates/card-images.hbs')
     .then(response => response.text())
     .then(text => template = Handlebars.compile(text));
+
+// Inicio de sesión
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = { username: e.target.elements[0].value };
+    const dataJSON = JSON.stringify(data);
+
+    const rawResponse = await fetch("http://localhost:3000/login", {
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': dataJSON.length
+        },
+        method: 'POST',
+        body: dataJSON
+    });
+    if (rawResponse.status === 200) {
+        mainContainer.classList.remove('d-none');
+        logOff.classList.add('d-none');
+        logOn.classList.remove('d-none');
+    }
+})
 
 // Conexión al servidor.
 socket.on('connect', () => {
