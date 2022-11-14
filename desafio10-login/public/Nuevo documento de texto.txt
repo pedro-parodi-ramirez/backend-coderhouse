@@ -1,0 +1,13 @@
+<!-- Login -->
+        <div id="login-container" class="mt-5 p-2 border rounded border-success bg-success bg-opacity-10">
+            <h2>Inicie sesión para continuar.</h2>
+            <form id="form-login" action="/login" method="POST">
+                <label for="login" class="form-label">Ingrese su nombre</label>
+                <input type="text" name="login" class="form-control" id="login" required>
+                <div class="mt-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success">Ingresar</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="main-container">

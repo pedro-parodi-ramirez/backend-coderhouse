@@ -1,0 +1,7 @@
+body {
+    background-color: #dddd;
+}
+
+#list-messages{
+    list-style-type:none;
+}
