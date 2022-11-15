@@ -6,7 +6,6 @@ const router = Router();
 router.delete('/logout', auth, (req, res) => {
   try {
     req.session.destroy(error => {
-      console.log(error);
       if (!error) {
         res.status(202).end();
       } else {

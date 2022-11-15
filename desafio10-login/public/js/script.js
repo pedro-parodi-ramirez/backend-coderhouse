@@ -6,10 +6,11 @@ const mainContainer = document.getElementById('main-container');
 mainContainer.classList.add('d-none');
 
 // Session
+let username = '';
 const loginForm = document.getElementById('form-login');
 const logOutDiv = document.getElementById('logout-div');
 const logInDiv = document.getElementById('login-div');
-const username = document.getElementById('username');
+const usernameOutput = document.getElementById('username-output');
 const logoutBtn = document.getElementById('logout-btn');
 
 // Productos
@@ -65,25 +66,26 @@ loginForm.addEventListener('submit', async (e) => {
         body: dataJSON
     });
     if (rawResponse.status === 200) {
-        let name = await rawResponse.json();
+        let response = await rawResponse.json();
+        username = response.username;
         document.getElementById('login').value = '';
         mainContainer.classList.remove('d-none');
         logOutDiv.classList.remove('d-none');
         logInDiv.classList.add('d-none');
-        username.innerText = name.username;
+        usernameOutput.innerText = `Bienvenido ${username} !`;
     }
 });
 
 logoutBtn.addEventListener('click', async () => {
     mainContainer.classList.add('d-none');
-    logOutDiv.classList.add('d-none');
-    logInDiv.classList.remove('d-none');
     await fetch("http://localhost:3000/logout", {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
     });
+    usernameOutput.innerText = `Hasta luego ${username}!`;
+    logoutBtn.classList.add('d-none');
 });
 
 // Conexión al servidor.
