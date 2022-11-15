@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressSession({
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://developer:x6JYg18ip3N7gsky@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority',
+    mongoUrl: `mongodb+srv://developer:${process.env.KEY}@coderhouse.wm4ogqy.mongodb.net/sessions?retryWrites=true&w=majority`,
     mongoOptions: advancedOptions,
     ttl: 60,
   }),

@@ -19,10 +19,10 @@ const auth = (req, res, next) => {
 
 router.post('/login', (req, res) => {
   try {
-    const username = req.body;
+    const { username } = req.body;
     req.session.username = username;
     req.session.isAuth = true;
-    res.status(200).json(username);
+    res.status(200).json({ username });
   }
   catch (e) {
     console.log("Error al loguearse:\n" + e);

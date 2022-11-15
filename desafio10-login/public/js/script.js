@@ -46,11 +46,6 @@ const postSchema = new normalizr.schema.Entity('posts', {
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 let products = [];      // Arreglo local de la lista de productos
 
-// Solicitud GET para obtener el template de las card-image de los productos
-fetch('http://localhost:3000/templates/card-images.hbs')
-    .then(response => response.text())
-    .then(text => template = Handlebars.compile(text));
-
 // Session
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -94,7 +89,12 @@ socket.on('connect', () => {
 });
 
 // Se capta lista de productos y mensajes al momento de la conexión.
-socket.on('init-elements', (data) => {
+socket.on('init-elements', async (data) => {
+    // Solicitud GET para obtener el template de las card-image de los productos
+    await fetch('http://localhost:3000/templates/card-images.hbs')
+        .then(response => response.text())
+        .then(text => template = Handlebars.compile(text));
+
     // Actualización del arreglo local de productos
     products = data.products;
 
