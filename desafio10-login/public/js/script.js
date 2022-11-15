@@ -5,11 +5,12 @@ const socket = io();
 const mainContainer = document.getElementById('main-container');
 mainContainer.classList.add('d-none');
 
-// Login
+// Session
 const loginForm = document.getElementById('form-login');
-const logOn = document.getElementById('log-on');
-const logOff = document.getElementById('log-off');
+const logOutDiv = document.getElementById('logout-div');
+const logInDiv = document.getElementById('login-div');
 const username = document.getElementById('username');
+const logoutBtn = document.getElementById('logout-btn');
 
 // Productos
 const productTable = document.getElementById('product-table');
@@ -49,12 +50,11 @@ fetch('http://localhost:3000/templates/card-images.hbs')
     .then(response => response.text())
     .then(text => template = Handlebars.compile(text));
 
-// Inicio de sesión
+// Session
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = { username: e.target.elements[0].value };
     const dataJSON = JSON.stringify(data);
-    let name = '';
 
     const rawResponse = await fetch("http://localhost:3000/login", {
         headers: {
@@ -65,13 +65,26 @@ loginForm.addEventListener('submit', async (e) => {
         body: dataJSON
     });
     if (rawResponse.status === 200) {
+        let name = await rawResponse.json();
+        document.getElementById('login').value = '';
         mainContainer.classList.remove('d-none');
-        logOff.classList.add('d-none');
-        logOn.classList.remove('d-none');
-        name = await rawResponse.json();
+        logOutDiv.classList.remove('d-none');
+        logInDiv.classList.add('d-none');
         username.innerText = name.username;
     }
-})
+});
+
+logoutBtn.addEventListener('click', async () => {
+    mainContainer.classList.add('d-none');
+    logOutDiv.classList.add('d-none');
+    logInDiv.classList.remove('d-none');
+    await fetch("http://localhost:3000/logout", {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'DELETE',
+    });
+});
 
 // Conexión al servidor.
 socket.on('connect', () => {
@@ -139,7 +152,6 @@ formMessage.addEventListener('submit', (e) => {
         content: inputUserContent.value,
         timestamp: time
     };
-    console.log(data);
     socket.emit('send-message', data);
     inputUserContent.value = '';
     inputUserContent.focus();

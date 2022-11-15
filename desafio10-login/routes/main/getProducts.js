@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import DB from '../db/db.js';
-import { auth } from './login.js';
+import DB from '../../db/db.js';
+import { auth } from '../session/login.js';
 
 const router = Router();
 

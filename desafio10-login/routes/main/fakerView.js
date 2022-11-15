@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import dbFaker from '../db/faker.js';
-import { emit } from '../socket.js';
-import { auth } from './login.js';
+import dbFaker from '../../db/faker.js';
+import { emit } from '../../socket.js';
+import { auth } from '../session/login.js';
 
 const router = Router();
 
