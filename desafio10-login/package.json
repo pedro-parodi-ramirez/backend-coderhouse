@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
+    "dev": "nodemon ./app.js"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
