@@ -9,13 +9,18 @@ const auth = (req, res, next) => {
       next();
     } else {
       console.log("🚫 Acceso denegado 🚫");
-      res.status(403).send('Error: permission denied.')
+      res.status(403).json('Error: permission denied.')
     }
   }
   catch (e) {
     throw new Error(e);
   }
 }
+router.get('/login', auth, (req, res) => {
+  let username = req.session.username;
+  console.log(username);
+  res.status(200).json({ username });
+});
 
 router.post('/login', (req, res) => {
   try {

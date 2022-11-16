@@ -46,7 +46,27 @@ const postSchema = new normalizr.schema.Entity('posts', {
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 let products = [];      // Arreglo local de la lista de productos
 
-// Session
+/* Session */
+// Al iniciar el sitio web, si corrobora si hay sesión iniciada
+window.addEventListener('load', async () => {
+    const rawResponse = await fetch("http://localhost:3000/login");
+    if (rawResponse.status === 200) {
+        let response = await rawResponse.json();
+        username = response.username;
+        console.log(username);
+        mainContainer.classList.remove('d-none');
+        logOutDiv.classList.remove('d-none');
+        logInDiv.classList.add('d-none');
+        usernameOutput.innerText = `Bienvenido ${username} !`;
+    }
+    else {
+        mainContainer.classList.add('d-none');
+        logOutDiv.classList.add('d-none');
+        logInDiv.classList.remove('d-none');
+        usernameOutput.innerText = '';
+    }
+});
+
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = { username: e.target.elements[0].value };
