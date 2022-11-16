@@ -1,6 +1,11 @@
-# Desafío 9 - Mocks y Normalizr
-La aplicación cuenta con una única ruta para interactuar `localhost:3000`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. También cuenta con un chat en línea con todos los usuarios conectados.
-Los productos cuentan con persistencia en MySQL usando Knex; los mensajes hacen uso de archivos.
+# Desafío 10 - Login
+La aplicación cuenta con una única ruta para interactuar `localhost:3000`. Será necesario loguearse con un nombre para interactuar con los productos disponibles y el centro de mensajes. Las sesiones permanecerán activas por un minuto.
+### Persistencia
+```
+Sesiones: Mongo Atlas.
+Productos: MySQL haciendo uso de Knex.
+Mensajes: archivos locales.
+```
 
 ## Ejecutar servidor
 Una vez realizada la configuración de las herramientas e instalado las depeendencias, ejectuar en VSCode:
@@ -34,6 +39,7 @@ npm install
 2. Crear un archivo en la raíz del proyecto, con el nombre `.env` y el siguiente contenido:
 ```
 PORT=3000
+KEY=x6JYg18ip3N7gsky
 ```
 3. Modificar el valor de `port` y `password` en el archivo `./config/config.js` según el puerto en el cual se haya creado la base de datos con MySQL y según la configuración de XAMMP. Para este trabajo, se utilizó el puerto 3307 y contraseña nula.
 ```

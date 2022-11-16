@@ -53,7 +53,6 @@ window.addEventListener('load', async () => {
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
         username = response.username;
-        console.log(username);
         mainContainer.classList.remove('d-none');
         logOutDiv.classList.remove('d-none');
         logInDiv.classList.add('d-none');
