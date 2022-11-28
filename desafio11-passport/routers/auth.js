@@ -3,7 +3,7 @@ import passport from 'passport';
 
 const router = Router();
 
-router.post('/sign-in', passport.authenticate('login'), (req, res) => {
+router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
   try {
     const { user } = req
     if (!req.isAuthenticated()) {
@@ -17,19 +17,19 @@ router.post('/sign-in', passport.authenticate('login'), (req, res) => {
   }
 });
 
-router.post('/sign-up', passport.authenticate('register'), (req, res) => {
+router.post('/sign-up', passport.authenticate('sign-up'), (req, res) => {
   const { user } = req
   console.log('register -> user', user);
   res.json({ message: `Bienvenid@ ${user.email} !` })
 })
 
-router.post('sign-out', (req, res, next) => {
+router.post('/sign-out', (req, res, next) => {
   const { user } = req
   req.logout((error) => {
     if (error) {
       return next(error)
     }
-    res.json({ message: `Goodbye ${user.email}.` })
+    res.json({ message: `Hasta luego ${user.email} ! 👋` })
   })
 })
 

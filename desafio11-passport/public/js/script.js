@@ -87,6 +87,7 @@ btnSignIn.addEventListener('click', async () => {
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
         signInDiv.classList.add('d-none');
+        signUpDiv.classList.add('d-none');
         usernameOutput.innerText = response.message;
     }
 });
@@ -121,6 +122,7 @@ btnSignUp.addEventListener('click', async () => {
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
         signInDiv.classList.add('d-none');
+        signUpDiv.classList.add('d-none');
         usernameOutput.innerText = response.message;
     }
 });
@@ -133,14 +135,15 @@ goToSignIn.addEventListener('click', () => {
 
 btnSignOut.addEventListener('click', async () => {
     mainContainer.classList.add('d-none');
-    await fetch("http://localhost:3000/logout", {
+    const rawResponse = await fetch("http://localhost:3000/auth/sign-out", {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'DELETE',
+        method: 'POST',
     });
-    usernameOutput.innerText = `Hasta luego ${username}!`;
-    logoutBtn.classList.add('d-none');
+    const response = await rawResponse.json();
+    usernameOutput.innerText = response.message;
+    btnSignOut.classList.add('d-none');
 });
 
 // Conexión al servidor.

@@ -7,13 +7,14 @@ import { initSocket } from './socket.js';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import UserModel from './models/user.js';
+import { isValidPassword, encryptPassword } from './config/utils.js'
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-passport.use('login', new LocalStrategy({
+passport.use('sign-in', new LocalStrategy({
   usernameField: 'email',
 }, (email, password, done) => {
   UserModel.findOne({ email })
@@ -22,7 +23,7 @@ passport.use('login', new LocalStrategy({
         console.log(`User with ${email} not found.`)
         return done(null, false)
       }
-      if (password !== user.password) {
+      if (!isValidPassword(password, user.password)) {
         console.log('Invalid Password')
         return done(null, false)
       }
@@ -34,7 +35,7 @@ passport.use('login', new LocalStrategy({
     })
 }))
 
-passport.use('register', new LocalStrategy({
+passport.use('sign-up', new LocalStrategy({
   usernameField: 'email',
   passReqToCallback: true,
 }, (req, email, password, done) => {
@@ -44,7 +45,11 @@ passport.use('register', new LocalStrategy({
         console.log(`User ${email} already exists.`)
         return done(null, false)
       }
-      return UserModel.create(req.body)
+      const newUser = {
+        ...req.body,
+        password: encryptPassword(password)
+      }
+      return UserModel.create(newUser)
     })
     .then(newUser => {
       console.log(`User ${newUser.email} registration succesful.`)
