@@ -3,9 +3,8 @@ import { faker } from '@faker-js/faker';
 class dbFaker {
     static async getProduct() {
         const product = {
-            title: faker.commerce.productName(),
-            price: faker.commerce.price(),
-            thumbnail: faker.internet.avatar()
+            title: faker.commerce.product(),
+            price: faker.commerce.price()
         }
         return product;
     }

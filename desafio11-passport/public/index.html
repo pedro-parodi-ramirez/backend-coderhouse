@@ -15,25 +15,35 @@
     <div class="container">
         <!-- Login -->
         <div id="login-container" class="rounded border border-success bg-success bg-opacity-10 mt-5 p-2">
-            <div id="login-div">
-                <h2>Inicie sesión para continuar.</h2>
-                <form id="form-login">
-                    <label for="email" class="form-label">Ingrese su email:</label>
-                    <input type="email" name="email" class="form-control" id="email" required>
-                    <label for="password" class="form-label">Ingrese su contraseña:</label>
-                    <input type="text" name="password" class="form-control" id="password" required>
-                    <div class="mt-2 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-success">Iniciar sesión</button>
-                    </div>
-                </form>
+            <div id="sign-in-div">
+                <h2 id="login-title">Inicie sesión para continuar.</h2>
+                <label for="email" class="form-label">Ingrese su email:</label>
+                <input type="email" name="email" class="form-control" id="email-sign-in" required>
+                <label for="password" class="form-label">Ingrese su contraseña:</label>
+                <input type="text" name="password" class="form-control" id="password-sign-in" required>
+                <div class="mt-2 d-flex justify-content-center">
+                    <button type="button" id="btn-sign-in" class="btn btn-success">Iniciar sesión</button>
+                    <button type="button" id="go-to-sign-up" class="ms-2 btn btn-warning">Ir a registrarse</button>
+                </div>
             </div>
-            <div id="logout-div" class="d-none">
+            <div id="sign-up-div" class="d-none">
+                <h2 id="login-title">Registro de usuario.</h2>
+                <label for="email" class="form-label">Ingrese su email:</label>
+                <input type="email" name="email" class="form-control" id="email-sign-up" required>
+                <label for="password" class="form-label">Ingrese su contraseña:</label>
+                <input type="text" name="password" class="form-control" id="password-sign-up" required>
+                <div class="mt-2 d-flex justify-content-center">
+                    <button type="button" id="btn-sign-up" class="btn btn-success">Registrarse</button>
+                    <button type="button" id="go-to-sign-in" class="ms-2 btn btn-warning">Ir a inicio de sesión</button>
+                </div>
+            </div>
+            <div id="sign-out-div" class="d-none">
                 <div class="row">
                     <div class="col-9">
                         <output id="username-output" class="fs-2"></output>
                     </div>
                     <div class="col-3 d-flex justify-content-end">
-                        <button id="logout-btn" type="button" class="me-2 btn btn-warning">Desloguear</button>
+                        <button id="btn-sign-out" type="button" class="me-2 btn btn-warning">Desloguear</button>
                     </div>
                 </div>
             </div>

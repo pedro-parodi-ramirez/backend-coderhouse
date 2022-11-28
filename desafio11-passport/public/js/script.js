@@ -6,11 +6,24 @@ const mainContainer = document.getElementById('main-container');
 mainContainer.classList.add('d-none');
 
 // Session
-const loginForm = document.getElementById('form-login');
-const logOutDiv = document.getElementById('logout-div');
-const logInDiv = document.getElementById('login-div');
+const userSignIn = {
+    email: document.getElementById('email-sign-in'),
+    password: document.getElementById('password-sign-in')
+}
+const userSignUp = {
+    email: document.getElementById('email-sign-up'),
+    password: document.getElementById('password-sign-up')
+}
+const loginTitle = document.getElementById('login-title');
+const btnSignIn = document.getElementById('btn-sign-in');
+const btnSignUp = document.getElementById('btn-sign-up');
+const goToSignIn = document.getElementById('go-to-sign-in');
+const goToSignUp = document.getElementById('go-to-sign-up');
+const signOutDiv = document.getElementById('sign-out-div');
+const signInDiv = document.getElementById('sign-in-div');
+const signUpDiv = document.getElementById('sign-up-div');
 const usernameOutput = document.getElementById('username-output');
-const logoutBtn = document.getElementById('logout-btn');
+const btnSignOut = document.getElementById('btn-sign-out');
 
 // Productos
 const productTable = document.getElementById('product-table');
@@ -50,14 +63,13 @@ fetch('http://localhost:3000/templates/card-images.hbs')
     .then(response => response.text())
     .then(text => template = Handlebars.compile(text));
 
-// Session
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// Iniciar sesión
+btnSignIn.addEventListener('click', async () => {
     const data = {
-        email: e.target.elements[0].value,
-        password: e.target.elements[1].value
+        email: userSignIn.email.value,
+        password: userSignIn.password.value
     };
-    console.log("data",data);
+    console.log("data", data);
     const dataJSON = JSON.stringify(data);
 
     const rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
@@ -70,16 +82,56 @@ loginForm.addEventListener('submit', async (e) => {
     });
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
-        document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
+        userSignIn.email.value = '';
+        userSignIn.password.value = '';
         mainContainer.classList.remove('d-none');
-        logOutDiv.classList.remove('d-none');
-        logInDiv.classList.add('d-none');
+        signOutDiv.classList.remove('d-none');
+        signInDiv.classList.add('d-none');
         usernameOutput.innerText = response.message;
     }
 });
+goToSignUp.addEventListener('click', () => {
+    userSignIn.email.value = '';
+    userSignIn.password.value = '';
+    signInDiv.classList.add('d-none');
+    signUpDiv.classList.remove('d-none');
+});
 
-logoutBtn.addEventListener('click', async () => {
+// Registrarse
+btnSignUp.addEventListener('click', async () => {
+    const data = {
+        email: userSignUp.email.value,
+        password: userSignUp.password.value
+    };
+    console.log("data", data);
+    const dataJSON = JSON.stringify(data);
+
+    const rawResponse = await fetch("http://localhost:3000/auth/sign-up", {
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': dataJSON.length
+        },
+        method: 'POST',
+        body: dataJSON
+    });
+    if (rawResponse.status === 200) {
+        let response = await rawResponse.json();
+        userSignUp.email.value = '';
+        userSignUp.password.value = '';
+        mainContainer.classList.remove('d-none');
+        signOutDiv.classList.remove('d-none');
+        signInDiv.classList.add('d-none');
+        usernameOutput.innerText = response.message;
+    }
+});
+goToSignIn.addEventListener('click', () => {
+    userSignUp.email.value = '';
+    userSignUp.password.value = '';
+    signInDiv.classList.remove('d-none');
+    signUpDiv.classList.add('d-none');
+});
+
+btnSignOut.addEventListener('click', async () => {
     mainContainer.classList.add('d-none');
     await fetch("http://localhost:3000/logout", {
         headers: {
