@@ -58,10 +58,25 @@ const postSchema = new normalizr.schema.Entity('posts', {
 let template;           // Template para las card-images de la lista de productos. Es captado mediante un fetch a archivo público de servidor.
 let products = [];      // Arreglo local de la lista de productos
 
-// Solicitud GET para obtener el template de las card-image de los productos
-fetch('http://localhost:3000/templates/card-images.hbs')
-    .then(response => response.text())
-    .then(text => template = Handlebars.compile(text));
+/* -------------------------------------------- SESSION -------------------------------------------- */
+// Al iniciar el sitio web, si corrobora si hay sesión iniciada
+window.addEventListener('load', async () => {
+    const rawResponse = await fetch("http://localhost:3000/users/me");
+    if (rawResponse.status === 200) {
+        let response = await rawResponse.json();
+        mainContainer.classList.remove('d-none');
+        signOutDiv.classList.remove('d-none');
+        signInDiv.classList.add('d-none');
+        signUpDiv.classList.add('d-none');
+        usernameOutput.innerText = `Bienvenido ${response.email} !`;
+    }
+    else {
+        mainContainer.classList.add('d-none');
+        signOutDiv.classList.add('d-none');
+        signInDiv.classList.remove('d-none');
+        usernameOutput.innerText = '';
+    }
+});
 
 // Iniciar sesión
 btnSignIn.addEventListener('click', async () => {
@@ -69,7 +84,6 @@ btnSignIn.addEventListener('click', async () => {
         email: userSignIn.email.value,
         password: userSignIn.password.value
     };
-    console.log("data", data);
     const dataJSON = JSON.stringify(data);
 
     const rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
@@ -146,13 +160,19 @@ btnSignOut.addEventListener('click', async () => {
     btnSignOut.classList.add('d-none');
 });
 
+/* -------------------------------------------- SOCKET IO -------------------------------------------- */
 // Conexión al servidor.
 socket.on('connect', () => {
     console.log('Conectado al servidor');
 });
 
 // Se capta lista de productos y mensajes al momento de la conexión.
-socket.on('init-elements', (data) => {
+socket.on('init-elements', async (data) => {
+    // Solicitud GET para obtener el template de las card-image de los productos
+    await fetch('http://localhost:3000/templates/card-images.hbs')
+        .then(response => response.text())
+        .then(text => template = Handlebars.compile(text));
+
     // Actualización del arreglo local de productos
     products = data.products;
 
@@ -175,6 +195,7 @@ socket.on('update-products', (data) => {
     productTable.innerHTML += template(data);
 });
 
+/* -------------------------------------------- NEW PRODUCT -------------------------------------------- */
 // Formulario agregar producto
 // Se agrega nuevo producto al arreglo local y se genera evento para emitirlo a todos los clientes conectados.
 addProduct.addEventListener('submit', () => {
@@ -217,6 +238,7 @@ formMessage.addEventListener('submit', (e) => {
     inputUserContent.focus();
 });
 
+/* -------------------------------------------- UTILIDADES -------------------------------------------- */
 // Función para presentar nuevos mensajes en el Centro de Mensajes, según formato requerido.
 function showMessages(normalized) {
     console.log(normalized);

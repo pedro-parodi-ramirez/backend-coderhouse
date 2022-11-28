@@ -19,7 +19,6 @@ router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
 
 router.post('/sign-up', passport.authenticate('sign-up'), (req, res) => {
   const { user } = req
-  console.log('register -> user', user);
   res.json({ message: `Bienvenid@ ${user.email} !` })
 })
 

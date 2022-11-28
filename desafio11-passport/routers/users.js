@@ -12,7 +12,6 @@ const verifyAuth = (req, res, next) => {
 }
 
 router.get('/me', verifyAuth, async (req, res, next) => {
-  console.log('req.session.passport', req.session.passport);
   try {
     const user = await DB.getUserByid(req.user._id)
     res.json(user)
