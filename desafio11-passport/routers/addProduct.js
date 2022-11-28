@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import DB from '../../db/db.js';
-import { emit } from '../../socket.js';
+import DB from '../db/db.js';
+import { emit } from '../socket.js';
 
 const router = Router();
 

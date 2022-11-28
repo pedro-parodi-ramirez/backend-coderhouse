@@ -6,7 +6,6 @@ const mainContainer = document.getElementById('main-container');
 mainContainer.classList.add('d-none');
 
 // Session
-let username = '';
 const loginForm = document.getElementById('form-login');
 const logOutDiv = document.getElementById('logout-div');
 const logInDiv = document.getElementById('login-div');
@@ -54,10 +53,14 @@ fetch('http://localhost:3000/templates/card-images.hbs')
 // Session
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const data = { username: e.target.elements[0].value };
+    const data = {
+        email: e.target.elements[0].value,
+        password: e.target.elements[1].value
+    };
+    console.log("data",data);
     const dataJSON = JSON.stringify(data);
 
-    const rawResponse = await fetch("http://localhost:3000/login", {
+    const rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': dataJSON.length
@@ -67,12 +70,12 @@ loginForm.addEventListener('submit', async (e) => {
     });
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
-        username = response.username;
-        document.getElementById('login').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
         mainContainer.classList.remove('d-none');
         logOutDiv.classList.remove('d-none');
         logInDiv.classList.add('d-none');
-        usernameOutput.innerText = `Bienvenido ${username} !`;
+        usernameOutput.innerText = response.message;
     }
 });
 

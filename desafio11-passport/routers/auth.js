@@ -10,7 +10,7 @@ router.post('/sign-in', passport.authenticate('login'), (req, res) => {
       res.status(401).json({ message: 'Email or password is invalid' })
       return
     }
-    res.json({ message: `Wellcome ${user.email}.` })
+    res.json({ message: `Bienvenid@ ${user.email} !` })
   }
   catch (e) {
     console.log("Error al loguearse:\n" + e);
