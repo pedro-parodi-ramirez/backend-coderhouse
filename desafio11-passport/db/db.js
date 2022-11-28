@@ -3,7 +3,10 @@ import database from '../config/config.js';
 import { schema, normalize } from 'normalizr';
 import { v4 as uuidv4 } from 'uuid';
 import { writeFile, readFile } from 'fs/promises';
+import mongoose from 'mongoose';
+import UserModel from '../models/user.js';
 
+const options = { dbName: 'challenge' };
 const commentSchema = new schema.Entity('comments');
 const authorSchema = new schema.Entity('authors', {}, { idAttribute: 'email' }
 );
@@ -14,7 +17,10 @@ const postSchema = new schema.Entity('posts', {
     }]
 });
 
+await mongoose.connect(process.env.MONGO_URI, options);
+
 class DB {
+    /* PRODUCTS */
     static async getProducts() {
         const products = await selectAllFromTable(database.sql, 'products');
         return products;
@@ -29,6 +35,7 @@ class DB {
         await insertOnTable(database.sql, 'products', data);
     }
 
+    /* MESSAGES */
     static async addMessage(newMessage) {
         const data = await this.readMessages();
         const comment = {
@@ -54,6 +61,27 @@ class DB {
         const data = await this.readMessages();
         const normalized = normalize(data[0], postSchema);
         return normalized;
+    }
+
+    /* USERS */
+    static createUser(data) {
+        return UserModel.create(data);
+    }
+
+    static getUser(query = {}) {
+        return UserModel.find(query);
+    }
+
+    static getUserByid(id) {
+        return UserModel.findById(id);
+    }
+
+    static uploadUserById(id, data) {
+        return UserModel.updateOne({ _id: id }, { $set: data });
+    }
+
+    static deleteUserById(id) {
+        return UserModel.deleteOne({ _id: id });
     }
 }
 

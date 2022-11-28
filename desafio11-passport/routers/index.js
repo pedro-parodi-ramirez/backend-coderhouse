@@ -2,11 +2,13 @@ import { Router } from 'express';
 import showProducts from './main/getProducts.js';
 import addProduct from './main/addProduct.js';
 import fakerView from './main/fakerView.js';
-import { router as login } from './session/login.js';
-import logout from './session/logout.js';
+import auth from './session/auth.js';
+import users from './session/users.js';
 
 const router = Router();
 
-router.use('/', showProducts, addProduct, fakerView, login, logout);
+router.use('/', showProducts, addProduct, fakerView);
+router.use('/auth', auth);
+router.use('/users', users);
 
 export default router;

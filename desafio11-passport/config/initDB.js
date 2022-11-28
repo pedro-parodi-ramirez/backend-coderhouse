@@ -1,6 +1,6 @@
 import knex from 'knex';
-import database from '../config/config.js';
-import DB from './db.js';
+import database from './config.js';
+import DB from '../db/db.js';
 import { readFile, writeFile } from 'fs/promises';
 
 (async () => {
