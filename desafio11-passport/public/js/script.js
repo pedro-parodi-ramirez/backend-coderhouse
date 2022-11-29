@@ -10,15 +10,19 @@ const user = {
     name: document.getElementById('name'),
     email: document.getElementById('email'),
     password: document.getElementById('password')
-}
+};
+const formAuth = document.getElementById('form-auth');
 const authTitle = document.getElementById('auth-title');
+const authErrorTitle = document.getElementById('auth-error-title');
 const btnSignIn = document.getElementById('btn-sign-in');
 const btnSignUp = document.getElementById('btn-sign-up');
-const toggleAuth = document.getElementById('toggle-auth');
+const btnToggleAuth = document.getElementById('btn-toggle-auth');
+const btnSignOut = document.getElementById('btn-sign-out');
+const btnGoToSignIn = document.getElementById('btn-go-to-sign-in');
 const signOutDiv = document.getElementById('sign-out-div');
 const authDiv = document.getElementById('auth-div');
+const authErrorDiv = document.getElementById('auth-error-div');
 const usernameOutput = document.getElementById('username-output');
-const btnSignOut = document.getElementById('btn-sign-out');
 
 // Productos
 const productTable = document.getElementById('product-table');
@@ -62,7 +66,6 @@ window.addEventListener('load', async () => {
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
         authDiv.classList.add('d-none');
-        signUpDiv.classList.add('d-none');
         usernameOutput.innerText = `Bienvenido ${response.email} !`;
     }
     else {
@@ -73,8 +76,8 @@ window.addEventListener('load', async () => {
     }
 });
 
-// Iniciar sesión
-btnSignIn.addEventListener('click', async () => {
+formAuth.addEventListener('submit', async (event) => {
+    event.preventDefault();
     const data = {
         name: user.name.value,
         email: user.email.value,
@@ -82,74 +85,142 @@ btnSignIn.addEventListener('click', async () => {
     };
     const dataJSON = JSON.stringify(data);
 
-    const rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': dataJSON.length
-        },
-        method: 'POST',
-        body: dataJSON
-    });
+    let rawResponse;
+    // Sign-in
+    if (event.submitter.id === 'btn-sign-in') {
+        rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': dataJSON.length
+            },
+            method: 'POST',
+            body: dataJSON
+        });
+    }
+    // Sign-up
+    else if (event.submitter.id === 'btn-sign-up') {
+        rawResponse = await fetch("http://localhost:3000/auth/sign-up", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': dataJSON.length
+            },
+            method: 'POST',
+            body: dataJSON
+        });
+    }
+
+    // Response
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
-        user.email.value = '';
-        user.password.value = '';
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
         authDiv.classList.add('d-none');
         usernameOutput.innerText = response.message;
     }
+    else {
+        authDiv.classList.add('d-none');
+        authErrorDiv.classList.remove('d-none');
+        authErrorTitle.innerText = await rawResponse.text();
+        // authErrorTitle.innerText = 'Error: invalid name or password.';
+        // authErrorTitle.innerText = 'Error: user already exist';
+    }
+    user.name.value = '';
+    user.email.value = '';
+    user.password.value = '';
 });
+
+// // Iniciar sesión
+// btnSignIn.addEventListener('click', async () => {
+//     const data = {
+//         name: user.name.value,
+//         email: user.email.value,
+//         password: user.password.value
+//     };
+//     const dataJSON = JSON.stringify(data);
+
+//     const rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Content-Length': dataJSON.length
+//         },
+//         method: 'POST',
+//         body: dataJSON
+//     });
+//     if (rawResponse.status === 200) {
+//         let response = await rawResponse.json();
+//         mainContainer.classList.remove('d-none');
+//         signOutDiv.classList.remove('d-none');
+//         authDiv.classList.add('d-none');
+//         usernameOutput.innerText = response.message;
+//     }
+//     else {
+//         authDiv.classList.add('d-none');
+//         authErrorDiv.classList.remove('d-none');
+//         authErrorTitle.innerText = 'Error: invalid name or password.';
+//     }
+//     user.name.value = '';
+//     user.email.value = '';
+//     user.password.value = '';
+// });
 
 // Registrarse
-btnSignUp.addEventListener('click', async () => {
-    const data = {
-        name: user.name.value,
-        email: user.email.value,
-        password: user.password.value
-    };
-    console.log("data", data);
-    const dataJSON = JSON.stringify(data);
+// btnSignUp.addEventListener('click', async () => {
+//     const data = {
+//         name: user.name.value,
+//         email: user.email.value,
+//         password: user.password.value
+//     };
+//     console.log("data", data);
+//     const dataJSON = JSON.stringify(data);
 
-    const rawResponse = await fetch("http://localhost:3000/auth/sign-up", {
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': dataJSON.length
-        },
-        method: 'POST',
-        body: dataJSON
-    });
-    if (rawResponse.status === 200) {
-        let response = await rawResponse.json();
-        user.email.value = '';
-        user.password.value = '';
-        mainContainer.classList.remove('d-none');
-        signOutDiv.classList.remove('d-none');
-        authDiv.classList.add('d-none');
-        usernameOutput.innerText = response.message;
-    }
-});
+//     const
+//     if (rawResponse.status === 200) {
+//         let response = await rawResponse.json();
+//         mainContainer.classList.remove('d-none');
+//         signOutDiv.classList.remove('d-none');
+//         authDiv.classList.add('d-none');
+//         usernameOutput.innerText = response.message;
+//     }
+//     else {
+//         authDiv.classList.add('d-none');
+//         authErrorDiv.classList.remove('d-none');
+        
+//     }
+//     user.name.value = '';
+//     user.email.value = '';
+//     user.password.value = '';
+// });
 
 // Toggle sign-in sign-up
-toggleAuth.addEventListener('click', () => {
-    let text = toggleAuth.innerText;
+btnToggleAuth.addEventListener('click', () => {
+    let text = btnToggleAuth.innerText;
     switch (text) {
         case 'Registrarse':
             btnSignIn.classList.add('d-none');
             btnSignUp.classList.remove('d-none');
             authTitle.innerText = 'Registro de usuario';
-            toggleAuth.innerText = 'Iniciar sesión';
+            btnToggleAuth.innerText = 'Iniciar sesión';
             break;
         default:
             btnSignIn.classList.remove('d-none');
             btnSignUp.classList.add('d-none');
             authTitle.innerText = 'Inicie sesión para continuar.';
-            toggleAuth.innerText = 'Registrarse';
+            btnToggleAuth.innerText = 'Registrarse';
             break;
     }
     user.name.value = '';
     user.email.value = '';
     user.password.value = '';
+});
+
+// Back to sign-up from error
+btnGoToSignIn.addEventListener('click', () => {
+    btnSignIn.classList.remove('d-none');
+    btnSignUp.classList.add('d-none');
+    authTitle.innerText = 'Inicie sesión para continuar.';
+    btnToggleAuth.innerText = 'Registrarse';
+    authDiv.classList.remove('d-none');
+    authErrorDiv.classList.add('d-none');
 });
 
 btnSignOut.addEventListener('click', async () => {

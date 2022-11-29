@@ -49,11 +49,11 @@ passport.use('sign-up', new LocalStrategy({
         ...req.body,
         password: encryptPassword(password)
       }
-      return UserModel.create(newUser)
-    })
-    .then(newUser => {
-      console.log(`User ${newUser.email} registration succesful.`)
-      done(null, newUser)
+      UserModel.create(newUser)
+        .then(newUser => {
+          console.log(`User ${newUser.email} registration succesful.`)
+          done(null, newUser)
+        })
     })
     .catch(error => {
       console.log('Error in register', error.message)

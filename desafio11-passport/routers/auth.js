@@ -7,7 +7,7 @@ router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
   try {
     const { user } = req
     if (!req.isAuthenticated()) {
-      res.status(401).json({ message: 'Email or password is invalid' })
+      res.status(401).json({ message: 'Invalid email or password' });
       return
     }
     res.json({ message: `Bienvenid@ ${user.name} !` })
