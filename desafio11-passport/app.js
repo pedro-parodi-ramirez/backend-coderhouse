@@ -75,6 +75,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressSession({
   secret: '3biXMV8#m5s7',
+  cookie: {
+    httpOnly: false,
+    secure: false,
+    maxAge: 600000,
+  },
+  rolling: true,
   resave: false,
   saveUninitialized: false,
 }));
