@@ -10,7 +10,7 @@ router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
       res.status(401).json({ message: 'Email or password is invalid' })
       return
     }
-    res.json({ message: `Bienvenid@ ${user.email} !` })
+    res.json({ message: `Bienvenid@ ${user.name} !` })
   }
   catch (e) {
     console.log("Error al loguearse:\n" + e);
@@ -19,7 +19,7 @@ router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
 
 router.post('/sign-up', passport.authenticate('sign-up'), (req, res) => {
   const { user } = req
-  res.json({ message: `Bienvenid@ ${user.email} !` })
+  res.json({ message: `Bienvenid@ ${user.name} !` })
 })
 
 router.post('/sign-out', (req, res, next) => {
@@ -28,7 +28,7 @@ router.post('/sign-out', (req, res, next) => {
     if (error) {
       return next(error)
     }
-    res.json({ message: `Hasta luego ${user.email} ! 👋` })
+    res.json({ message: `Hasta luego ${user.name} ! 👋` })
   })
 })
 

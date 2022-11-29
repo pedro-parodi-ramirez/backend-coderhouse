@@ -6,22 +6,17 @@ const mainContainer = document.getElementById('main-container');
 mainContainer.classList.add('d-none');
 
 // Session
-const userSignIn = {
-    email: document.getElementById('email-sign-in'),
-    password: document.getElementById('password-sign-in')
+const user = {
+    name: document.getElementById('name'),
+    email: document.getElementById('email'),
+    password: document.getElementById('password')
 }
-const userSignUp = {
-    email: document.getElementById('email-sign-up'),
-    password: document.getElementById('password-sign-up')
-}
-const loginTitle = document.getElementById('login-title');
+const authTitle = document.getElementById('auth-title');
 const btnSignIn = document.getElementById('btn-sign-in');
 const btnSignUp = document.getElementById('btn-sign-up');
-const goToSignIn = document.getElementById('go-to-sign-in');
-const goToSignUp = document.getElementById('go-to-sign-up');
+const toggleAuth = document.getElementById('toggle-auth');
 const signOutDiv = document.getElementById('sign-out-div');
-const signInDiv = document.getElementById('sign-in-div');
-const signUpDiv = document.getElementById('sign-up-div');
+const authDiv = document.getElementById('auth-div');
 const usernameOutput = document.getElementById('username-output');
 const btnSignOut = document.getElementById('btn-sign-out');
 
@@ -66,14 +61,14 @@ window.addEventListener('load', async () => {
         let response = await rawResponse.json();
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
-        signInDiv.classList.add('d-none');
+        authDiv.classList.add('d-none');
         signUpDiv.classList.add('d-none');
         usernameOutput.innerText = `Bienvenido ${response.email} !`;
     }
     else {
         mainContainer.classList.add('d-none');
         signOutDiv.classList.add('d-none');
-        signInDiv.classList.remove('d-none');
+        authDiv.classList.remove('d-none');
         usernameOutput.innerText = '';
     }
 });
@@ -81,8 +76,9 @@ window.addEventListener('load', async () => {
 // Iniciar sesión
 btnSignIn.addEventListener('click', async () => {
     const data = {
-        email: userSignIn.email.value,
-        password: userSignIn.password.value
+        name: user.name.value,
+        email: user.email.value,
+        password: user.password.value
     };
     const dataJSON = JSON.stringify(data);
 
@@ -96,27 +92,21 @@ btnSignIn.addEventListener('click', async () => {
     });
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
-        userSignIn.email.value = '';
-        userSignIn.password.value = '';
+        user.email.value = '';
+        user.password.value = '';
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
-        signInDiv.classList.add('d-none');
-        signUpDiv.classList.add('d-none');
+        authDiv.classList.add('d-none');
         usernameOutput.innerText = response.message;
     }
-});
-goToSignUp.addEventListener('click', () => {
-    userSignIn.email.value = '';
-    userSignIn.password.value = '';
-    signInDiv.classList.add('d-none');
-    signUpDiv.classList.remove('d-none');
 });
 
 // Registrarse
 btnSignUp.addEventListener('click', async () => {
     const data = {
-        email: userSignUp.email.value,
-        password: userSignUp.password.value
+        name: user.name.value,
+        email: user.email.value,
+        password: user.password.value
     };
     console.log("data", data);
     const dataJSON = JSON.stringify(data);
@@ -131,20 +121,35 @@ btnSignUp.addEventListener('click', async () => {
     });
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
-        userSignUp.email.value = '';
-        userSignUp.password.value = '';
+        user.email.value = '';
+        user.password.value = '';
         mainContainer.classList.remove('d-none');
         signOutDiv.classList.remove('d-none');
-        signInDiv.classList.add('d-none');
-        signUpDiv.classList.add('d-none');
+        authDiv.classList.add('d-none');
         usernameOutput.innerText = response.message;
     }
 });
-goToSignIn.addEventListener('click', () => {
-    userSignUp.email.value = '';
-    userSignUp.password.value = '';
-    signInDiv.classList.remove('d-none');
-    signUpDiv.classList.add('d-none');
+
+// Toggle sign-in sign-up
+toggleAuth.addEventListener('click', () => {
+    let text = toggleAuth.innerText;
+    switch (text) {
+        case 'Registrarse':
+            btnSignIn.classList.add('d-none');
+            btnSignUp.classList.remove('d-none');
+            authTitle.innerText = 'Registro de usuario';
+            toggleAuth.innerText = 'Iniciar sesión';
+            break;
+        default:
+            btnSignIn.classList.remove('d-none');
+            btnSignUp.classList.add('d-none');
+            authTitle.innerText = 'Inicie sesión para continuar.';
+            toggleAuth.innerText = 'Registrarse';
+            break;
+    }
+    user.name.value = '';
+    user.email.value = '';
+    user.password.value = '';
 });
 
 btnSignOut.addEventListener('click', async () => {
