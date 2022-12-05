@@ -4,7 +4,7 @@ import config from '../config/config.js';
 const router = Router();
 
 /* GET Info. */
-router.get('/info', async function (_, res, next) {
+router.get('/info', function (_, res, next) {
     try {
         const data = {
             argv: config.argv,

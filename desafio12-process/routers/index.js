@@ -4,10 +4,12 @@ import addProduct from './addProduct.js';
 import auth from './auth.js';
 import users from './users.js';
 import info from './info.js'
+import randoms from './randoms.js'
 
 const router = Router();
 
-router.use('/', showProducts, addProduct, info);
+router.use('/', info);
+router.use('/api', showProducts, addProduct, randoms);
 router.use('/auth', auth);
 router.use('/users', users);
 

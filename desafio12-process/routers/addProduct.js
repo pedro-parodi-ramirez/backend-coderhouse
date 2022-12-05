@@ -5,7 +5,7 @@ import { emit } from '../socket.js';
 const router = Router();
 
 /* POST add product */
-router.post('/api/productos', async function (req, res, next) {
+router.post('/productos', async function (req, res, next) {
   try {
     const data = req.body;
     console.log('Solicitud POST para agregar producto');

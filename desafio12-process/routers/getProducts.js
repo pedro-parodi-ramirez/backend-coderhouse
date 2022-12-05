@@ -6,7 +6,7 @@ import { emit } from '../socket.js';
 const router = Router();
 
 /* GET products. */
-router.get('/api/productos', async function (_, res, next) {
+router.get('/productos', async function (_, res, next) {
   try {
     console.log('Solicitud GET de listar los productos');
     const data = await DB.getProducts();
