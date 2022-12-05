@@ -1,6 +1,6 @@
 import yargs from 'yargs/yargs';
 
-const params = yargs(
+const argv = yargs(
     process.argv.slice(2)
 )
     .default({
@@ -12,7 +12,8 @@ const params = yargs(
     .argv
 
 const config = {
-    PORT: params.port,
+    argv,
+    PORT: argv.port,
     MONGO_URI: process.env.MONGO_URI,
     databaseSQL: {
         sql: {
