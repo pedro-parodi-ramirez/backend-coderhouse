@@ -5,6 +5,7 @@ import expressSession from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import index from './routers/index.js';
+import processRouter from './routers/process/processRouter.js'
 import { initSocket } from './socket.js';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
@@ -90,6 +91,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', index);
+app.use('/', processRouter);
 app.use(express.static(path.join(__dirname, '/public')));
 
 const server = app.listen(PORT, () => {

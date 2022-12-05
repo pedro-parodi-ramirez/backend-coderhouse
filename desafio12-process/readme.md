@@ -1,5 +1,5 @@
 # Desafío 11 - Passport
-La aplicación cuenta con una única ruta para interactuar `localhost:3000`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados.
+La aplicación cuenta con una única ruta para interactuar `localhost:8080`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados.
 Los productos cuentan con persistencia en MySQL usando Knex; los mensajes hacen uso de archivos .json.
 
 ## Ejecutar servidor
@@ -14,7 +14,7 @@ npm start
 ```
 Luego ingresar a la siguiente ruta para probar las funcionalidades de la app:
 ```
-localhost:3000
+localhost:8080
 ```
 
 ## Configuración
@@ -38,7 +38,7 @@ npm install
 ```
 2. Crear un archivo en la raíz del proyecto, con el nombre `.env` y el siguiente contenido:
 ```
-PORT=3000
+PORT=8080
 MONGO_URI='mongodb+srv://developer:x6JYg18ip3N7gsky@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority'
 ```
 3. Modificar el valor de `port` y `password` en el archivo `./config/config.js` según el puerto en el cual se haya creado la base de datos con MySQL y según la configuración de XAMMP. Para este trabajo, se utilizó el puerto 3307 y contraseña nula.

@@ -60,7 +60,7 @@ let products = [];      // Arreglo local de la lista de productos
 /* -------------------------------------------- SESSION -------------------------------------------- */
 // Al iniciar el sitio web, si corrobora si hay sesión iniciada
 window.addEventListener('load', async () => {
-    const rawResponse = await fetch("http://localhost:3000/users/me");
+    const rawResponse = await fetch("http://localhost:8080/users/me");
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
         mainContainer.classList.remove('d-none');
@@ -88,7 +88,7 @@ formAuth.addEventListener('submit', async (event) => {
     let rawResponse;
     // Sign-in
     if (event.submitter.id === 'btn-sign-in') {
-        rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
+        rawResponse = await fetch("http://localhost:8080/auth/sign-in", {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': dataJSON.length
@@ -99,7 +99,7 @@ formAuth.addEventListener('submit', async (event) => {
     }
     // Sign-up
     else if (event.submitter.id === 'btn-sign-up') {
-        rawResponse = await fetch("http://localhost:3000/auth/sign-up", {
+        rawResponse = await fetch("http://localhost:8080/auth/sign-up", {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': dataJSON.length
@@ -138,7 +138,7 @@ formAuth.addEventListener('submit', async (event) => {
 //     };
 //     const dataJSON = JSON.stringify(data);
 
-//     const rawResponse = await fetch("http://localhost:3000/auth/sign-in", {
+//     const rawResponse = await fetch("http://localhost:8080/auth/sign-in", {
 //         headers: {
 //             'Content-Type': 'application/json',
 //             'Content-Length': dataJSON.length
@@ -225,7 +225,7 @@ btnGoToSignIn.addEventListener('click', () => {
 
 btnSignOut.addEventListener('click', async () => {
     mainContainer.classList.add('d-none');
-    const rawResponse = await fetch("http://localhost:3000/auth/sign-out", {
+    const rawResponse = await fetch("http://localhost:8080/auth/sign-out", {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -245,7 +245,7 @@ socket.on('connect', () => {
 // Se capta lista de productos y mensajes al momento de la conexión.
 socket.on('init-elements', async (data) => {
     // Solicitud GET para obtener el template de las card-image de los productos
-    await fetch('http://localhost:3000/templates/card-images.hbs')
+    await fetch('http://localhost:8080/templates/card-images.hbs')
         .then(response => response.text())
         .then(text => template = Handlebars.compile(text));
 
