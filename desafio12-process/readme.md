@@ -1,22 +1,13 @@
-# Desafío 11 - Passport
-La aplicación cuenta con una única ruta para interactuar `localhost:8080`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados.
+# Desafío 12 - Process
+Se agrega a la app existente las rutas `localhost:8080/info` y `localhost:8080/api/randoms` según dicta el enunciado. Se cuenta con una colección postman para probar el backend con esas solicitudes (no implementado en front-end).
+Del lado del front-end, la aplicación cuenta con una única ruta para interactuar `localhost:8080`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados.
 Los productos cuentan con persistencia en MySQL usando Knex; los mensajes hacen uso de archivos .json.
 
 ## Ejecutar servidor
-Una vez realizada la configuración de las herramientas e instalado las depeendencias, ejectuar en VSCode:
+Una vez realizada la configuración de las herramientas e instalado las depeendencias, situarse en la raiz del proyecto y ejectuar en VSCode:
 ```
-npm run dev
+node . -p 8080
 ```
-O bien
-```
-$env:MONGO_URI='mongodb+srv://developer:x6JYg18ip3N7gsky@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority'
-npm start
-```
-Luego ingresar a la siguiente ruta para probar las funcionalidades de la app:
-```
-localhost:8080
-```
-
 ## Configuración
 
 ### MariaDB
@@ -38,7 +29,6 @@ npm install
 ```
 2. Crear un archivo en la raíz del proyecto, con el nombre `.env` y el siguiente contenido:
 ```
-PORT=8080
 MONGO_URI='mongodb+srv://developer:x6JYg18ip3N7gsky@coderhouse.wm4ogqy.mongodb.net/?retryWrites=true&w=majority'
 ```
 3. Modificar el valor de `port` y `password` en el archivo `./config/config.js` según el puerto en el cual se haya creado la base de datos con MySQL y según la configuración de XAMMP. Para este trabajo, se utilizó el puerto 3307 y contraseña nula.
