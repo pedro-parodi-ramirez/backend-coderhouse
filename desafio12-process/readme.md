@@ -1,6 +1,6 @@
 # Desafío 12 - Process
-Se agrega a la app existente las rutas `localhost:8080/info` y `localhost:8080/api/randoms` según dicta el enunciado. Se cuenta con una colección postman para probar el backend con esas solicitudes (no implementado en front-end).
-Del lado del front-end, la aplicación cuenta con una única ruta para interactuar `localhost:8080`, desde la cual es posible visualizar los productos disponibles y agregar nuevos productos. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados.
+Se agrega a la app existente las rutas `localhost:8080/info` y `localhost:8080/api/randoms` según dicta el enunciado. Se cuenta con una colección postman para probar el backend con esas solicitudes.
+Del lado del front-end, la aplicación cuenta con una única ruta `localhost:8080` que permite interactuar con todas las funcionalidades. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados.
 Los productos cuentan con persistencia en MySQL usando Knex; los mensajes hacen uso de archivos .json.
 
 ## Ejecutar servidor

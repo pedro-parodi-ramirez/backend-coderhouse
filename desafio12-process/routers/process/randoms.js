@@ -15,7 +15,7 @@ router.get('/randoms', function (req, res, next) {
         child.send(qty);
         return;
       }
-      res.json(msg);
+      res.end(JSON.stringify(msg, null, 3));
     })
   }
   catch (e) {

@@ -5,6 +5,12 @@ const socket = io();
 const mainContainer = document.getElementById('main-container');
 mainContainer.classList.add('d-none');
 
+// Process && Yargv
+const btnServerInfo = document.getElementById('btn-server-info');
+const btnGenerateNumbers = document.getElementById('btn-generate-numbers');
+const divServerInfo = document.getElementById('div-server-info');
+const listServerInfo = document.getElementById('list-server-info');
+
 // Session
 const user = {
     name: document.getElementById('name'),
@@ -128,68 +134,6 @@ formAuth.addEventListener('submit', async (event) => {
     user.email.value = '';
     user.password.value = '';
 });
-
-// // Iniciar sesión
-// btnSignIn.addEventListener('click', async () => {
-//     const data = {
-//         name: user.name.value,
-//         email: user.email.value,
-//         password: user.password.value
-//     };
-//     const dataJSON = JSON.stringify(data);
-
-//     const rawResponse = await fetch("http://localhost:8080/auth/sign-in", {
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Content-Length': dataJSON.length
-//         },
-//         method: 'POST',
-//         body: dataJSON
-//     });
-//     if (rawResponse.status === 200) {
-//         let response = await rawResponse.json();
-//         mainContainer.classList.remove('d-none');
-//         signOutDiv.classList.remove('d-none');
-//         authDiv.classList.add('d-none');
-//         usernameOutput.innerText = response.message;
-//     }
-//     else {
-//         authDiv.classList.add('d-none');
-//         authErrorDiv.classList.remove('d-none');
-//         authErrorTitle.innerText = 'Error: invalid name or password.';
-//     }
-//     user.name.value = '';
-//     user.email.value = '';
-//     user.password.value = '';
-// });
-
-// Registrarse
-// btnSignUp.addEventListener('click', async () => {
-//     const data = {
-//         name: user.name.value,
-//         email: user.email.value,
-//         password: user.password.value
-//     };
-//     console.log("data", data);
-//     const dataJSON = JSON.stringify(data);
-
-//     const
-//     if (rawResponse.status === 200) {
-//         let response = await rawResponse.json();
-//         mainContainer.classList.remove('d-none');
-//         signOutDiv.classList.remove('d-none');
-//         authDiv.classList.add('d-none');
-//         usernameOutput.innerText = response.message;
-//     }
-//     else {
-//         authDiv.classList.add('d-none');
-//         authErrorDiv.classList.remove('d-none');
-        
-//     }
-//     user.name.value = '';
-//     user.email.value = '';
-//     user.password.value = '';
-// });
 
 // Toggle sign-in sign-up
 btnToggleAuth.addEventListener('click', () => {
@@ -334,3 +278,41 @@ function showMessages(normalized) {
         messageList.appendChild(li);
     })
 }
+
+/* -------------------------------------------- PROCESS && YARGV -------------------------------------------- */
+// Mostrar información del servidor
+btnServerInfo.addEventListener('click', async () => {
+    if (!divServerInfo.classList.contains('d-none')) { divServerInfo.classList.add('d-none'); }
+    else {
+        divServerInfo.classList.remove('d-none');
+        const rawResponse = await fetch('http://localhost:8080/info');
+        const response = await rawResponse.json();
+
+        let li;
+        listServerInfo.innerHTML = `<li>argv:
+                                        <ul id="inner-ul"></ul>
+                                    </li>`;
+        const innerUL = document.getElementById('inner-ul');
+        innerUL.innerHTML = '';
+        for (m in response) {
+            li = document.createElement('li');
+            if (m === 'argv') {
+                let inerrLI;
+                for (e in response[m]) {
+                    inerrLI = document.createElement('li');
+                    inerrLI.innerHTML = `${e}: ${response[m][e]}`;
+                    innerUL.appendChild(inerrLI);
+                }
+            }
+            else {
+                li.innerHTML = `${m}: ${response[m]}`;
+                listServerInfo.appendChild(li);
+            }
+        }
+    }
+})
+
+btnGenerateNumbers.addEventListener('click', () => {
+    const qty = document.getElementById('qty').value;
+    window.location = `http://localhost:8080/api/randoms?qty=${qty}`;
+});

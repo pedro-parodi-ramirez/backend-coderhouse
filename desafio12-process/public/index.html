@@ -25,8 +25,10 @@
                     <label for="password" class="form-label">Ingrese su contraseña:</label>
                     <input type="text" name="password" class="form-control" id="password" required>
                     <div class="mt-2 d-flex justify-content-center">
-                        <button type="submit" formaction="sign-in" id="btn-sign-in" class="btn btn-success">Iniciar sesión</button>
-                        <button type="submit" formaction="sign-up" id="btn-sign-up" class="btn btn-success d-none">Registrarse</button>
+                        <button type="submit" formaction="sign-in" id="btn-sign-in" class="btn btn-success">Iniciar
+                            sesión</button>
+                        <button type="submit" formaction="sign-up" id="btn-sign-up"
+                            class="btn btn-success d-none">Registrarse</button>
                     </div>
                     <hr>
                     <button type="button" id="btn-toggle-auth" class="ms-2 btn btn-warning">Registrarse</button>
@@ -38,6 +40,7 @@
                         <output id="username-output" class="fs-2"></output>
                     </div>
                     <div class="col-3 d-flex justify-content-end">
+                        <button id="btn-server-info" type="button" class="me-2 btn btn-warning">Server info</button>
                         <button id="btn-sign-out" type="button" class="me-2 btn btn-warning">Desloguear</button>
                     </div>
                 </div>
@@ -49,6 +52,20 @@
         </div>
 
         <div id="main-container">
+            <!-- Server info -->
+            <div id="div-server-info" class="mt-3 d-none">
+                <h3>Información del servidor:</h3>
+                <ul id="list-server-info"></ul>
+            </div>
+
+            <!-- Random numbers -->
+            <div class="rounded border border-success bg-success bg-opacity-10 mt-5 p-2">
+                <h3>Generar números aleatorios.</h3>
+                <label for="name" class="form-label">Cantidad de números:</label>
+                <input id="qty" type="number" name="numbers" class="text-center">
+                <button id="btn-generate-numbers" type="button" class="me-2 btn btn-warning">Generar</button>
+            </div>
+
             <!-- Formulario para agregar producto -->
             <h2 class="text-center mt-5">Agregar producto</h2>
             <form id="form-add-product" action="/api/productos" method="POST">
