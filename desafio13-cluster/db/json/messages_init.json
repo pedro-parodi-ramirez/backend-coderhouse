@@ -1,0 +1,95 @@
+[
+  {
+    "id": "messages",
+    "messages": [
+      {
+        "authors": {
+          "email": "Coderhouse@Coderhouse",
+          "name": "Coderhouse",
+          "lastName": "Coderhouse",
+          "age": "Coderhouse",
+          "alias": "Coderhouse",
+          "avatar": "Coderhouse"
+        },
+        "comments": {
+          "id": "Coderhouse",
+          "content": "Bienvenid@!",
+          "timestamp": {
+            "YY": "2022",
+            "MM": "10",
+            "DD": "09",
+            "hh": "11",
+            "mm": "46",
+            "ss": "19"
+          }
+        }
+      },
+      {
+        "authors": {
+          "email": "maria.dipierro@gmail.com",
+          "name": "Maria",
+          "lastName": "Di Pierro",
+          "age": "24",
+          "alias": "Maru",
+          "avatar": "https://cdn2.iconfinder.com/data/icons/avatars-60/5985/1-Girl-512.png"
+        },
+        "comments": {
+          "id": "d69f526d-552a-4340-96a3-5daee9e879da",
+          "content": "Hola !!",
+          "timestamp": {
+            "YY": "2022",
+            "MM": "10",
+            "DD": "09",
+            "hh": "12",
+            "mm": "30",
+            "ss": "10"
+          }
+        }
+      },
+      {
+        "authors": {
+          "email": "tomas.fernandez@gmail.com",
+          "name": "Tomas",
+          "lastName": "Fernandez",
+          "age": "32",
+          "alias": "elcolo",
+          "avatar": "https://cdn2.iconfinder.com/data/icons/avatars-60/5985/13-Captain-512.png"
+        },
+        "comments": {
+          "id": "a5d18885-41f5-4f9b-b1fb-39d86cd55067",
+          "content": "Heey, como va?",
+          "timestamp": {
+            "YY": "2022",
+            "MM": "10",
+            "DD": "09",
+            "hh": "12",
+            "mm": "30",
+            "ss": "44"
+          }
+        }
+      },
+      {
+        "authors": {
+          "email": "josefina.dandi@gmail.com",
+          "name": "Josefina",
+          "lastName": "Dandi",
+          "age": "29",
+          "alias": "Jose",
+          "avatar": "https://cdn2.iconfinder.com/data/icons/avatars-60/5985/37-Daughter-512.png"
+        },
+        "comments": {
+          "id": "9bb57d6c-2d7d-46b1-9dfb-832dd8de8d2f",
+          "content": "Hola chic@s!!!",
+          "timestamp": {
+            "YY": "2022",
+            "MM": "10",
+            "DD": "09",
+            "hh": "12",
+            "mm": "32",
+            "ss": "19"
+          }
+        }
+      }
+    ]
+  }
+]

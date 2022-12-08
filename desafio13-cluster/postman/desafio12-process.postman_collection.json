@@ -1,0 +1,77 @@
+{
+	"info": {
+		"_postman_id": "eceeda0e-53df-4799-a8f3-3e7ce4e9abad",
+		"name": "desafio12-process",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23358626"
+	},
+	"item": [
+		{
+			"name": "numeros aleatorios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/randoms?qty=500000000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"randoms"
+					],
+					"query": [
+						{
+							"key": "qty",
+							"value": "500000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "informacion del sistema",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"asd@asd\",\r\n    \"password\": \"asd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/info",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"info"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

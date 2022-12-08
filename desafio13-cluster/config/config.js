@@ -4,10 +4,12 @@ const argv = yargs(
     process.argv.slice(2)
 )
     .default({
-        p: 8080
+        p: 8080,
+        m: 'cluster'
     })
     .alias({
-        p: 'port'
+        p: 'port',
+        m: 'mode'
     })
     .argv
 
