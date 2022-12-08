@@ -5,8 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { writeFile, readFile } from 'fs/promises';
 import mongoose from 'mongoose';
 import UserModel from '../models/user.js';
+import ProductModel from '../models/product.js';
 
-const options = { dbName: 'challenge' };
+const options = { dbName: 'ecommerce' };
 const commentSchema = new schema.Entity('comments');
 const authorSchema = new schema.Entity('authors', {}, { idAttribute: 'email' }
 );
@@ -24,17 +25,17 @@ await mongoose.connect(config.MONGO_URI, options);
 class DB {
     /* PRODUCTS */
     static async getProducts() {
-        const products = await selectAllFromTable(config.databaseSQL.sql, 'products');
+        const products = await ProductModel.find({});
         return products;
     }
 
     static async addProduct(newProduct) {
         const data = {
-            title: newProduct.title,
+            name: newProduct.name,
             price: parseFloat(newProduct.price),
-            thumbnail: newProduct.thumbnail
+            image: newProduct.image
         }
-        await insertOnTable(config.databaseSQL.sql, 'products', data);
+        await ProductModel.create(data);
     }
 
     /* MESSAGES */
@@ -88,13 +89,3 @@ class DB {
 }
 
 export default DB;
-
-async function selectAllFromTable(databaseSQL, table) {
-    const knexInstance = knex(databaseSQL);
-    return await knexInstance(table).select('*');
-}
-
-async function insertOnTable(databaseSQL, table, newRegister) {
-    const knexInstance = knex(databaseSQL);
-    await knexInstance(table).insert(newRegister);
-}

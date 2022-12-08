@@ -70,16 +70,16 @@
             <h2 class="text-center mt-5">Agregar producto</h2>
             <form id="form-add-product" action="/api/productos" method="POST">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Nombre del producto</label>
-                    <input type="text" name="title" class="form-control" id="title" required>
+                    <label for="name" class="form-label">Nombre del producto</label>
+                    <input type="text" name="name" class="form-control" id="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Precio</label>
                     <input type="number" name="price" class="form-control" id="price" step=".01" required>
                 </div>
                 <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Imagen URL</label>
-                    <input type="url" name="thumbnail" class="form-control" id="thumbnail" required>
+                    <label for="image" class="form-label">Imagen URL</label>
+                    <input type="url" name="image" class="form-control" id="image" required>
                 </div>
                 <button type="submit" class="btn btn-success">Agregar</button>
             </form>

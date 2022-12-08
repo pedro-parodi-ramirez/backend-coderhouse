@@ -33,9 +33,9 @@ const usernameOutput = document.getElementById('username-output');
 // Productos
 const productTable = document.getElementById('product-table');
 const addProduct = document.getElementById('form-add-product');
-const inputTitle = document.getElementById('title');
+const inputName = document.getElementById('name');
 const inputPrice = document.getElementById('price');
-const inputThumbnail = document.getElementById('thumbnail');
+const inputImage = document.getElementById('image');
 
 // Centro de mensajes
 const messageList = document.getElementById('list-messages');
@@ -220,9 +220,9 @@ socket.on('update-products', (data) => {
 // Se agrega nuevo producto al arreglo local y se genera evento para emitirlo a todos los clientes conectados.
 addProduct.addEventListener('submit', () => {
     let data = {
-        title: inputTitle.value,
+        name: inputName.value,
         price: inputPrice.value,
-        thumbnail: inputThumbnail.value
+        image: inputImage.value
     };
     products.push(data);
     socket.emit('new-product', data);

@@ -11,6 +11,8 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import UserModel from './models/user.js';
 import { isValidPassword, encryptPassword } from './config/utils.js';
+import cluster from 'cluster';
+import os from 'os';
 
 const PORT = config.PORT;
 const app = express();
