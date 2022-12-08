@@ -31,6 +31,9 @@ const authErrorDiv = document.getElementById('auth-error-div');
 const usernameOutput = document.getElementById('username-output');
 
 // Productos
+const btnShowAddProduct = document.getElementById('btn-show-add-product');
+const btnCancelAddProduct = document.getElementById('btn-cancel-add-product');
+const divAddProduct = document.getElementById('div-add-product');
 const productTable = document.getElementById('product-table');
 const addProduct = document.getElementById('form-add-product');
 const inputName = document.getElementById('name');
@@ -216,6 +219,15 @@ socket.on('update-products', (data) => {
 });
 
 /* -------------------------------------------- NEW PRODUCT -------------------------------------------- */
+btnShowAddProduct.addEventListener('click', () => {
+    divAddProduct.classList.remove('d-none');
+})
+
+btnCancelAddProduct.addEventListener('click', () => {
+    divAddProduct.classList.add('d-none');
+    addProduct.reset();
+})
+
 // Formulario agregar producto
 // Se agrega nuevo producto al arreglo local y se genera evento para emitirlo a todos los clientes conectados.
 addProduct.addEventListener('submit', () => {

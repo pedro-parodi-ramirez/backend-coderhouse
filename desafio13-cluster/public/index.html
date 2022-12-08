@@ -25,10 +25,8 @@
                     <label for="password" class="form-label">Ingrese su contraseña:</label>
                     <input type="text" name="password" class="form-control" id="password" required>
                     <div class="mt-2 d-flex justify-content-center">
-                        <button type="submit" formaction="sign-in" id="btn-sign-in" class="btn btn-success">Iniciar
-                            sesión</button>
-                        <button type="submit" formaction="sign-up" id="btn-sign-up"
-                            class="btn btn-success d-none">Registrarse</button>
+                        <button type="submit" formaction="sign-in" id="btn-sign-in" class="btn btn-success">Iniciar sesión</button>
+                        <button type="submit" formaction="sign-up" id="btn-sign-up" class="btn btn-success d-none">Registrarse</button>
                     </div>
                     <hr>
                     <button type="button" id="btn-toggle-auth" class="ms-2 btn btn-warning">Registrarse</button>
@@ -67,27 +65,31 @@
             </div>
 
             <!-- Formulario para agregar producto -->
-            <h2 class="text-center mt-5">Agregar producto</h2>
-            <form id="form-add-product" action="/api/productos" method="POST">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nombre del producto</label>
-                    <input type="text" name="name" class="form-control" id="name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="price" class="form-label">Precio</label>
-                    <input type="number" name="price" class="form-control" id="price" step=".01" required>
-                </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Imagen URL</label>
-                    <input type="url" name="image" class="form-control" id="image" required>
-                </div>
-                <button type="submit" class="btn btn-success">Agregar</button>
-            </form>
+            <div id="div-add-product" class="rounded border border-success bg-success bg-opacity-10 mt-5 p-2 d-none">
+                <h2 class="text-center">Agregar producto</h2>
+                <form id="form-add-product" action="/api/productos" method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre del producto</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Precio</label>
+                        <input type="number" name="price" class="form-control" id="price" step=".01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen URL</label>
+                        <input type="url" name="image" class="form-control" id="image" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                    <button id="btn-cancel-add-product" type="button" class="me-2 btn btn-warning">Cancel</button>
+                </form>
+            </div>
 
             <!-- Lista de productos -->
             <div id="product-container">
                 <h2 class="mt-4">Productos disponibles</h2>
-                <div id="product-table" class="row row-cols-1 row-cols-md-6 g-4"></div>
+                <button id="btn-show-add-product" type="button" class="me-2 btn btn-warning my-2">Agregar producto</button>
+                <div id="product-table" class="row row-cols-1 row-cols-md-4 g-4"></div>
             </div>
 
             <!-- Centro de mensajes -->
@@ -109,8 +111,7 @@
                 <div id="messages-container">
                     <ul id="list-messages"></ul>
                 </div>
-                <input type="text" name="user-content" class="form-control" id="user-content"
-                    placeholder="Escribe algo ..." required>
+                <input type="text" name="user-content" class="form-control" id="user-content" placeholder="Escribe algo ..." required>
                 <button type="submit" class="mt-2 btn btn-success">Enviar</button>
             </form>
         </div>
