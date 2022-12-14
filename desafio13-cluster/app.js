@@ -15,18 +15,31 @@ import cluster from 'cluster';
 import os from 'os';
 
 const PORT = config.PORT;
+const MODE = config.argv.mode;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-configPassport();
-configApp();
-const server = app.listen(PORT, () => {
-  console.log(`Servidor http esta escuchando en el puerto ${server.address().port}`);
-  console.log(`http://localhost:${server.address().port}`);
-});
-initSocket(server);
-server.on("error", error => console.log(`Error en servidor ${error}`));
+if (MODE === 'cluster' && cluster.isPrimary) { // Require node in version 16 or higher. Other versions call isMaster property.
+  for (let i = 0; i < os.cpus().length; i++) {
+    cluster.fork();
+  }
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} | code ${code} | signal ${signal}`);
+    console.log('Starting a new worker...');
+    cluster.fork();
+  })
+} else {
+  configPassport();
+  configApp();
+  console.log("PROCESS PID: ", process.pid);
+  const server = app.listen(PORT, () => {
+    console.log(`Servidor http esta escuchando en el puerto ${server.address().port} en modo ${MODE}`);
+    console.log(`http://localhost:${server.address().port}`);
+  });
+  initSocket(server);
+  server.on("error", error => console.log(`Error en servidor ${error}`));
+}
 
 /**********************************************************************************************/
 /******************************************* CONFIG *******************************************/

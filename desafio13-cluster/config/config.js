@@ -5,7 +5,7 @@ const argv = yargs(
 )
     .default({
         p: 8080,
-        m: 'cluster'
+        m: 'fork'
     })
     .alias({
         p: 'port',
