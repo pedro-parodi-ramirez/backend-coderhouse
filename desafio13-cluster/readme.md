@@ -1,20 +1,19 @@
 # Desafío 13 - Cluster y Nginx
 Pruebas de ejectuar servidor en modos cluster y modo fork. Uso de Nginx.
 
-Del lado del front-end, la aplicación cuenta con una única ruta `localhost:8080` que permite interactuar con todas las funcionalidades. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios  y productos se realiza haciendo uso de Mongo Atlas. La app también cuenta con un chat en línea con todos los usuarios conectados. Los mensajes hacen uso de archivos .json.
+Del lado del front-end, la aplicación cuenta con una única ruta `localhost:80` que permite interactuar con todas las funcionalidades. Para ello es necesario estar registrado y logueado en el servidor, donde la persistencia de usuarios se realiza haciendo uso de Mongo Atlas, como así también la de productos. La app también cuenta con un chat en línea con todos los usuarios conectados. Los mensajes hacen uso de archivos .json.
 
 ## Ejecutar servidor
 
 ### PM2
-Modo cluster
+Situado en la raiz del proyecto, ejectuar los siguientes comandos:
 ```
-pm2 start ./app.js -i max -- -p=8080
+pm2 start app.js --name="instance-main-8080" -- -p=8080
+pm2 start app.js --name="instance-api-randoms-8082" -- -p=8082
+pm2 start app.js --name="instance-api-randoms-8083" -- -p=8083
+pm2 start app.js --name="instance-api-randoms-8084" -- -p=8084
+pm2 start app.js --name="instance-api-randoms-8085" -- -p=8085
 ```
-Modo fork
-```
-pm2 start ./app.js -- -p=8080 -m=fork
-```
-
 ### NINGX
 Desde la terminal de Ubuntu, ejecutar con permisos de administrador:
 ```
@@ -34,15 +33,4 @@ MONGO_URI='mongodb+srv://developer:x6JYg18ip3N7gsky@coderhouse.wm4ogqy.mongodb.n
 ```
 
 ### NGINX
-El repositorio cuenta con un archivo `nginx_config`. Este debe ser usado para configurar Nginx. Reemplazar el archivo `default` en el directorio de instalación de nginx `...\nginx\sites-available` por el archivo `nginx_config`. Se recomienda guardar un back-up del archivo `default` original.
-Además, configurar en dicho archivo la ruta donde se encuentran los archivos públicos del repositorio:
-```
-listen 8080 default_server;
-listen [::]:8080 default_server;
-root [CONFIGURE_SU_RUTA_AQUI];
-server_name _;
-  ```
-  Ejemplo:
-  ```
-root /home/pedro-parodi-ramirez/Coderhouse/Backend/Desafios/desafio13-cluster/public;
-  ```
+El repositorio cuenta con un archivo `nginx.conf`. Este debe ser usado para configurar Nginx. Reemplazar el archivo `nginx.conf` en el directorio de instalación de nginx por el archivo `nginx.conf` provisto en el repositorio. Se recomienda guardar un back-up del archivo de configuración original.

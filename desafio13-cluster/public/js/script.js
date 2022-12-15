@@ -1,3 +1,6 @@
+// Server
+const PORT = 80;
+
 // Socket IO
 const socket = io();
 
@@ -69,7 +72,7 @@ let products = [];      // Arreglo local de la lista de productos
 /* -------------------------------------------- SESSION -------------------------------------------- */
 // Al iniciar el sitio web, si corrobora si hay sesión iniciada
 window.addEventListener('load', async () => {
-    const rawResponse = await fetch("http://localhost:8080/users/me");
+    const rawResponse = await fetch("http://localhost:80/users/me");
     if (rawResponse.status === 200) {
         let response = await rawResponse.json();
         mainContainer.classList.remove('d-none');
@@ -97,7 +100,7 @@ formAuth.addEventListener('submit', async (event) => {
     let rawResponse;
     // Sign-in
     if (event.submitter.id === 'btn-sign-in') {
-        rawResponse = await fetch("http://localhost:8080/auth/sign-in", {
+        rawResponse = await fetch("http://localhost:80/auth/sign-in", {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': dataJSON.length
@@ -108,7 +111,7 @@ formAuth.addEventListener('submit', async (event) => {
     }
     // Sign-up
     else if (event.submitter.id === 'btn-sign-up') {
-        rawResponse = await fetch("http://localhost:8080/auth/sign-up", {
+        rawResponse = await fetch("http://localhost:80/auth/sign-up", {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': dataJSON.length
@@ -172,7 +175,7 @@ btnGoToSignIn.addEventListener('click', () => {
 
 btnSignOut.addEventListener('click', async () => {
     mainContainer.classList.add('d-none');
-    const rawResponse = await fetch("http://localhost:8080/auth/sign-out", {
+    const rawResponse = await fetch("http://localhost:80/auth/sign-out", {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -192,7 +195,7 @@ socket.on('connect', () => {
 // Se capta lista de productos y mensajes al momento de la conexión.
 socket.on('init-elements', async (data) => {
     // Solicitud GET para obtener el template de las card-image de los productos
-    await fetch('http://localhost:8080/templates/card-images.hbs')
+    await fetch('http://localhost:80/templates/card-images.hbs')
         .then(response => response.text())
         .then(text => template = Handlebars.compile(text));
 
@@ -297,7 +300,7 @@ btnServerInfo.addEventListener('click', async () => {
     if (!divServerInfo.classList.contains('d-none')) { divServerInfo.classList.add('d-none'); }
     else {
         divServerInfo.classList.remove('d-none');
-        const rawResponse = await fetch('http://localhost:8080/info');
+        const rawResponse = await fetch('http://localhost:80/info');
         const response = await rawResponse.json();
 
         let li;
@@ -326,5 +329,5 @@ btnServerInfo.addEventListener('click', async () => {
 
 btnGenerateNumbers.addEventListener('click', () => {
     const qty = document.getElementById('qty').value;
-    window.location = `http://localhost:8080/api/randoms?qty=${qty}`;
+    window.location = `http://localhost:80/api/randoms?qty=${qty}`;
 });

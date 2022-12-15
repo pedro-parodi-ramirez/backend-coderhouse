@@ -2,25 +2,22 @@ import { Router } from 'express';
 // import { fork } from 'child_process';
 
 const router = Router();
-let numbers = {};
 
 /* GET random numbers. */
 router.get('/randoms', function (req, res, next) {
   try {
     const qty = req.query.qty;
+    let numbers = {};
     console.log(`Solicitud de generar ${qty} números aleatorios`);
 
-    // const child = fork('./routers/process/compute.js');
-    // child.on('message', msg => {
-    //   if (msg === 'ready') {
-    //     child.send(qty);
-    //     return;
-    //   }
-    //   res.end(JSON.stringify(msg, null, 3));
-    // })
+    if (qty) { generateRandomArray(qty, numbers); }
+    else { generateRandomArray(10, numbers); }
 
-    generateRandomArray(qty);
-    res.end(JSON.stringify(numbers, null, 3));
+    const data = {
+      url: req.protocol + '://' + req.get('host') + req.originalUrl,
+      numbers
+    }
+    res.end(JSON.stringify(data, null, 3));
   }
   catch (e) {
     console.log(e.message);
@@ -28,7 +25,7 @@ router.get('/randoms', function (req, res, next) {
   }
 });
 
-function generateRandomArray(qty) {
+function generateRandomArray(qty, numbers) {
   let number;
   for (let i = 0; i < qty; i++) {
     number = Math.floor((Math.random() * 1000) + 1);
