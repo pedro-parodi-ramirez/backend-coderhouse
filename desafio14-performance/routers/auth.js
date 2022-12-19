@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
+import { logError } from '../logs/logger.js';
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
     res.json({ message: `Bienvenid@ ${user.name} !` })
   }
   catch (e) {
-    console.log("Error al loguearse:\n" + e);
+    logError(req, res, next);
   }
 });
 

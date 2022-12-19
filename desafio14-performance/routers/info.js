@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import config from '../config/config.js';
 import os from 'os';
-import compression from 'compression'
+import compression from 'compression';
+import { logError } from '../logs/logger.js';
 
 const router = Router();
 
@@ -21,8 +22,7 @@ router.get('/info', compression(), function (_, res, next) {
         res.status(201).json(data);
     }
     catch (e) {
-        console.log(e.message);
-        next(e);
+        logError(req, res, next);
     }
 });
 
@@ -42,8 +42,7 @@ router.get('/info-no-compression', function (_, res, next) {
         res.status(201).json(data);
     }
     catch (e) {
-        console.log(e.message);
-        next(e);
+        logError(req, res, next);
     }
 });
 

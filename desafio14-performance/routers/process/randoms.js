@@ -1,5 +1,5 @@
 import { Router } from 'express';
-// import { fork } from 'child_process';
+import { logError } from '../../logs/logger.js';
 
 const router = Router();
 
@@ -20,8 +20,7 @@ router.get('/randoms', function (req, res, next) {
     res.end(JSON.stringify(data, null, 3));
   }
   catch (e) {
-    console.log(e.message);
-    next(e);
+    logError(req, res, next);
   }
 });
 

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import DB from '../db/db.js';
 import { emit } from '../socket.js';
+import { logError } from '../logs/logger.js';
 
 const router = Router();
 
@@ -14,8 +15,7 @@ router.post('/productos', async function (req, res, next) {
     res.redirect('/');
   }
   catch (e) {
-    console.log(e.message);
-    next(e);
+    logError(req, res, next);
   }
 })
 

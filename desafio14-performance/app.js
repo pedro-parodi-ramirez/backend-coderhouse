@@ -13,6 +13,7 @@ import UserModel from './models/user.js';
 import { isValidPassword, encryptPassword } from './config/utils.js';
 import cluster from 'cluster';
 import os from 'os';
+import { logger, logInfo, logWarn, logError } from './logs/logger.js';
 
 const PORT = config.PORT;
 const MODE = config.argv.mode;
@@ -123,7 +124,12 @@ function configApp() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use('/', index);
+  app.use('/', (req, _, next) => logInfo(req, _, next), index);
   app.use('/', processRouter);
   app.use(express.static(path.join(__dirname, '/public')));
+
+  app.use(function (err, req, res, next) {
+    logWarn(req, _, next);
+    res.status(401).end(err);
+  });
 }

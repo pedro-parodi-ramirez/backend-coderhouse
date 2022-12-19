@@ -1,5 +1,6 @@
-import { Router } from 'express'
-import DB from '../db/db.js'
+import { Router } from 'express';
+import DB from '../db/db.js';
+import { logError } from '../logs/logger.js';
 
 const router = Router()
 
@@ -16,7 +17,7 @@ router.get('/me', verifyAuth, async (req, res, next) => {
     const user = await DB.getUserByid(req.user._id)
     res.json(user)
   } catch (error) {
-    next(error)
+    logError(req, res, next);
   }
 })
 
@@ -26,7 +27,7 @@ router.post('/', async (req, res, next) => {
     const user = await DB.createUser(body)
     res.json(user)
   } catch (error) {
-    next(error)
+    logError(req, res, next);
   }
 })
 
@@ -36,7 +37,7 @@ router.get('/', async (req, res, next) => {
     const users = await DB.getUser(query)
     res.json(users)
   } catch (error) {
-    next(error)
+    logError(req, res, next);
   }
 })
 
@@ -49,7 +50,7 @@ router.get('/:id', async (req, res, next) => {
     }
     res.json(user)
   } catch (error) {
-    next(error)
+    logError(req, res, next);
   }
 })
 
@@ -62,7 +63,7 @@ router.put('/:id', async (req, res, next) => {
     }
     res.status(204).end()
   } catch (error) {
-    next(error)
+    logError(req, res, next);
   }
 })
 
@@ -75,7 +76,7 @@ router.delete('/:id', async (req, res, next) => {
     }
     res.status(204).end()
   } catch (error) {
-    next(error)
+    logError(req, res, next);
   }
 })
 
