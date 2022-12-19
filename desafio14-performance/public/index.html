@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Authentification -->
+        <div id="login-container" class="rounded border border-success bg-success bg-opacity-10 mt-5 p-2">
+            <div id="auth-div">
+                <form id="form-auth">
+                    <h2 id="auth-title">Inicie sesión para continuar.</h2>
+                    <label for="name" class="form-label">Ingrese su nombre:</label>
+                    <input type="text" name="name" class="form-control" id="name" required>
+                    <label for="email" class="form-label">Ingrese su email:</label>
+                    <input type="email" name="email" class="form-control" id="email" required>
+                    <label for="password" class="form-label">Ingrese su contraseña:</label>
+                    <input type="text" name="password" class="form-control" id="password" required>
+                    <div class="mt-2 d-flex justify-content-center">
+                        <button type="submit" formaction="sign-in" id="btn-sign-in" class="btn btn-success">Iniciar sesión</button>
+                        <button type="submit" formaction="sign-up" id="btn-sign-up" class="btn btn-success d-none">Registrarse</button>
+                    </div>
+                    <hr>
+                    <button type="button" id="btn-toggle-auth" class="ms-2 btn btn-warning">Registrarse</button>
+                </form>
+            </div>
+            <div id="sign-out-div" class="d-none">
+                <div class="row">
+                    <div class="col-9">
+                        <output id="username-output" class="fs-2"></output>
+                    </div>
+                    <div class="col-3 d-flex justify-content-end">
+                        <button id="btn-server-info" type="button" class="me-2 btn btn-warning">Server info</button>
+                        <button id="btn-sign-out" type="button" class="me-2 btn btn-warning">Desloguear</button>
+                    </div>
+                </div>
+            </div>
+            <div id="auth-error-div" class="d-flex justify-content-center d-none">
+                <h2 id="auth-error-title"></h2>
+                <button id="btn-go-to-sign-in" type="button" class="ms-3 btn btn-warning">Volver</button>
+            </div>
+        </div>
+
+        <div id="main-container">
+            <!-- Server info -->
+            <div id="div-server-info" class="mt-3 d-none">
+                <h3>Información del servidor:</h3>
+                <ul id="list-server-info"></ul>
+            </div>
+
+            <!-- Random numbers -->
+            <div class="rounded border border-success bg-success bg-opacity-10 mt-5 p-2">
+                <h3>Generar números aleatorios.</h3>
+                <label for="name" class="form-label">Cantidad de números:</label>
+                <input id="qty" type="number" name="numbers" class="text-center">
+                <button id="btn-generate-numbers" type="button" class="me-2 btn btn-warning">Generar</button>
+            </div>
+
+            <!-- Formulario para agregar producto -->
+            <div id="div-add-product" class="rounded border border-success bg-success bg-opacity-10 mt-5 p-2 d-none">
+                <h2 class="text-center">Agregar producto</h2>
+                <form id="form-add-product" action="/api/productos" method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre del producto</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Precio</label>
+                        <input type="number" name="price" class="form-control" id="price" step=".01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen URL</label>
+                        <input type="url" name="image" class="form-control" id="image" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                    <button id="btn-cancel-add-product" type="button" class="me-2 btn btn-warning">Cancel</button>
+                </form>
+            </div>
+
+            <!-- Lista de productos -->
+            <div id="product-container">
+                <h2 class="mt-4">Productos disponibles</h2>
+                <button id="btn-show-add-product" type="button" class="me-2 btn btn-warning my-2">Agregar producto</button>
+                <div id="product-table" class="row row-cols-1 row-cols-md-4 g-4"></div>
+            </div>
+
+            <!-- Centro de mensajes -->
+            <h2 class="mt-4">Centro de mensajes</h2>
+            <form id="form-message">
+                <input type="email" name="user-email" class="form-control mb-1" id="user-email" placeholder="Email"
+                    required>
+                <input type="text" name="user-name" class="form-control mb-1" id="user-name" placeholder="Nombre"
+                    required>
+                <input type="text" name="user-lastName" class="form-control mb-1" id="user-lastName"
+                    placeholder="Apellidos" required>
+                <input type="text" name="user-alias" class="form-control mb-1" id="user-alias" placeholder="Alias"
+                    required>
+                <input type="url" name="user-avatar" class="form-control mb-1" id="user-avatar" placeholder="Avatar url"
+                    required>
+                <input type="number" name="user-age" class="form-control mb-1" id="user-age" placeholder="Edad"
+                    required>
+                <span><b>Porcentaje de compresión: </b>% <output id="compression" type="number"></output></span>
+                <div id="messages-container">
+                    <ul id="list-messages"></ul>
+                </div>
+                <input type="text" name="user-content" class="form-control" id="user-content" placeholder="Escribe algo ..." required>
+                <button type="submit" class="mt-2 btn btn-success">Enviar</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
