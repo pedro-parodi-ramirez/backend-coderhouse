@@ -11,11 +11,12 @@ router.get('/productos', async function (req, res, next) {
   try {
     console.log('Solicitud GET de listar los productos');
     const data = await DB.getProducts();
-    
+
     res.json(data);
   }
   catch (e) {
     logError(req, res, next);
+    console.log(e.message);
   }
 });
 
@@ -29,7 +30,7 @@ router.get('/api/productos-test', async function (_, res, next) {
   }
   catch (e) {
     logError(req, res, next);
-    next(e);
+    console.log(e.message);
   }
 })
 

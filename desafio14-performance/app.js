@@ -124,12 +124,11 @@ function configApp() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use('/', (req, _, next) => logInfo(req, _, next), index);
-  app.use('/', processRouter);
+  app.use('/', (req, _, next) => logInfo(req, _, next), index, processRouter);
   app.use(express.static(path.join(__dirname, '/public')));
 
-  app.use(function (err, req, res, next) {
-    logWarn(req, _, next);
-    res.status(401).end(err);
+  app.use(function (req, res) {
+    logWarn(req, res);
+    res.status(401).end();
   });
 }

@@ -15,6 +15,7 @@ router.post('/sign-in', passport.authenticate('sign-in'), (req, res) => {
   }
   catch (e) {
     logError(req, res, next);
+    console.log(e.message);
   }
 });
 

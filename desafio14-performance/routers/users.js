@@ -18,6 +18,7 @@ router.get('/me', verifyAuth, async (req, res, next) => {
     res.json(user)
   } catch (error) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 
@@ -28,6 +29,7 @@ router.post('/', async (req, res, next) => {
     res.json(user)
   } catch (error) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 
@@ -38,6 +40,7 @@ router.get('/', async (req, res, next) => {
     res.json(users)
   } catch (error) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 
@@ -51,6 +54,7 @@ router.get('/:id', async (req, res, next) => {
     res.json(user)
   } catch (error) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 
@@ -64,6 +68,7 @@ router.put('/:id', async (req, res, next) => {
     res.status(204).end()
   } catch (error) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 
@@ -77,6 +82,7 @@ router.delete('/:id', async (req, res, next) => {
     res.status(204).end()
   } catch (error) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 

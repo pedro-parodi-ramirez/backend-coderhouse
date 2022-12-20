@@ -16,6 +16,7 @@ router.post('/productos', async function (req, res, next) {
   }
   catch (e) {
     logError(req, res, next);
+    console.log(e.message);
   }
 })
 

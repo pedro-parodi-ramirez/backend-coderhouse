@@ -23,6 +23,7 @@ router.get('/info', compression(), function (_, res, next) {
     }
     catch (e) {
         logError(req, res, next);
+        console.log(e.message);
     }
 });
 
@@ -43,6 +44,7 @@ router.get('/info-no-compression', function (_, res, next) {
     }
     catch (e) {
         logError(req, res, next);
+        console.log(e.message);
     }
 });
 
