@@ -19,7 +19,7 @@ router.get('/info', compression(), function (_, res, next) {
             so: process.platform,
             CPUs: os.cpus().length
         }
-        console.log(data);
+        // console.log(data);
         res.status(201).json(data);
     }
     catch (e) {
