@@ -1,0 +1,21 @@
+{
+  "name": "ecommerce",
+  "version": "0.0.0",
+  "private": true,
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "set PERSISTANCE_TYPE=mongodb&& node .",
+    "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "~4.16.1",
+    "firebase-admin": "^11.2.0",
+    "mongoose": "^6.7.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.5.2",
+    "uuid": "^9.0.0"
+  }
+}

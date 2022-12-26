@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "ebf4b11e-a138-46e3-8f20-26c98cf56291",
+		"name": "segunda-entrega:carrito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23358626"
+	},
+	"item": [
+		{
+			"name": "chart-new-chart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/carrito",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carrito"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chart-add-product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"_id\": \"cfa4de46-5a3f-4599-a15d-a501e6cbce95\",\r\n    \"name\": \"Champagne\",\r\n    \"description\": \"Espumante Extra Brut Chandon Bot 750 Ml\",\r\n    \"timestamp\": 1667340584162,\r\n    \"stock\": 10,\r\n    \"price\": 1830,\r\n    \"code\": \"BA\",\r\n    \"image\": \"https://cdn3.iconfinder.com/data/icons/christmas-and-new-year-27/64/xmas-11-512.png\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/carrito/837c8fa9-1f8a-49c4-913a-e744dd7392a3/productos",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carrito",
+						"837c8fa9-1f8a-49c4-913a-e744dd7392a3",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chart-get-all-products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/carrito/837c8fa9-1f8a-49c4-913a-e744dd7392a3/productos",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carrito",
+						"837c8fa9-1f8a-49c4-913a-e744dd7392a3",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chart-delete-product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/carrito/837c8fa9-1f8a-49c4-913a-e744dd7392a3/productos/cfa4de46-5a3f-4599-a15d-a501e6cbce95",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carrito",
+						"837c8fa9-1f8a-49c4-913a-e744dd7392a3",
+						"productos",
+						"cfa4de46-5a3f-4599-a15d-a501e6cbce95"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chart-delete-chart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/carrito/9937acd8-cc46-4b9f-8c60-2a2c6c728cef",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carrito",
+						"9937acd8-cc46-4b9f-8c60-2a2c6c728cef"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
