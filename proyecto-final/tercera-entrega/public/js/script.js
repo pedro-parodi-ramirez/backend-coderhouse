@@ -8,6 +8,28 @@ const STATUS = {
     INTERNAL_SERVER_ERROR: 500
 };
 
+// Server
+const PORT = 8080;
+
+// Session
+const user = {
+    name: document.getElementById('name'),
+    email: document.getElementById('email'),
+    password: document.getElementById('password')
+};
+const formAuth = document.getElementById('form-auth');
+const authTitle = document.getElementById('auth-title');
+const authErrorTitle = document.getElementById('auth-error-title');
+const btnSignIn = document.getElementById('btn-sign-in');
+const btnSignUp = document.getElementById('btn-sign-up');
+const btnToggleAuth = document.getElementById('btn-toggle-auth');
+const btnSignOut = document.getElementById('btn-sign-out');
+const btnGoToSignIn = document.getElementById('btn-go-to-sign-in');
+const signOutDiv = document.getElementById('sign-out-div');
+const authDiv = document.getElementById('auth-div');
+const authErrorDiv = document.getElementById('auth-error-div');
+const usernameOutput = document.getElementById('username-output');
+
 // Show products
 const productTable = document.getElementById('product-table');
 const productContainer = document.getElementById('product-container');
@@ -65,11 +87,11 @@ buttonCancelFormUpdate.addEventListener('click', () => {
 
 // Get all products and show them
 (async () => {
-    const rawResponseHandlebards = await fetch("http://localhost:8080/templates/card-images.hbs");
+    const rawResponseHandlebards = await fetch(`http://localhost:${PORT}/templates/card-images.hbs`);
     text = await rawResponseHandlebards.text();
     template = Handlebars.compile(text);
 
-    const rawResponse = await fetch("http://localhost:8080/api/productos");
+    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos`);
     const products = await rawResponse.json();
     if (products.length > 0) {
         // Prices with two decimals
@@ -84,7 +106,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
             // Delete product
             document.getElementById(`button-delete-product-id${p._id}`).addEventListener('click', async () => {
                 // Delete request to server and refresh website
-                const rawResponse = await fetch(`http://localhost:8080/api/productos/${p._id}`, {
+                const rawResponse = await fetch(`http://localhost:${PORT}/api/productos/${p._id}`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -111,7 +133,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                 // If cart doesn't exist, create it
                 if (shoppingCartID === null) {
                     document.getElementById('cart-container').className = '';
-                    const rawResponse = await fetch('http://localhost:8080/api/carrito', {
+                    const rawResponse = await fetch(`http://localhost:${PORT}/api/carrito`, {
                         method: 'POST'
                     });
                     shoppingCartID = await rawResponse.json();
@@ -119,7 +141,7 @@ buttonCancelFormUpdate.addEventListener('click', () => {
 
                 // POST request to add product to cart
                 const dataJSON = JSON.stringify(p);
-                const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingCartID}/productos`, {
+                const rawResponse = await fetch(`http://localhost:${PORT}/api/carrito/${shoppingCartID}/productos`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Content-Length': dataJSON.length
@@ -151,7 +173,7 @@ formAddProduct.addEventListener('submit', async (e) => {
         stock: inputStockAdd.value,
     };
     const dataJSON = JSON.stringify(data);
-    const rawResponse = await fetch("http://localhost:8080/api/productos", {
+    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos`, {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': dataJSON.length
@@ -179,7 +201,7 @@ formUpdateProduct.addEventListener('submit', async (e) => {
         stock: inputStockUpdate.value,
     };
     const dataJSON = JSON.stringify(data);
-    const rawResponse = await fetch(`http://localhost:8080/api/productos/${idProduct}`, {
+    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos/${idProduct}`, {
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': dataJSON.length
@@ -215,7 +237,7 @@ function showCartProducts(cartProducts) {
         // Delete product from cart
         document.getElementById(`button-delete-from-cart-id${p.product._id}`).addEventListener('click', async () => {
             // DELETE request to server
-            const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingCartID}/productos/${p.product._id}`, {
+            const rawResponse = await fetch(`http://localhost:${PORT}/api/carrito/${shoppingCartID}/productos/${p.product._id}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -227,3 +249,120 @@ function showCartProducts(cartProducts) {
     });
     totalPrice.value = total.toFixed(2);
 }
+
+/* -------------------------------------------- SESSION -------------------------------------------- */
+// Al iniciar el sitio web, si corrobora si hay sesión iniciada
+window.addEventListener('load', async () => {
+    const rawResponse = await fetch(`http://localhost:${PORT}/users/me`);
+    if (rawResponse.status === 200) {
+        let response = await rawResponse.json();
+        mainContainer.classList.remove('d-none');
+        signOutDiv.classList.remove('d-none');
+        authDiv.classList.add('d-none');
+        usernameOutput.innerText = `Bienvenido ${response.email} !`;
+    }
+    else {
+        mainContainer.classList.add('d-none');
+        signOutDiv.classList.add('d-none');
+        authDiv.classList.remove('d-none');
+        usernameOutput.innerText = '';
+    }
+});
+
+formAuth.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = {
+        name: user.name.value,
+        email: user.email.value,
+        password: user.password.value
+    };
+    const dataJSON = JSON.stringify(data);
+
+    let rawResponse;
+    // Sign-in
+    if (event.submitter.id === 'btn-sign-in') {
+        rawResponse = await fetch(`http://localhost:${PORT}/auth/sign-in`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': dataJSON.length
+            },
+            method: 'POST',
+            body: dataJSON
+        });
+    }
+    // Sign-up
+    else if (event.submitter.id === 'btn-sign-up') {
+        rawResponse = await fetch(`http://localhost:${PORT}/auth/sign-up`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': dataJSON.length
+            },
+            method: 'POST',
+            body: dataJSON
+        });
+    }
+
+    // Response
+    if (rawResponse.status === 200) {
+        let response = await rawResponse.json();
+        mainContainer.classList.remove('d-none');
+        signOutDiv.classList.remove('d-none');
+        authDiv.classList.add('d-none');
+        usernameOutput.innerText = response.message;
+    }
+    else {
+        authDiv.classList.add('d-none');
+        authErrorDiv.classList.remove('d-none');
+        authErrorTitle.innerText = await rawResponse.text();
+        // authErrorTitle.innerText = 'Error: invalid name or password.';
+        // authErrorTitle.innerText = 'Error: user already exist';
+    }
+    user.name.value = '';
+    user.email.value = '';
+    user.password.value = '';
+});
+
+// Toggle sign-in sign-up
+btnToggleAuth.addEventListener('click', () => {
+    let text = btnToggleAuth.innerText;
+    switch (text) {
+        case 'Registrarse':
+            btnSignIn.classList.add('d-none');
+            btnSignUp.classList.remove('d-none');
+            authTitle.innerText = 'Registro de usuario';
+            btnToggleAuth.innerText = 'Iniciar sesión';
+            break;
+        default:
+            btnSignIn.classList.remove('d-none');
+            btnSignUp.classList.add('d-none');
+            authTitle.innerText = 'Inicie sesión para continuar.';
+            btnToggleAuth.innerText = 'Registrarse';
+            break;
+    }
+    user.name.value = '';
+    user.email.value = '';
+    user.password.value = '';
+});
+
+// Back to sign-up from error
+btnGoToSignIn.addEventListener('click', () => {
+    btnSignIn.classList.remove('d-none');
+    btnSignUp.classList.add('d-none');
+    authTitle.innerText = 'Inicie sesión para continuar.';
+    btnToggleAuth.innerText = 'Registrarse';
+    authDiv.classList.remove('d-none');
+    authErrorDiv.classList.add('d-none');
+});
+
+btnSignOut.addEventListener('click', async () => {
+    mainContainer.classList.add('d-none');
+    const rawResponse = await fetch(`http://localhost:${PORT}/auth/sign-out`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+    });
+    const response = await rawResponse.json();
+    usernameOutput.innerText = response.message;
+    btnSignOut.classList.add('d-none');
+});
