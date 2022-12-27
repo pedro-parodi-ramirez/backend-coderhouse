@@ -36,9 +36,9 @@ const containerUpdateProduct = document.getElementById('container-update-product
 const formUpdateProduct = document.getElementById('form-update-product');
 
 // Shopping cart
-let shoppingChartID = null;
-const chartList = document.getElementById('chart-list');
-let chart = [];
+let shoppingCartID = null;
+const cartList = document.getElementById('cart-list');
+let cart = [];
 const totalPrice = document.getElementById('total');
 
 let template;   // Template for card-images used for showing products. It's fetched from the server.
@@ -107,19 +107,19 @@ buttonCancelFormUpdate.addEventListener('click', () => {
             });
 
             // Add product to cart
-            document.getElementById(`button-add-to-chart-id${p._id}`).addEventListener('click', async () => {
+            document.getElementById(`button-add-to-cart-id${p._id}`).addEventListener('click', async () => {
                 // If cart doesn't exist, create it
-                if (shoppingChartID === null) {
-                    document.getElementById('chart-container').className = '';
+                if (shoppingCartID === null) {
+                    document.getElementById('cart-container').className = '';
                     const rawResponse = await fetch('http://localhost:8080/api/carrito', {
                         method: 'POST'
                     });
-                    shoppingChartID = await rawResponse.json();
+                    shoppingCartID = await rawResponse.json();
                 }
 
                 // POST request to add product to cart
                 const dataJSON = JSON.stringify(p);
-                const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos`, {
+                const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingCartID}/productos`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Content-Length': dataJSON.length
@@ -129,10 +129,10 @@ buttonCancelFormUpdate.addEventListener('click', () => {
                 });
 
                 // Request return all products from cart
-                chartProducts = await rawResponse.json();
+                cartProducts = await rawResponse.json();
 
                 // Show all product from cart and update total value of purchase
-                showChartProducts(chartProducts);
+                showCartProducts(cartProducts);
             });
 
         });
@@ -195,11 +195,11 @@ formUpdateProduct.addEventListener('submit', async (e) => {
 });
 
 // Show all product from shopping cart
-function showChartProducts(chartProducts) {
+function showCartProducts(cartProducts) {
     let total = 0;
-    chartList.innerHTML = '';
+    cartList.innerHTML = '';
     totalPrice.value = 0;
-    chartProducts.forEach(p => {
+    cartProducts.forEach(p => {
         total += (p.product.price * p.quantity);
         const li = document.createElement('li');
         li.innerHTML = `
@@ -207,22 +207,22 @@ function showChartProducts(chartProducts) {
             <p>${p.product.description}<br>
             <b>$ ${p.product.price}</b><br>
             Cantidad: ${p.quantity}
-            <button id="button-delete-from-chart-id${p.product._id}" type="button" class="btn btn-danger ms-2">Eliminar</button>
+            <button id="button-delete-from-cart-id${p.product._id}" type="button" class="btn btn-danger ms-2">Eliminar</button>
             </p>
         `;
-        chartList.appendChild(li);
+        cartList.appendChild(li);
 
         // Delete product from cart
-        document.getElementById(`button-delete-from-chart-id${p.product._id}`).addEventListener('click', async () => {
+        document.getElementById(`button-delete-from-cart-id${p.product._id}`).addEventListener('click', async () => {
             // DELETE request to server
-            const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingChartID}/productos/${p.product._id}`, {
+            const rawResponse = await fetch(`http://localhost:8080/api/carrito/${shoppingCartID}/productos/${p.product._id}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method: 'DELETE'
             });
-            const updatedChart = await rawResponse.json();
-            showChartProducts(updatedChart);
+            const updatedCart = await rawResponse.json();
+            showCartProducts(updatedCart);
         });
     });
     totalPrice.value = total.toFixed(2);

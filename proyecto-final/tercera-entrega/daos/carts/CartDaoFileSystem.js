@@ -2,23 +2,23 @@ import ContainerFileSystem from '../../containers/ContainerFileSystem.js';
 import { config } from '../../config/config.js';
 import fs from 'fs';
 
-class ChartDaoFileSystem extends ContainerFileSystem {
+class cartDaoFileSystem extends ContainerFileSystem {
     constructor(file) {
         super(`${config.fileSystem.path}/${file}`);
     }
 
     /* Get all products from cart */
-    async getAllFromChart(idChart) {
+    async getAllFromCart(idCart) {
         try {
             // Read product from cart
-            let chartArray = await this.getAll();
+            let cartArray = await this.getAll();
 
             // Search cart
-            let chart = chartArray.find(c => c._id === idChart);
+            let cart = cartArray.find(c => c._id === idCart);
 
-            if (chart !== undefined) {
+            if (cart !== undefined) {
                 // Return products
-                return chart.products;
+                return cart.products;
             }
             else {
                 return null;
@@ -30,25 +30,25 @@ class ChartDaoFileSystem extends ContainerFileSystem {
     }
 
     /* Add product to cart */
-    async addToChart(idChart, product) {
+    async addToCart(idCart, product) {
         try {
             let succeed = false;
             // Read all carts
-            let chartArray = await this.getAll();
+            let cartArray = await this.getAll();
 
             // Search cart
-            let chart = chartArray.find(c => c._id === idChart);
+            let cart = cartArray.find(c => c._id === idCart);
 
             // Add product if cart exist
-            if (chart !== undefined) {
+            if (cart !== undefined) {
                 // If product exists, increase quantity. Otherwise add product to cart
-                let inChartIndex = chart.products.findIndex(p => p.product._id === product._id);
+                let inCartIndex = cart.products.findIndex(p => p.product._id === product._id);
 
-                if (inChartIndex === -1) { chart.products.push({ product: product, quantity: 1 }) }
-                else { chart.products[inChartIndex].quantity++ }
+                if (inCartIndex === -1) { cart.products.push({ product: product, quantity: 1 }) }
+                else { cart.products[inCartIndex].quantity++ }
 
                 // Update DB
-                await fs.promises.writeFile(this.path, JSON.stringify(chartArray, null, 2));
+                await fs.promises.writeFile(this.path, JSON.stringify(cartArray, null, 2));
                 succeed = true;
             }
             else {
@@ -62,26 +62,26 @@ class ChartDaoFileSystem extends ContainerFileSystem {
     }
 
     /* Delete product from cart */
-    async deleteFromChart(idChart, idProduct) {
+    async deleteFromCart(idCart, idProduct) {
         try {
             let succeed = false;
             // Read all carts
-            let chartArray = await this.getAll();
+            let cartArray = await this.getAll();
 
             // Search cart
-            let chart = chartArray.find(c => c._id === idChart);
+            let cart = cartArray.find(c => c._id === idCart);
 
             // If cart exist, delete product
-            if (chart !== undefined) {
+            if (cart !== undefined) {
                 // Search product
-                succeed = chart.products.some(p => p.product._id === idProduct);
+                succeed = cart.products.some(p => p.product._id === idProduct);
 
                 if (succeed) {
                     // Delete product
-                    chart.products = chart.products.filter(p => p.product._id !== idProduct);
+                    cart.products = cart.products.filter(p => p.product._id !== idProduct);
 
                     // Update DB
-                    await fs.promises.writeFile(this.path, JSON.stringify(chartArray, null, 2));
+                    await fs.promises.writeFile(this.path, JSON.stringify(cartArray, null, 2));
                 }
             }
 
@@ -93,4 +93,4 @@ class ChartDaoFileSystem extends ContainerFileSystem {
     }
 }
 
-export default ChartDaoFileSystem;
+export default cartDaoFileSystem;

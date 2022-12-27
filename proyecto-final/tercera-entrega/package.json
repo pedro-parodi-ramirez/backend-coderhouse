@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "set PERSISTANCE_TYPE=mongodb&& node .",
+    "start": "set PERSISTANCE_TYPE=firebase&& node .",
     "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
   },
   "dependencies": {

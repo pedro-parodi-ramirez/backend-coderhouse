@@ -1,8 +1,8 @@
 (async () => {
     try {
         let productDAO;
-        let chartDAO;
-       
+        let cartDAO;
+
         let products = [
             {
                 timestamp: 1665419816542,
@@ -96,67 +96,73 @@
             }
         ];
 
-        switch (process.env.PERSISTANCE_TYPE) {
-            case 'mongodb':
-                console.log("📂 Generating data in MongoDB 📂");
-                const { default: ProductDaoMongoDB } = await import('../daos/products/ProductDaoMongoDB.js');
-                const { default: ChartDaoMongoDB } = await import('../daos/charts/ChartDaoMongoDB.js');
-                productDAO = new ProductDaoMongoDB();
-                chartDAO = new ChartDaoMongoDB();
+        /********************************************************************************************/
+        /***************************************** MONGO DB *****************************************/
+        /********************************************************************************************/
 
-                // Delete previous elements
-                await productDAO.collection.deleteMany({});
-                await chartDAO.collection.deleteMany({});
+        console.log("📂 Generating data in MongoDB 📂");
+        const { default: ProductDaoMongoDB } = await import('../daos/products/ProductDaoMongoDB.js');
+        const { default: cartDaoMongoDB } = await import('../daos/carts/cartDaoMongoDB.js');
+        productDAO = new ProductDaoMongoDB();
+        cartDAO = new cartDaoMongoDB();
 
-                // Add new products
-                for (let i = 0; i < products.length; i++) {
-                    await productDAO.create(products[i]);
-                }
-                break;
-            case 'firebase':
-                console.log("📂 Generating data in Firebase 📂");
-                const { default: ProductDaoFirebase } = await import('../daos/products/ProductDaoFirebase.js');
-                const { default: ChartDaoFirebase } = await import('../daos/charts/ChartDaoFirebase.js');
-                productDAO = new ProductDaoFirebase();
-                chartDAO = new ChartDaoFirebase();
+        // Delete previous elements
+        await productDAO.collection.deleteMany({});
+        await cartDAO.collection.deleteMany({});
 
-                let docs;
-                // Delete previous products
-                docs = await productDAO.collection.listDocuments();
-                docs.forEach(d => {
-                    d.delete();
-                });
-
-                // Delete previous carts
-                docs = await chartDAO.collection.listDocuments();
-                docs.forEach(d => {
-                    d.delete();
-                });
-
-                // Add new elements
-                for (let i = 0; i < products.length; i++) {
-                    await productDAO.create(products[i]);
-                }
-                break;
-            case 'filesystem':
-                console.log("📂 Generating data in archivos 📂");
-                const { default: fs } = await import('fs/promises');
-                const { default: ProductDaoFileSystem } = await import('../daos/products/ProductDaoFileSystem.js');
-                productDAO = new ProductDaoFileSystem('products.json');
-
-                // Delete previous elements
-                await fs.writeFile('./config/DB/shoppingCharts.json', JSON.stringify([], null, 2));
-                await fs.writeFile('./config/DB/products.json', JSON.stringify([], null, 2));
-
-                // Add new products
-                for (let i = 0; i < products.length; i++) {
-                    await productDAO.create(products[i]);
-                }
-                break;
-            default:
-                throw new Error('PERSISTANCE_TYPE not defined.');
+        // Add new products
+        for (let i = 0; i < products.length; i++) {
+            await productDAO.create(products[i]);
         }
-        console.log('📂✔ DB initialized ✔📂');
+
+        /********************************************************************************************/
+        /***************************************** FIREBASE *****************************************/
+        /********************************************************************************************/
+
+        console.log("📂 Generating data in Firebase 📂");
+        const { default: ProductDaoFirebase } = await import('../daos/products/ProductDaoFirebase.js');
+        const { default: cartDaoFirebase } = await import('../daos/carts/cartDaoFirebase.js');
+        productDAO = new ProductDaoFirebase();
+        cartDAO = new cartDaoFirebase();
+
+        let docs;
+        // Delete previous products
+        docs = await productDAO.collection.listDocuments();
+        docs.forEach(d => {
+            d.delete();
+        });
+
+        // Delete previous carts
+        docs = await cartDAO.collection.listDocuments();
+        docs.forEach(d => {
+            d.delete();
+        });
+
+        // Add new elements
+        for (let i = 0; i < products.length; i++) {
+            await productDAO.create(products[i]);
+        }
+
+        /********************************************************************************************/
+        /**************************************** JSON FILES ****************************************/
+        /********************************************************************************************/
+
+        console.log("📂 Generating data JSON Files 📂");
+        const { default: fs } = await import('fs/promises');
+        const { default: ProductDaoFileSystem } = await import('../daos/products/ProductDaoFileSystem.js');
+        productDAO = new ProductDaoFileSystem('products.json');
+
+        // Delete previous elements
+        await fs.writeFile('./config/DB/shoppingCarts.json', JSON.stringify([], null, 2));
+        await fs.writeFile('./config/DB/products.json', JSON.stringify([], null, 2));
+
+        // Add new products
+        for (let i = 0; i < products.length; i++) {
+            await productDAO.create(products[i]);
+        }
+
+        // Success
+        console.log('✔ DB initialized ✔\nPress Ctrl + c to finish ...');
     }
     catch (e) {
         console.log('📂❌ Error creating data for DB ❌📂\n' + e);

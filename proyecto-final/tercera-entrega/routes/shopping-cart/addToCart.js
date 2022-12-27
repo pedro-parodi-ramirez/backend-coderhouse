@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { variables } from '../../config/config.js';
-import { chartDAO as chartAPI } from '../../daos/index.js';
+import { cartDAO as cartAPI } from '../../daos/index.js';
 
 const router = Router();
 const STATUS = variables.STATUS;
@@ -8,16 +8,16 @@ const STATUS = variables.STATUS;
 /* Add product to cart */
 router.post('/api/carrito/:id/productos', async function (req, res) {
     try {
-        let idChart = req.params.id;
+        let idCart = req.params.id;
         let product = req.body;
-        console.log(`\nPOST request to add product idProduct:${product._id} to idCart:${idChart}`);
-        const succeed = await chartAPI.addToChart(idChart, product);
+        console.log(`\nPOST request to add product idProduct:${product._id} to idCart:${idCart}`);
+        const succeed = await cartAPI.addToCart(idCart, product);
 
         if (succeed) {
-            console.log('🛒✔ Added product to cart ✔🛒');
+            console.log('🛒✔ Product added to cart ✔🛒');
 
             // Respond products from cart updated
-            const products = await chartAPI.getAllFromChart(idChart);
+            const products = await cartAPI.getAllFromCart(idCart);
             res.status(STATUS.ACCEPTED).json(products);
         }
         else {

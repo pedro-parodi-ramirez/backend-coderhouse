@@ -1,9 +1,9 @@
 import { Schema } from 'mongoose';
 import ContainerMongoDB from '../../containers/ContainerMongoDB.js'
 
-class ChartDaoMongoDB extends ContainerMongoDB {
+class cartDaoMongoDB extends ContainerMongoDB {
     constructor() {
-        super('Chart', new Schema({
+        super('cart', new Schema({
             timestamp: { type: Date, default: Date.now },
             products: [new Schema({
                 product: {
@@ -24,9 +24,9 @@ class ChartDaoMongoDB extends ContainerMongoDB {
     }
 
     /* Get all products from cart */
-    async getAllFromChart(idChart) {
+    async getAllFromCart(idCart) {
         try {
-            const query = await this.collection.find({ _id: idChart }, { products: 1, _id: 0 });
+            const query = await this.collection.find({ _id: idCart }, { products: 1, _id: 0 });
             return query[0].products;
         }
         catch (e) {
@@ -35,13 +35,13 @@ class ChartDaoMongoDB extends ContainerMongoDB {
     }
 
     /* Add product to cart */
-    async addToChart(idChart, product) {
+    async addToCart(idCart, product) {
         try {
             // If product exists, increase quantity. Otherwise add product to cart
-            let response = await this.collection.updateOne({ _id: idChart, "products.product._id": product._id }, { $inc: { "products.$.quantity": 1 } });
+            let response = await this.collection.updateOne({ _id: idCart, "products.product._id": product._id }, { $inc: { "products.$.quantity": 1 } });
             
             if (response.modifiedCount === 0) {
-                response = await this.collection.updateOne({ _id: idChart }, {
+                response = await this.collection.updateOne({ _id: idCart }, {
                     $push: { "products": { product, quantity: 1 } }
                 });
             }
@@ -53,9 +53,9 @@ class ChartDaoMongoDB extends ContainerMongoDB {
     }
 
     /* Delete product from cart */
-    async deleteFromChart(idChart, idProduct) {
+    async deleteFromCart(idCart, idProduct) {
         try {
-            let response = await this.collection.updateOne({ _id: idChart }, { $pull: { "products": { "product._id": idProduct } } });
+            let response = await this.collection.updateOne({ _id: idCart }, { $pull: { "products": { "product._id": idProduct } } });
             return response.matchedCount && response.modifiedCount;
         }
         catch (e) {
@@ -64,4 +64,4 @@ class ChartDaoMongoDB extends ContainerMongoDB {
     }
 }
 
-export default ChartDaoMongoDB;
+export default cartDaoMongoDB;

@@ -1,42 +1,42 @@
 let productDAO;
-let chartDAO;
+let cartDAO;
 
 switch (process.env.PERSISTANCE_TYPE) {
     case 'mongodb':
-        console.log("📂 Persistencia de datos en MongoDB 📂");
+        console.log("📂 Data persistance: <MongoDB> 📂");
         const { default: ProductDaoMongoDB } = await import('./products/ProductDaoMongoDB.js');
-        const { default: ChartDaoMongoDB } = await import('./charts/ChartDaoMongoDB.js');
+        const { default: cartDaoMongoDB } = await import('./carts/cartDaoMongoDB.js');
         productDAO = new ProductDaoMongoDB();
-        chartDAO = new ChartDaoMongoDB();
+        cartDAO = new cartDaoMongoDB();
         break;
     case 'firebase':
-        console.log("📂 Persistencia de datos en Firebase 📂");
+        console.log("📂 Data persistance: <Firebase> 📂");
         const { default: ProductDaoFirebase } = await import('./products/ProductDaoFirebase.js');
-        const { default: ChartDaoFirebase } = await import('./charts/ChartDaoFirebase.js');
+        const { default: cartDaoFirebase } = await import('./carts/cartDaoFirebase.js');
         productDAO = new ProductDaoFirebase();
-        chartDAO = new ChartDaoFirebase();
+        cartDAO = new cartDaoFirebase();
         break;
     case 'filesystem':
-        console.log("📂 Persistencia de datos en archivos 📂");
+        console.log("📂 Data persistance: <JSON Files> 📂");
         const { default: ProductDaoFileSystem } = await import('./products/ProductDaoFileSystem.js');
-        const { default: ChartDaoFileSystem } = await import('./charts/ChartDaoFileSystem.js');
+        const { default: cartDaoFileSystem } = await import('./carts/cartDaoFileSystem.js');
         productDAO = new ProductDaoFileSystem('products.json');
-        chartDAO = new ChartDaoFileSystem('shoppingCharts.json');
+        cartDAO = new cartDaoFileSystem('shoppingCarts.json');
         break;
     case 'memory':
-        console.log("📂 Persistencia de datos en memoria 📂");
+        console.log("📂 Data persistance: <Memory> 📂");
         const { default: ProductDaoMemory } = await import('./products/ProductDaoMemory.js');
-        const { default: ChartDaoMemory } = await import('./charts/ChartDaoMemory.js');
+        const { default: cartDaoMemory } = await import('./carts/cartDaoMemory.js');
         productDAO = new ProductDaoMemory();
-        chartDAO = new ChartDaoMemory();
+        cartDAO = new cartDaoMemory();
         break;
     default:
-        console.log("📂 Persistencia de datos <default: Mongo DB> 📂");
+        console.log("📂 Data persistance <default: Mongo DB> 📂");
         const { default: ProductDaoMongoDB_ } = await import('./products/ProductDaoMongoDB.js');
-        const { default: ChartDaoMongoDB_ } = await import('./charts/ChartDaoMongoDB.js');
+        const { default: cartDaoMongoDB_ } = await import('./carts/cartDaoMongoDB.js');
         productDAO = new ProductDaoMongoDB_();
-        chartDAO = new ChartDaoMongoDB_();
+        cartDAO = new cartDaoMongoDB_();
         break;
 }
 
-export { productDAO, chartDAO };
+export { productDAO, cartDAO };

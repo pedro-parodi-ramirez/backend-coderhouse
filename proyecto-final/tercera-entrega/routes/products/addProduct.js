@@ -10,7 +10,7 @@ const ADMIN = variables.ADMIN;
 router.post('/api/productos', async function (req, res) {
   try {
     if (ADMIN) {
-      console.log('\nPOST request to add new product to the database');
+      console.log('\nPOST request to add new product');
       const product = {
         timestamp: Date.now(),
         name: req.body.name,
@@ -22,7 +22,7 @@ router.post('/api/productos', async function (req, res) {
       }
 
       const response = await productAPI.create(product);
-      console.log('📁✔ Added product to DB ✔📁');
+      console.log('📁✔ Product added ✔📁');
       res.status(STATUS.ACCEPTED).json(response);
     }
     else {

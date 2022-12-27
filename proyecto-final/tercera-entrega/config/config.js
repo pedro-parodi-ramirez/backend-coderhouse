@@ -25,6 +25,4 @@ const config = {
     }
 }
 
-
-
 export { variables, config }

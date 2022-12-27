@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "chart-new-chart",
+			"name": "cart-new-cart",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -26,7 +26,7 @@
 			"response": []
 		},
 		{
-			"name": "chart-add-product",
+			"name": "cart-add-product",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -56,7 +56,7 @@
 			"response": []
 		},
 		{
-			"name": "chart-get-all-products",
+			"name": "cart-get-all-products",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -77,7 +77,7 @@
 			"response": []
 		},
 		{
-			"name": "chart-delete-product",
+			"name": "cart-delete-product",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -99,7 +99,7 @@
 			"response": []
 		},
 		{
-			"name": "chart-delete-chart",
+			"name": "cart-delete-cart",
 			"request": {
 				"method": "DELETE",
 				"header": [],

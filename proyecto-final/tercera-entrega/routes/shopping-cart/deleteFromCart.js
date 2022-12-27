@@ -1,22 +1,22 @@
 import { Router } from 'express';
 import { variables } from '../../config/config.js';
-import { chartDAO as chartAPI } from '../../daos/index.js';
+import { cartDAO as cartAPI } from '../../daos/index.js';
 
 const router = Router();
 const STATUS = variables.STATUS;
 
 /* Delete product from cart */
-router.delete('/api/carrito/:idChart/productos/:idProduct', async function (req, res) {
+router.delete('/api/carrito/:idCart/productos/:idProduct', async function (req, res) {
     try {
-        let idChart = req.params.idChart;
+        let idCart = req.params.idCart;
         let idProduct = req.params.idProduct;
-        console.log(`\nDELETE request to delete idProduct:${idProduct} from idCart:${idChart}`);
-        const succeed = await chartAPI.deleteFromChart(idChart, idProduct);
+        console.log(`\nDELETE request for idProduct:${idProduct} from idCart:${idCart}`);
+        const succeed = await cartAPI.deleteFromCart(idCart, idProduct);
 
         if (succeed) {
-            console.log('🛒✔ Added product to cart ✔🛒');
+            console.log('🛒✔ Product deleted from cart ✔🛒');
             // Respond products from cart updated
-            const products = await chartAPI.getAllFromChart(idChart);
+            const products = await cartAPI.getAllFromCart(idCart);
             res.status(STATUS.ACCEPTED).json(products);
         }
         else {

@@ -8,10 +8,10 @@ const STATUS = variables.STATUS;
 /* Get all products. */
 router.get('/api/productos', async function (_, res) {
   try {
-    console.log('\nGET request to show all products');
+    console.log('\nGET request for all products');
     const products = await productAPI.getAll();
     
-    (products.length >= 0) && console.log('📁✔ Read products from DB ✔📁');
+    (products.length >= 0) && console.log('📁✔ Read products ✔📁');
 
     res.status(STATUS.OK).json(products);
   }
@@ -25,11 +25,11 @@ router.get('/api/productos', async function (_, res) {
 router.get('/api/productos/:id', async function (req, res) {
   try {
     let id = req.params.id;
-    console.log(`\nGET request to search product id:${id}`);
+    console.log(`\nGET request for product id:${id}`);
     const productRequested = await productAPI.getById(id);
     
     if (productRequested.length > 0) {
-      console.log('📁✔ Read product from DB ✔📁');
+      console.log('📁✔ Read product ✔📁');
       res.status(STATUS.OK).json(productRequested);
     }
     else {

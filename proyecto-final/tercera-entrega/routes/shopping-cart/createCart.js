@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { variables } from '../../config/config.js';
-import { chartDAO as chartAPI } from '../../daos/index.js';
+import { cartDAO as cartAPI } from '../../daos/index.js';
 
 const router = Router();
 const STATUS = variables.STATUS;
@@ -9,7 +9,7 @@ const STATUS = variables.STATUS;
 router.post('/api/carrito', async function (_, res) {
     try {
         console.log('\nPOST request to create new cart');
-        let id = await chartAPI.create({
+        let id = await cartAPI.create({
             timestamp: Date.now(),
             products: []
         });

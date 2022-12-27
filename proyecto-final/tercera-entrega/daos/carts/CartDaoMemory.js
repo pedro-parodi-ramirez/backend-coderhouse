@@ -1,16 +1,16 @@
 import ContainerMemory from '../../containers/ContainerMemory.js';
 
-class ChartDaoMemory extends ContainerMemory {
+class cartDaoMemory extends ContainerMemory {
 
     /* Get all products from cart */
-    getAllFromChart(idChart) {
+    getAllFromCart(idCart) {
         try {
             // Read product from cart
-            let chart = this.array.find(c => c._id === idChart);
+            let cart = this.array.find(c => c._id === idCart);
 
-            if (chart !== undefined) {
+            if (cart !== undefined) {
                 // Return products
-                return chart.products;
+                return cart.products;
             }
             else {
                 return null;
@@ -22,20 +22,20 @@ class ChartDaoMemory extends ContainerMemory {
     }
 
     /* Add product to cart */
-    addToChart(idChart, product) {
+    addToCart(idCart, product) {
         try {
             let succeed = false;
 
             // Search cart
-            let chart = this.array.find(c => c._id === idChart);
+            let cart = this.array.find(c => c._id === idCart);
 
             // Add product if cart exist
-            if (chart !== undefined) {
+            if (cart !== undefined) {
                 // If product exists, increase quantity. Otherwise add product to cart
-                let inChartIndex = chart.products.findIndex(p => p.product._id === product._id);
+                let inCartIndex = cart.products.findIndex(p => p.product._id === product._id);
 
-                if (inChartIndex === -1) { chart.products.push({ product: product, quantity: 1 }) }
-                else { chart.products[inChartIndex].quantity++ }
+                if (inCartIndex === -1) { cart.products.push({ product: product, quantity: 1 }) }
+                else { cart.products[inCartIndex].quantity++ }
                 succeed = true;
             }
             else {
@@ -49,20 +49,20 @@ class ChartDaoMemory extends ContainerMemory {
     }
 
     /* Delete product from cart */
-    deleteFromChart(idChart, idProduct) {
+    deleteFromCart(idCart, idProduct) {
         try {
             let succeed = false;
 
             // Search cart
-            let chart = this.array.find(c => c._id === idChart);
+            let cart = this.array.find(c => c._id === idCart);
 
-            if (chart !== undefined) {
+            if (cart !== undefined) {
                 // Search product
-                succeed = chart.products.some(p => p.product._id === idProduct);
+                succeed = cart.products.some(p => p.product._id === idProduct);
 
                 if (succeed) {
                     // Delete product
-                    chart.products = chart.products.filter(p => p.product._id !== idProduct);
+                    cart.products = cart.products.filter(p => p.product._id !== idProduct);
                 }
             }
             return succeed;
@@ -73,4 +73,4 @@ class ChartDaoMemory extends ContainerMemory {
     }
 }
 
-export default ChartDaoMemory;
+export default cartDaoMemory;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { variables } from '../../config/config.js';
-import { chartDAO as chartAPI } from '../../daos/index.js';
+import { cartDAO as cartAPI } from '../../daos/index.js';
 
 const router = Router();
 const STATUS = variables.STATUS;
@@ -9,8 +9,8 @@ const STATUS = variables.STATUS;
 router.delete('/api/carrito/:id', async function (req, res) {
     try {
         let id = req.params.id;
-        console.log(`\nDELETE request to delete cart id:${id}`);
-        let succeed = await chartAPI.deleteById(id);
+        console.log(`\nDELETE request for cart id:${id}`);
+        let succeed = await cartAPI.deleteById(id);
 
         if (succeed > 0) {
             console.log('🛒✔ Cart deleted ✔🛒');

@@ -1,17 +1,17 @@
 import ContainerFirebase from '../../containers/ContainerFirebase.js';
 
-class ChartDaoFirebase extends ContainerFirebase {
+class cartDaoFirebase extends ContainerFirebase {
     constructor() {
-        super('charts');
+        super('carts');
     }
 
     /* Get all products from cart */
-    async getAllFromChart(idChart) {
+    async getAllFromCart(idCart) {
         try {
             // Read product from cart
-            const snapshot = await this.collection.doc(idChart).get();
-            const chartProducts = [...(snapshot.data().products)];
-            return chartProducts;
+            const snapshot = await this.collection.doc(idCart).get();
+            const cartProducts = [...(snapshot.data().products)];
+            return cartProducts;
         }
         catch (e) {
             throw new Error('🛒❌ Error getting products from cart 🛒❌');
@@ -19,23 +19,23 @@ class ChartDaoFirebase extends ContainerFirebase {
     }
 
     /* Add product to cart */
-    async addToChart(idChart, product) {
+    async addToCart(idCart, product) {
         try {
             let succeed = false;
-            const doc = await this.collection.doc(idChart);
+            const doc = await this.collection.doc(idCart);
             const snapshot = await doc.get();
             
             // Add product if cart exist
             if (snapshot.exists) {
                 // If product exists, increase quantity. Otherwise add product to cart
-                const chartProducts = [...(snapshot.data().products)];
-                let inChartIndex = chartProducts.findIndex(c => c.product._id === product._id);
+                const cartProducts = [...(snapshot.data().products)];
+                let inCartIndex = cartProducts.findIndex(c => c.product._id === product._id);
 
-                if (inChartIndex === -1) { chartProducts.push({ product: product, quantity: 1 }) }
-                else { chartProducts[inChartIndex].quantity++ }
+                if (inCartIndex === -1) { cartProducts.push({ product: product, quantity: 1 }) }
+                else { cartProducts[inCartIndex].quantity++ }
 
                 // Update DB
-                doc.set({ products: chartProducts });
+                doc.set({ products: cartProducts });
                 succeed = true;
             }
             else {
@@ -49,21 +49,21 @@ class ChartDaoFirebase extends ContainerFirebase {
     }
 
     /* Delete product from cart */
-    async deleteFromChart(idChart, idProduct) {
+    async deleteFromCart(idCart, idProduct) {
         try {
             let succeed = false;
-            const doc = await this.collection.doc(idChart);
+            const doc = await this.collection.doc(idCart);
             const snapshot = await doc.get();
             
             // If cart exist, delete product
             if (snapshot.exists) {
-                let chartProducts = [...(snapshot.data().products)];
+                let cartProducts = [...(snapshot.data().products)];
                 
                 // Delete product
-                chartProducts = chartProducts.filter(c => c.product._id !== idProduct);
+                cartProducts = cartProducts.filter(c => c.product._id !== idProduct);
 
                 // Update DB
-                doc.set({ products: chartProducts });
+                doc.set({ products: cartProducts });
                 succeed = true;
             }
             return succeed;
@@ -74,4 +74,4 @@ class ChartDaoFirebase extends ContainerFirebase {
     }
 }
 
-export default ChartDaoFirebase;
+export default cartDaoFirebase;

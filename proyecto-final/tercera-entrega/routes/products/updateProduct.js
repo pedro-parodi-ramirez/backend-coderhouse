@@ -11,7 +11,7 @@ router.put('/api/productos/:id', async function (req, res) {
     try {
         if (ADMIN) {
             let id = req.params.id;
-            console.log(`\nUPDATE request to update product id:${id}`);
+            console.log(`\nUPDATE request for product id:${id}`);
 
             let newPrice = parseFloat(parseFloat(req.body.price).toFixed(2));
             let newStock = parseInt(req.body.stock);
@@ -27,11 +27,11 @@ router.put('/api/productos/:id', async function (req, res) {
 
             let response = await productAPI.update(id, data);
             if (response > 0) {
-                console.log('📁✔ Product updated on DB ✔📁');
+                console.log('📁✔ Product updated ✔📁');
                 res.status(STATUS.ACCEPTED).end();
             }
             else {
-                console.log('📁❌ Producto not found ❌📁');
+                console.log('📁❌ Product not found ❌📁');
                 res.status(STATUS.BAD_REQUEST).end();
             }
         }
