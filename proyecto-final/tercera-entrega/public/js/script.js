@@ -65,7 +65,11 @@ const totalPrice = document.getElementById('total');
 
 let template;   // Template for card-images used for showing products. It's fetched from the server.
 
-// Events --> Add product
+/* -------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------- PRODUCTS -------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------- */
+
+// Event --> Add product
 buttonAddProduct.addEventListener('click', () => {
     buttonAddProduct.classList.add('d-none');
     containerAddProduct.className = 'mt-5';
@@ -77,7 +81,7 @@ buttonCancelFormAdd.addEventListener('click', () => {
     containerAddProduct.className = 'd-flex d-none';
 });
 
-// Events --> Delete product
+// Event --> Delete product
 buttonCancelFormUpdate.addEventListener('click', () => {
     containerUpdateProduct.classList.add('d-none');
     buttonAddProduct.classList.remove('d-none');
@@ -85,7 +89,62 @@ buttonCancelFormUpdate.addEventListener('click', () => {
     productContainer.className = '';
 });
 
-// Get all products and show them
+// POST request to add new product to DB
+formAddProduct.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+        name: inputNameAdd.value,
+        price: inputPriceAdd.value,
+        image: inputImageAdd.value,
+        description: inputDescriptionAdd.value,
+        code: inputCodeAdd.value,
+        stock: inputStockAdd.value,
+    };
+    const dataJSON = JSON.stringify(data);
+    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': dataJSON.length
+        },
+        method: 'POST',
+        body: dataJSON
+    });
+    if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
+    else {
+        let message = await rawResponse.text();
+        window.alert(message);
+    }
+});
+
+// POST request to update product from DB
+formUpdateProduct.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let idProduct = document.getElementById('idProduct').value;
+    const data = {
+        name: inputNameUpdate.value,
+        price: inputPriceUpdate.value,
+        image: inputImageUpdate.value,
+        description: inputDescriptionUpdate.value,
+        code: inputCodeUpdate.value,
+        stock: inputStockUpdate.value,
+    };
+    const dataJSON = JSON.stringify(data);
+    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos/${idProduct}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': dataJSON.length
+        },
+        method: 'PUT',
+        body: dataJSON
+    });
+    if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
+    else {
+        let message = await rawResponse.text();
+        window.alert(message);
+    }
+});
+
+// Get all products and show them (with all of his properties)
 (async () => {
     const rawResponseHandlebards = await fetch(`http://localhost:${PORT}/templates/card-images.hbs`);
     text = await rawResponseHandlebards.text();
@@ -161,60 +220,9 @@ buttonCancelFormUpdate.addEventListener('click', () => {
     }
 })();
 
-// POST request to add new product to DB
-formAddProduct.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = {
-        name: inputNameAdd.value,
-        price: inputPriceAdd.value,
-        image: inputImageAdd.value,
-        description: inputDescriptionAdd.value,
-        code: inputCodeAdd.value,
-        stock: inputStockAdd.value,
-    };
-    const dataJSON = JSON.stringify(data);
-    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': dataJSON.length
-        },
-        method: 'POST',
-        body: dataJSON
-    });
-    if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
-    else {
-        let message = await rawResponse.text();
-        window.alert(message);
-    }
-});
-
-// POST request to update product from DB
-formUpdateProduct.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    let idProduct = document.getElementById('idProduct').value;
-    const data = {
-        name: inputNameUpdate.value,
-        price: inputPriceUpdate.value,
-        image: inputImageUpdate.value,
-        description: inputDescriptionUpdate.value,
-        code: inputCodeUpdate.value,
-        stock: inputStockUpdate.value,
-    };
-    const dataJSON = JSON.stringify(data);
-    const rawResponse = await fetch(`http://localhost:${PORT}/api/productos/${idProduct}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': dataJSON.length
-        },
-        method: 'PUT',
-        body: dataJSON
-    });
-    if (rawResponse.status === STATUS.ACCEPTED) { window.location.href = "/" }
-    else {
-        let message = await rawResponse.text();
-        window.alert(message);
-    }
-});
+/* -------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------- SHOPING CARTS ------------------------------------------------ */
+/* -------------------------------------------------------------------------------------------------------------- */
 
 // Show all product from shopping cart
 function showCartProducts(cartProducts) {
@@ -250,7 +258,10 @@ function showCartProducts(cartProducts) {
     totalPrice.value = total.toFixed(2);
 }
 
-/* -------------------------------------------- SESSION -------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------- SESSION --------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------- */
+
 // Al iniciar el sitio web, si corrobora si hay sesión iniciada
 window.addEventListener('load', async () => {
     const rawResponse = await fetch(`http://localhost:${PORT}/users/me`);

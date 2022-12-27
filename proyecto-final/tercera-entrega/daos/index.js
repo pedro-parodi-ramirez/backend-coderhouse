@@ -4,38 +4,25 @@ let cartDAO;
 switch (process.env.PERSISTANCE_TYPE) {
     case 'mongodb':
         console.log("📂 Data persistance: <MongoDB> 📂");
-        const { default: ProductDaoMongoDB } = await import('./products/ProductDaoMongoDB.js');
-        const { default: cartDaoMongoDB } = await import('./carts/cartDaoMongoDB.js');
+        const { default: ProductDaoMongoDB } = await import('./ProductDaoMongoDB.js');
+        const { default: cartDaoMongoDB } = await import('./CartDaoMongoDB.js');
         productDAO = new ProductDaoMongoDB();
         cartDAO = new cartDaoMongoDB();
         break;
-    case 'firebase':
-        console.log("📂 Data persistance: <Firebase> 📂");
-        const { default: ProductDaoFirebase } = await import('./products/ProductDaoFirebase.js');
-        const { default: cartDaoFirebase } = await import('./carts/cartDaoFirebase.js');
-        productDAO = new ProductDaoFirebase();
-        cartDAO = new cartDaoFirebase();
-        break;
     case 'filesystem':
         console.log("📂 Data persistance: <JSON Files> 📂");
-        const { default: ProductDaoFileSystem } = await import('./products/ProductDaoFileSystem.js');
-        const { default: cartDaoFileSystem } = await import('./carts/cartDaoFileSystem.js');
+        const { default: ProductDaoFileSystem } = await import('./ProductDaoFileSystem.js');
+        const { default: CartDaoFileSystem } = await import('./CartDaoFileSystem.js');
         productDAO = new ProductDaoFileSystem('products.json');
-        cartDAO = new cartDaoFileSystem('shoppingCarts.json');
-        break;
-    case 'memory':
-        console.log("📂 Data persistance: <Memory> 📂");
-        const { default: ProductDaoMemory } = await import('./products/ProductDaoMemory.js');
-        const { default: cartDaoMemory } = await import('./carts/cartDaoMemory.js');
-        productDAO = new ProductDaoMemory();
-        cartDAO = new cartDaoMemory();
+        cartDAO = new CartDaoFileSystem('shoppingCarts.json');
         break;
     default:
-        console.log("📂 Data persistance <default: Mongo DB> 📂");
-        const { default: ProductDaoMongoDB_ } = await import('./products/ProductDaoMongoDB.js');
-        const { default: cartDaoMongoDB_ } = await import('./carts/cartDaoMongoDB.js');
-        productDAO = new ProductDaoMongoDB_();
-        cartDAO = new cartDaoMongoDB_();
+        console.log("📂 Data persistance: <default: JSON Files> 📂");
+        const { default: _ProductDaoFileSystem } = await import('./ProductDaoFileSystem.js');
+        const { default: _CartDaoFileSystem } = await import('./CartDaoFileSystem.js');
+        productDAO = new _ProductDaoFileSystem('products.json');
+        cartDAO = new _CartDaoFileSystem('shoppingCarts.json');
+        break;
         break;
 }
 

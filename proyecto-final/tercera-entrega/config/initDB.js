@@ -101,8 +101,8 @@
         /********************************************************************************************/
 
         console.log("📂 Generating data in MongoDB 📂");
-        const { default: ProductDaoMongoDB } = await import('../daos/products/ProductDaoMongoDB.js');
-        const { default: cartDaoMongoDB } = await import('../daos/carts/cartDaoMongoDB.js');
+        const { default: ProductDaoMongoDB } = await import('../daos/ProductDaoMongoDB.js');
+        const { default: cartDaoMongoDB } = await import('../daos/cartDaoMongoDB.js');
         productDAO = new ProductDaoMongoDB();
         cartDAO = new cartDaoMongoDB();
 
@@ -115,33 +115,7 @@
             await productDAO.create(products[i]);
         }
 
-        /********************************************************************************************/
-        /***************************************** FIREBASE *****************************************/
-        /********************************************************************************************/
-
-        console.log("📂 Generating data in Firebase 📂");
-        const { default: ProductDaoFirebase } = await import('../daos/products/ProductDaoFirebase.js');
-        const { default: cartDaoFirebase } = await import('../daos/carts/cartDaoFirebase.js');
-        productDAO = new ProductDaoFirebase();
-        cartDAO = new cartDaoFirebase();
-
-        let docs;
-        // Delete previous products
-        docs = await productDAO.collection.listDocuments();
-        docs.forEach(d => {
-            d.delete();
-        });
-
-        // Delete previous carts
-        docs = await cartDAO.collection.listDocuments();
-        docs.forEach(d => {
-            d.delete();
-        });
-
-        // Add new elements
-        for (let i = 0; i < products.length; i++) {
-            await productDAO.create(products[i]);
-        }
+        console.log('✔ DB initialized in MongoDB ✔');
 
         /********************************************************************************************/
         /**************************************** JSON FILES ****************************************/
@@ -149,7 +123,7 @@
 
         console.log("📂 Generating data JSON Files 📂");
         const { default: fs } = await import('fs/promises');
-        const { default: ProductDaoFileSystem } = await import('../daos/products/ProductDaoFileSystem.js');
+        const { default: ProductDaoFileSystem } = await import('../daos/ProductDaoFileSystem.js');
         productDAO = new ProductDaoFileSystem('products.json');
 
         // Delete previous elements
@@ -161,8 +135,8 @@
             await productDAO.create(products[i]);
         }
 
-        // Success
-        console.log('✔ DB initialized ✔\nPress Ctrl + c to finish ...');
+        console.log('✔ DB initialized in JSON Files ✔');
+        console.log('✔ All done. Press Ctrl + c to finish ...');
     }
     catch (e) {
         console.log('📂❌ Error creating data for DB ❌📂\n' + e);

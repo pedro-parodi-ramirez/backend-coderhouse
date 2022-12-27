@@ -1,5 +1,5 @@
-import { config } from '../../config/config.js';
-import ContainerFileSystem from '../../containers/ContainerFileSystem.js';
+import { config } from '../config/config.js';
+import ContainerFileSystem from '../containers/ContainerFileSystem.js';
 
 class ProductDaoFileSystem extends ContainerFileSystem {
     constructor(file) {

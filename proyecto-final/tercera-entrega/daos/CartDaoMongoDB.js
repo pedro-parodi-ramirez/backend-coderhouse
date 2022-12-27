@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import ContainerMongoDB from '../../containers/ContainerMongoDB.js'
+import ContainerMongoDB from '../containers/ContainerMongoDB.js'
 
 class cartDaoMongoDB extends ContainerMongoDB {
     constructor() {
