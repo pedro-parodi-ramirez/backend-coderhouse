@@ -115,28 +115,8 @@
             await productDAO.create(products[i]);
         }
 
-        console.log('✔ DB initialized in MongoDB ✔');
-
-        /********************************************************************************************/
-        /**************************************** JSON FILES ****************************************/
-        /********************************************************************************************/
-
-        console.log("📂 Generating data JSON Files 📂");
-        const { default: fs } = await import('fs/promises');
-        const { default: ProductDaoFileSystem } = await import('../daos/ProductDaoFileSystem.js');
-        productDAO = new ProductDaoFileSystem('products.json');
-
-        // Delete previous elements
-        await fs.writeFile('./config/DB/shoppingCarts.json', JSON.stringify([], null, 2));
-        await fs.writeFile('./config/DB/products.json', JSON.stringify([], null, 2));
-
-        // Add new products
-        for (let i = 0; i < products.length; i++) {
-            await productDAO.create(products[i]);
-        }
-
-        console.log('✔ DB initialized in JSON Files ✔');
-        console.log('✔ All done. Press Ctrl + c to finish ...');
+        console.log('📂✔ DB initialized in MongoDB ✔📂');
+        console.log('All done. Press Ctrl + c to finish ...\n');
     }
     catch (e) {
         console.log('📂❌ Error creating data for DB ❌📂\n' + e);

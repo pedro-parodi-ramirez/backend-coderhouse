@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
-import ContainerMongoDB from '../containers/ContainerMongoDB.js'
+import ControllerMongoDB from '../controllers/ControllerMongoDB.js'
 
-class ProductDaoMongoDB extends ContainerMongoDB {
+class ProductDaoMongoDB extends ControllerMongoDB {
     constructor() {
         super('Product', new Schema({
             timestamp: { type: Date, default: Date.now },

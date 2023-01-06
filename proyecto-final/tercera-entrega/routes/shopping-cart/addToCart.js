@@ -6,7 +6,7 @@ const router = Router();
 const STATUS = variables.STATUS;
 
 /* Add product to cart */
-router.post('/api/carrito/:id/productos', async function (req, res) {
+router.post('/:id/productos', async function (req, res) {
     try {
         let idCart = req.params.id;
         let product = req.body;

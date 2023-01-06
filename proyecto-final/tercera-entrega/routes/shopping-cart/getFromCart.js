@@ -6,7 +6,7 @@ const router = Router();
 const STATUS = variables.STATUS;
 
 /* Search for product on cart */
-router.get('/api/carrito/:id/productos', async function (req, res) {
+router.get('/:id/productos', async function (req, res) {
     try {
         let idCart = req.params.id;
         console.log(`\nGET request to show products from idCart:${idCart}`);

@@ -7,7 +7,7 @@ const STATUS = variables.STATUS;
 const ADMIN = variables.ADMIN;
 
 /* Delete product based on ID */
-router.delete('/api/productos/:id', async function (req, res) {
+router.delete('/productos/:id', async function (req, res) {
     try {
         if (ADMIN) {
             let id = req.params.id;

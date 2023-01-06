@@ -5,7 +5,7 @@ const options = { dbName: 'ecommerce' };
 
 await mongoose.connect(config.mongoDB.URI, options);
 
-export default class ContainerMongoDB {
+export default class ControllerMongoDB {
   constructor(modelName, schema) {
     this.collection = mongoose.model(modelName, schema);
   }

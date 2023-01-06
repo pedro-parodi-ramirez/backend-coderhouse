@@ -6,7 +6,7 @@ const router = Router();
 const STATUS = variables.STATUS;
 
 /* Create new cart */
-router.post('/api/carrito', async function (_, res) {
+router.post('/', async function (_, res) {
     try {
         console.log('\nPOST request to create new cart');
         let id = await cartAPI.create({

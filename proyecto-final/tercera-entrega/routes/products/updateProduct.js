@@ -7,7 +7,7 @@ const STATUS = variables.STATUS;
 const ADMIN = variables.ADMIN;
 
 /* Update product based on ID */
-router.put('/api/productos/:id', async function (req, res) {
+router.put('/productos/:id', async function (req, res) {
     try {
         if (ADMIN) {
             let id = req.params.id;

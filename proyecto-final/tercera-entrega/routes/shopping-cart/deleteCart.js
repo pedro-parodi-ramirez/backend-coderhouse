@@ -6,7 +6,7 @@ const router = Router();
 const STATUS = variables.STATUS;
 
 /* Delete cart based on ID */
-router.delete('/api/carrito/:id', async function (req, res) {
+router.delete('/:id', async function (req, res) {
     try {
         let id = req.params.id;
         console.log(`\nDELETE request for cart id:${id}`);

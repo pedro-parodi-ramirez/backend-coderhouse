@@ -6,7 +6,7 @@ const router = Router();
 const STATUS = variables.STATUS;
 
 /* Delete product from cart */
-router.delete('/api/carrito/:idCart/productos/:idProduct', async function (req, res) {
+router.delete('/:idCart/productos/:idProduct', async function (req, res) {
     try {
         let idCart = req.params.idCart;
         let idProduct = req.params.idProduct;

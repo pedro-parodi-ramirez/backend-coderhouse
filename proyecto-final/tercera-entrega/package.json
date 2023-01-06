@@ -5,8 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "set PERSISTANCE_TYPE=filesystem&& node .",
-    "dev": "nodemon --exec 'node -r dotenv/config' ./app.js"
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
   },
   "dependencies": {
     "dotenv": "^16.0.2",

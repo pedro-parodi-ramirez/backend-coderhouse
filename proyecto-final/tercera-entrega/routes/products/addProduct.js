@@ -7,7 +7,7 @@ const STATUS = variables.STATUS;
 const ADMIN = variables.ADMIN;
 
 /* Add new product */
-router.post('/api/productos', async function (req, res) {
+router.post('/productos', async function (req, res) {
   try {
     if (ADMIN) {
       console.log('\nPOST request to add new product');

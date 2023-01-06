@@ -6,7 +6,7 @@ const router = Router();
 const STATUS = variables.STATUS;
 
 /* Get all products. */
-router.get('/api/productos', async function (_, res) {
+router.get('/productos', async function (_, res) {
   try {
     console.log('\nGET request for all products');
     const products = await productAPI.getAll();
@@ -22,7 +22,7 @@ router.get('/api/productos', async function (_, res) {
 });
 
 /* Obtener producto según ID */
-router.get('/api/productos/:id', async function (req, res) {
+router.get('/productos/:id', async function (req, res) {
   try {
     let id = req.params.id;
     console.log(`\nGET request for product id:${id}`);
