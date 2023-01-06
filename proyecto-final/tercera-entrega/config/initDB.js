@@ -1,7 +1,11 @@
 (async () => {
     try {
-        let productDAO;
-        let cartDAO;
+        const { default: ProductDaoMongoDB } = await import('../daos/ProductDaoMongoDB.js');
+        const { default: CartDaoMongoDB } = await import('../daos/cartDaoMongoDB.js');
+        const { default: UserDaoMongoDB } = await import('../daos/UserDaoMongoDB.js');
+        const productDAO = new ProductDaoMongoDB();
+        const cartDAO = new CartDaoMongoDB();
+        const userDAO = new UserDaoMongoDB();
 
         let products = [
             {
@@ -101,14 +105,11 @@
         /********************************************************************************************/
 
         console.log("📂 Generating data in MongoDB 📂");
-        const { default: ProductDaoMongoDB } = await import('../daos/ProductDaoMongoDB.js');
-        const { default: cartDaoMongoDB } = await import('../daos/cartDaoMongoDB.js');
-        productDAO = new ProductDaoMongoDB();
-        cartDAO = new cartDaoMongoDB();
 
         // Delete previous elements
         await productDAO.collection.deleteMany({});
         await cartDAO.collection.deleteMany({});
+        await userDAO.collection.deleteMany({});
 
         // Add new products
         for (let i = 0; i < products.length; i++) {

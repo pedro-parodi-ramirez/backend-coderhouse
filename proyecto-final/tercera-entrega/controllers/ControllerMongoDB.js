@@ -24,11 +24,11 @@ export default class ControllerMongoDB {
   /* Search element based on ID */
   async getById(id) {
     try {
-      const element = await this.collection.find({ _id: id });
+      const element = await this.collection.findOne({ _id: id });
       return element;
     }
     catch (e) {
-      throw new Error('📁❌ Error searching in DB ❌📁');
+      throw new Error('📁❌ Error searching by ID in DB ❌📁');
     }
   }
 
@@ -36,7 +36,7 @@ export default class ControllerMongoDB {
   async create(data) {
     try {
       const response = await this.collection.create(data);
-      return response.id;
+      return response;
     }
     catch (e) {
       throw new Error('📁❌ Error adding to DB ❌📁');

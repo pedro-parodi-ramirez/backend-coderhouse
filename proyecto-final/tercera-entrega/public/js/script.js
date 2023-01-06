@@ -195,7 +195,8 @@ formUpdateProduct.addEventListener('submit', async (e) => {
                     const rawResponse = await fetch(`http://localhost:${PORT}/api/carrito`, {
                         method: 'POST'
                     });
-                    shoppingCartID = await rawResponse.json();
+                    const response = await rawResponse.json();
+                    shoppingCartID = response._id;
                 }
 
                 // POST request to add product to cart

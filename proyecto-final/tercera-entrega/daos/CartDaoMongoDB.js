@@ -26,8 +26,8 @@ class cartDaoMongoDB extends ControllerMongoDB {
     /* Get all products from cart */
     async getAllFromCart(idCart) {
         try {
-            const query = await this.collection.find({ _id: idCart }, { products: 1, _id: 0 });
-            return query[0].products;
+            const query = await this.collection.findOne({ _id: idCart }, { products: 1, _id: 0 });
+            return query.products;
         }
         catch (e) {
             throw new Error('🛒❌ Error getting products from cart 🛒❌');

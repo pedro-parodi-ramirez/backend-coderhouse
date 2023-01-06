@@ -9,8 +9,10 @@
     "dev": "nodemon ./app.js"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.2",
     "express": "~4.16.1",
+    "express-session": "^1.17.3",
     "firebase-admin": "^11.2.0",
     "mongoose": "^6.7.0",
     "passport": "^0.6.0",

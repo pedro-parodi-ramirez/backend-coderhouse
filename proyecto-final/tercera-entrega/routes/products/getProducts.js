@@ -28,7 +28,7 @@ router.get('/productos/:id', async function (req, res) {
     console.log(`\nGET request for product id:${id}`);
     const productRequested = await productAPI.getById(id);
     
-    if (productRequested.length > 0) {
+    if (productRequested) {
       console.log('📁✔ Read product ✔📁');
       res.status(STATUS.OK).json(productRequested);
     }
